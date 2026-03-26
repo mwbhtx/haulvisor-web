@@ -85,6 +85,7 @@ interface LocationSidebarProps {
   destFilter?: { lat: number; lng: number; city: string } | null;
   costPerMile?: number;
   orderUrlTemplate?: string;
+  onHoverLeg?: (legIndex: number | null) => void;
 }
 
 type SortKey = "score" | "profit" | "daily_profit" | "deadhead";
@@ -123,7 +124,7 @@ function routeKey(legs: { order_id?: string }[]): string {
   return legs.map((l) => l.order_id ?? "spec").join("|");
 }
 
-export function LocationSidebar({ location, selectedIndex, onSelectIndex, onClose, onClearFilters, orderCount, maxWeight, isLoading, originFilter, destFilter, costPerMile = 1.5, orderUrlTemplate }: LocationSidebarProps) {
+export function LocationSidebar({ location, selectedIndex, onSelectIndex, onClose, onClearFilters, orderCount, maxWeight, isLoading, originFilter, destFilter, costPerMile = 1.5, orderUrlTemplate, onHoverLeg }: LocationSidebarProps) {
   const { activeCompanyId } = useAuth();
   const scrollRef = useRef<HTMLDivElement>(null);
   const [sortBy, setSortBy] = useState<SortKey>("score");
@@ -280,6 +281,7 @@ export function LocationSidebar({ location, selectedIndex, onSelectIndex, onClos
                 onToggleWatchlist={() => toggleWatchlist(routeKey(chain.legs))}
                 orderUrlTemplate={orderUrlTemplate}
                 onShowComments={handleShowComments}
+                onHoverLeg={onHoverLeg}
               />
             ))
           : sortedRoutes.map((route, i) => (
@@ -296,6 +298,7 @@ export function LocationSidebar({ location, selectedIndex, onSelectIndex, onClos
                 onToggleWatchlist={() => toggleWatchlist(routeKey(route.legs))}
                 orderUrlTemplate={orderUrlTemplate}
                 onShowComments={handleShowComments}
+                onHoverLeg={onHoverLeg}
               />
             ))
         }
@@ -382,6 +385,7 @@ function RoundTripChainCard({
   routeIdx,
   orderUrlTemplate,
   onShowComments,
+  onHoverLeg,
 }: {
   chain: RoundTripChain;
   rank: number;
@@ -396,6 +400,7 @@ function RoundTripChainCard({
   routeIdx?: number;
   orderUrlTemplate?: string;
   onShowComments?: (orderId: string) => void;
+  onHoverLeg?: (legIndex: number | null) => void;
 }) {
   const hasSpeculative = chain.legs.some((leg) => leg.type === "speculative");
   const firmLegs = chain.legs.filter((leg) => leg.type === "firm");
@@ -578,7 +583,11 @@ function RoundTripChainCard({
                     )}
 
                     {/* Leg */}
-                    <div className="flex items-start gap-3 py-2 relative">
+                    <div
+                      className="flex items-start gap-3 py-2 relative"
+                      onMouseEnter={() => onHoverLeg?.(legIdx)}
+                      onMouseLeave={() => onHoverLeg?.(null)}
+                    >
                       <div
                         className="relative z-10 -ml-[4px] mt-1 h-3 w-3 rounded-full shrink-0"
                         style={{ backgroundColor: color }}

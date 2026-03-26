@@ -47,6 +47,7 @@ export default function MapPage() {
   }, []);
 
   const [tripMode, setTripMode] = useState<"one-way" | "round-trip">("round-trip");
+  const hoverLegRef = useRef<((legIndex: number | null) => void) | null>(null);
 
   const { data, isLoading, isFetched } = useRouteSearch(activeCompanyId ?? "", searchParams);
   const routes = data?.routes ?? [];
@@ -224,6 +225,7 @@ export default function MapPage() {
           originCoords={originFilter}
           destCoords={destFilter}
           tripMode={tripMode}
+          onHoverLegRef={hoverLegRef}
         />
       )}
 
@@ -257,6 +259,7 @@ export default function MapPage() {
             destFilter={destFilter}
             costPerMile={(settings?.cost_per_mile as number | undefined) ?? 1.5}
             orderUrlTemplate={orderUrlTemplate}
+            onHoverLeg={(idx) => hoverLegRef.current?.(idx)}
           />
         </div>}
       </div>

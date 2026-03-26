@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useCallback } from "react";
 import mapboxgl from "mapbox-gl";
 import { cleanupRouteLayers, type DrawableRouteLeg } from "@/lib/map/draw-route";
 import { LEG_COLORS, DEADHEAD_COLOR } from "@/lib/route-colors";
@@ -16,6 +16,8 @@ interface RouteMapProps {
   destCoords?: { lat: number; lng: number } | null;
   /** Trip mode — determines which point the return deadhead targets */
   tripMode?: "one-way" | "round-trip";
+  /** Callback ref for imperative leg hover highlighting */
+  onHoverLegRef?: React.MutableRefObject<((legIndex: number | null) => void) | null>;
 }
 
 const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_TOKEN ?? "";
@@ -28,9 +30,11 @@ export function RouteMap({
   originCoords,
   destCoords,
   tripMode = "round-trip",
+  onHoverLegRef,
 }: RouteMapProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<mapboxgl.Map | null>(null);
+  const legCountRef = useRef(0);
 
   // Initialize map (once)
   useEffect(() => {
@@ -111,7 +115,8 @@ export function RouteMap({
         }));
       }
 
-      if (legs.length === 0) return;
+      if (legs.length === 0) { legCountRef.current = 0; return; }
+      legCountRef.current = legs.length;
 
       // Draw straight lines immediately for instant feedback
       for (let i = 0; i < legs.length; i++) {
@@ -338,6 +343,32 @@ export function RouteMap({
     tryDraw();
     return () => { cancelled = true; clearTimeout(timerId); };
   }, [selectedRoute, originCoords, destCoords, tripMode]);
+
+  // Expose imperative hover handler — bypasses React render cycle for instant feedback
+  const handleHoverLeg = useCallback((legIndex: number | null) => {
+    const map = mapRef.current;
+    if (!map || !map.isStyleLoaded()) return;
+    const count = legCountRef.current;
+    for (let i = 0; i < count; i++) {
+      const layerId = `route-leg-${i}`;
+      if (!map.getLayer(layerId)) continue;
+      if (legIndex === null) {
+        map.setPaintProperty(layerId, "line-opacity", 1);
+        map.setPaintProperty(layerId, "line-width", 3);
+      } else if (i === legIndex) {
+        map.setPaintProperty(layerId, "line-opacity", 1);
+        map.setPaintProperty(layerId, "line-width", 5);
+      } else {
+        map.setPaintProperty(layerId, "line-opacity", 0.2);
+        map.setPaintProperty(layerId, "line-width", 3);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    if (onHoverLegRef) onHoverLegRef.current = handleHoverLeg;
+    return () => { if (onHoverLegRef) onHoverLegRef.current = null; };
+  }, [onHoverLegRef, handleHoverLeg]);
 
   return (
     <div ref={containerRef} className="h-full w-full" />

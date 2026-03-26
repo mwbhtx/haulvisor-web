@@ -81,7 +81,9 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen bg-[#0b090c] text-foreground relative">
-      <BackgroundBeams />
+      <div className="opacity-0 animate-[fade-in_1s_ease-in_forwards]">
+        <BackgroundBeams />
+      </div>
       <MarketingNav variant="light" hideAuth />
 
       <div className="relative z-10 flex flex-col items-center justify-center px-6 pt-20 sm:pt-28 pb-20">

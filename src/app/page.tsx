@@ -9,7 +9,6 @@ import { MarketingNav } from "@/components/marketing-nav";
 import { ArrowRight, CalendarCheck, Bookmark, DollarSign, BarChart3 } from "lucide-react";
 import { motion } from "framer-motion";
 import dynamic from "next/dynamic";
-
 import ShaderGradientButton from "@/components/shader-gradient-button";
 const ShaderGradientCanvas = dynamic(() => import("@shadergradient/react").then(m => ({ default: m.ShaderGradientCanvas })), { ssr: false });
 const ShaderGradient = dynamic(() => import("@shadergradient/react").then(m => ({ default: m.ShaderGradient })), { ssr: false });
@@ -63,7 +62,7 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-[#ff5601] text-foreground">
       <ShaderGradientCanvas
-        style={{ position: "fixed", inset: 0, pointerEvents: "none", zIndex: 0, opacity: 0, animation: "fade-in 1s ease-in 0.5s forwards" }}
+        style={{ position: "fixed", inset: 0, pointerEvents: "none", zIndex: 0, opacity: 0, animation: "fade-in 0.5s ease-in 0.5s forwards" }}
         pixelDensity={1}
         fov={45}
       >

@@ -8,6 +8,9 @@
 html, body {
   overscroll-behavior: none;
 }
+html {
+  scrollbar-gutter: stable;
+}
 
 @keyframes fade-in {
   from { opacity: 0; }
