@@ -199,7 +199,6 @@ export default function HomePage() {
               <div>
                 <p className="text-sm font-semibold text-foreground mb-4">Features</p>
                 <ul className="space-y-2.5 text-sm text-muted-foreground">
-                  <li><button type="button" className="hover:text-foreground transition-colors">AI Profitability</button></li>
                   <li><button type="button" className="hover:text-foreground transition-colors">Lane Watchlists</button></li>
                   <li><button type="button" className="hover:text-foreground transition-colors">Cost Modeling</button></li>
                   <li><button type="button" className="hover:text-foreground transition-colors">Order Board</button></li>
