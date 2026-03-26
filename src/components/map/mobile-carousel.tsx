@@ -5,6 +5,7 @@ import { ChevronLeftIcon, ChevronRightIcon, ChevronDownIcon, ChevronUpIcon, Flam
 import { Badge } from "@/components/ui/badge";
 import type { RouteChain, RoundTripChain, RoundTripLeg, LocationGroup } from "@/lib/types";
 import { LEG_COLORS } from "@/lib/route-colors";
+import { rateColor, netRateColor } from "@/lib/rate-color";
 
 function formatCurrency(value: number): string {
   return new Intl.NumberFormat("en-US", {
@@ -145,9 +146,10 @@ interface MobileCarouselProps {
   destCity?: string;
   sortBy: SortKey;
   orderUrlTemplate?: string;
+  costPerMile?: number;
 }
 
-export function MobileCarousel({ location, selectedIndex, onSelectIndex, originCity, destCity, sortBy, orderUrlTemplate }: MobileCarouselProps) {
+export function MobileCarousel({ location, selectedIndex, onSelectIndex, originCity, destCity, sortBy, orderUrlTemplate, costPerMile = 1.5 }: MobileCarouselProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [watchlist, setWatchlist] = useState<Set<string>>(() => {
     if (typeof window === "undefined") return new Set();
@@ -263,6 +265,7 @@ export function MobileCarousel({ location, selectedIndex, onSelectIndex, originC
             isWatchlisted={watchlist.has(routeKey(chain.legs))}
             onToggleWatchlist={() => toggleWatchlist(routeKey(chain.legs))}
             orderUrlTemplate={orderUrlTemplate}
+            costPerMile={costPerMile}
           />
         ))}
         {/* Trailing spacer to center last card */}
@@ -282,6 +285,7 @@ function FullDetailCard({
   isWatchlisted,
   onToggleWatchlist,
   orderUrlTemplate,
+  costPerMile,
 }: {
   chain: RoundTripChain;
   rank: number;
@@ -290,6 +294,7 @@ function FullDetailCard({
   isWatchlisted?: boolean;
   onToggleWatchlist?: () => void;
   orderUrlTemplate?: string;
+  costPerMile: number;
 }) {
   const hasSpeculative = chain.legs.some((leg) => leg.type === "speculative");
   const profit = hasSpeculative ? chain.estimated_total_profit : chain.firm_profit;
@@ -336,7 +341,7 @@ function FullDetailCard({
           </div>
           <div>
             <p className="text-xs text-muted-foreground uppercase tracking-wide">$/Mi</p>
-            <p className="text-xl font-bold tabular-nums">{formatRpm(chain.effective_rpm)}</p>
+            <p className={`text-xl font-bold tabular-nums ${netRateColor(chain.effective_rpm)}`}>{formatRpm(chain.effective_rpm)}</p>
           </div>
           <div>
             <p className="text-xs text-muted-foreground uppercase tracking-wide">Gross</p>
@@ -403,7 +408,7 @@ function FullDetailCard({
                 </div>
                 <div>
                   <p className="text-[10px] text-muted-foreground uppercase tracking-wide">Rate</p>
-                  <p className="text-base font-semibold tabular-nums">{formatRpm(rpmLeg)}</p>
+                  <p className={`text-base font-semibold tabular-nums ${rateColor(rpmLeg, costPerMile)}`}>{formatRpm(rpmLeg)}</p>
                 </div>
                 {leg.weight != null && leg.weight > 0 && (
                   <div>

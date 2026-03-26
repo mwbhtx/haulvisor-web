@@ -9,6 +9,7 @@ import { useAuth } from "@/components/auth-provider";
 import { fetchApi } from "@/lib/api";
 import type { RouteChain, RoundTripChain, RoundTripLeg, LocationGroup } from "@/lib/types";
 import { LEG_COLORS } from "@/lib/route-colors";
+import { rateColor, netRateColor } from "@/lib/rate-color";
 
 function formatCurrency(value: number): string {
   return new Intl.NumberFormat("en-US", {
@@ -282,6 +283,7 @@ export function LocationSidebar({ location, selectedIndex, onSelectIndex, onClos
                 orderUrlTemplate={orderUrlTemplate}
                 onShowComments={handleShowComments}
                 onHoverLeg={onHoverLeg}
+                costPerMile={costPerMile}
               />
             ))
           : sortedRoutes.map((route, i) => (
@@ -299,6 +301,7 @@ export function LocationSidebar({ location, selectedIndex, onSelectIndex, onClos
                 orderUrlTemplate={orderUrlTemplate}
                 onShowComments={handleShowComments}
                 onHoverLeg={onHoverLeg}
+                costPerMile={costPerMile}
               />
             ))
         }
@@ -386,6 +389,7 @@ function RoundTripChainCard({
   orderUrlTemplate,
   onShowComments,
   onHoverLeg,
+  costPerMile,
 }: {
   chain: RoundTripChain;
   rank: number;
@@ -401,6 +405,7 @@ function RoundTripChainCard({
   orderUrlTemplate?: string;
   onShowComments?: (orderId: string) => void;
   onHoverLeg?: (legIndex: number | null) => void;
+  costPerMile: number;
 }) {
   const hasSpeculative = chain.legs.some((leg) => leg.type === "speculative");
   const firmLegs = chain.legs.filter((leg) => leg.type === "firm");
@@ -498,7 +503,7 @@ function RoundTripChainCard({
 
         {/* Secondary info pills */}
         <div className="flex flex-wrap gap-1.5 mt-2">
-          <span className="rounded-full border px-3 py-1 text-sm text-muted-foreground">
+          <span className={`rounded-full border px-3 py-1 text-sm ${netRateColor(chain.effective_rpm)}`}>
             {formatRpm(chain.effective_rpm)} net
           </span>
           <span className="rounded-full border px-3 py-1 text-sm text-muted-foreground">
@@ -628,7 +633,10 @@ function RoundTripChainCard({
                         </div>
                         {leg.type === "firm" ? (
                           <div className="text-base text-muted-foreground mt-0.5 space-y-0.5">
-                            <p>{[leg.weight != null ? `${leg.weight.toLocaleString()} lbs` : null, leg.miles != null ? `${leg.miles.toLocaleString()} mi` : null, leg.miles > 0 ? `$${(leg.pay / leg.miles).toFixed(2)}/mi` : null, leg.order_id].filter(Boolean).join(" · ")}</p>
+                            <p>
+                              {[leg.weight != null ? `${leg.weight.toLocaleString()} lbs` : null, leg.miles != null ? `${leg.miles.toLocaleString()} mi` : null].filter(Boolean).join(" · ")}
+                              {leg.miles > 0 && <>{" · "}<span className={rateColor(leg.pay / leg.miles, costPerMile)}>${(leg.pay / leg.miles).toFixed(2)}/mi</span></>}
+                            </p>
                             {(leg.pickup_date_early || leg.delivery_date_early) && (
                               <div className="text-sm">
                                 {leg.pickup_date_early && <p>Pickup: {formatDateRange(leg.pickup_date_early, leg.pickup_date_late)}</p>}

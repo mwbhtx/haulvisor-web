@@ -367,6 +367,7 @@ export default function MapPage() {
                 destCity={destFilter?.city}
                 sortBy={mobileSortBy}
                 orderUrlTemplate={orderUrlTemplate}
+                costPerMile={(settings?.cost_per_mile as number | undefined) ?? 1.5}
               />
             );
           }
