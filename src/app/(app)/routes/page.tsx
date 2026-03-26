@@ -75,6 +75,7 @@ export default function MapPage() {
   }, [activeCompanyId]);
   useEffect(() => {
     if (tourStarted.current || isOnbordaVisible) return;
+    if (isMobile) return;
     if (settingsLoading) return;
     if (hasHomeBase && !isDemoUser()) return;
     if (hasActiveSearch) return;
