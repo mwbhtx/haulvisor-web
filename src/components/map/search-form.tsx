@@ -17,6 +17,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { ChevronDown, LocateIcon, SlidersHorizontal, XIcon } from "lucide-react";
+import { BorderBeam } from "@/components/ui/border-beam";
 import { Calendar } from "@/components/ui/calendar";
 import { useSettings, useUpdateSettings } from "@/lib/hooks/use-settings";
 import { TRAILER_CATEGORIES, expandTrailerCodes, codesToLabels } from "@/lib/trailer-types";
@@ -371,10 +372,19 @@ function LocationPill({
       <PopoverTrigger asChild>
         <button
           type="button"
-          className={`flex h-9 items-center gap-1.5 rounded-full border bg-card/95 backdrop-blur px-4 text-sm font-medium shadow-sm transition-colors hover:bg-accent mobile-filter-pill whitespace-nowrap ${
+          className={`relative overflow-hidden flex h-9 items-center gap-1.5 rounded-full border bg-card/95 backdrop-blur px-4 text-sm font-medium shadow-sm transition-colors hover:bg-accent mobile-filter-pill whitespace-nowrap ${
             pulse ? "animate-pulse-border" : ""
           }`}
         >
+          {!value && (
+            <BorderBeam
+              size={40}
+              duration={4}
+              colorFrom="#ff5601"
+              colorTo="#ff7a33"
+              borderWidth={2}
+            />
+          )}
           <span className="text-muted-foreground">{label}:</span>
           <span className="flex items-center gap-1.5">
             <span>{value?.name?.split(",")[0] ?? "Not set"}</span>
