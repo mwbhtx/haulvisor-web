@@ -155,15 +155,8 @@ export function RouteInspector({
   return (
     <div className="flex flex-col h-full bg-[#111111]">
       {/* Header */}
-      <div className="flex items-center gap-2 px-3 py-2.5 border-b border-white/10 shrink-0">
-        <button
-          type="button"
-          onClick={onClose}
-          className="p-1 rounded hover:bg-white/10 transition-colors text-muted-foreground hover:text-foreground"
-        >
-          <ChevronLeftIcon className="h-4 w-4" />
-        </button>
-        <p className="flex-1 text-center pr-6 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+      <div className="flex items-center px-3 py-2.5 border-b border-white/10 shrink-0">
+        <p className="flex-1 text-center text-xs font-semibold uppercase tracking-widest text-muted-foreground">
           Segment Breakdown
         </p>
       </div>
