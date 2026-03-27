@@ -273,7 +273,7 @@ export function MobileCarousel({ location, selectedIndex, onSelectIndex, originC
               <div className="shrink-0 flex items-center justify-center snap-center" style={{ width: "60%" }}>
                 <div className="flex items-center gap-3 px-4">
                   <div className="w-8 h-px bg-border" />
-                  <span className="text-xs font-medium text-muted-foreground whitespace-nowrap">Single Leg Routes</span>
+                  <span className="text-xs font-medium text-muted-foreground whitespace-nowrap">Single Load Routes</span>
                   <div className="w-8 h-px bg-border" />
                 </div>
               </div>
@@ -298,7 +298,7 @@ export function MobileCarousel({ location, selectedIndex, onSelectIndex, originC
               onClick={() => setShowSingleLeg(true)}
               className="w-full rounded-xl border border-dashed border-primary/40 bg-card px-4 py-6 text-center"
             >
-              <p className="text-sm font-medium text-foreground">Show Single Leg Routes</p>
+              <p className="text-sm font-medium text-foreground">Show Single Load Routes</p>
               <p className="text-xs text-muted-foreground mt-0.5">{singleLegChains.length} available</p>
             </button>
           </div>

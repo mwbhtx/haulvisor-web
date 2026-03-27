@@ -179,7 +179,7 @@ function MaxIdlePill({ value, onChange }: { value: number; onChange: (v: number)
       </PopoverTrigger>
       <PopoverContent className="w-auto" align="start">
         <div className="space-y-2 p-1">
-          <p className="text-sm font-medium">Max Idle Between Legs</p>
+          <p className="text-sm font-medium">Max Idle Between Loads</p>
           <div className="flex flex-wrap gap-2">
             {IDLE_OPTIONS.map((opt) => (
               <button
@@ -771,7 +771,7 @@ export function SearchFilters({
   // Shared filter elements
   const tripTypePill = (
     <div id="onborda-trip-mode">
-    <FilterPill label={compactBar || mobile ? "" : "Trip Mode"} value={isRoundTrip ? (compactBar || mobile ? "RT" : "Round Trip") : (compactBar || mobile ? "OW" : "One Way")}>
+    <FilterPill label={compactBar || mobile ? "" : "Trip"} value={isRoundTrip ? (compactBar || mobile ? "RT" : "Round Trip") : (compactBar || mobile ? "OW" : "One Way")}>
       {(close) => (
         <div className="space-y-3 p-1">
           <p className="text-sm font-medium">Trip Type</p>
@@ -831,7 +831,7 @@ export function SearchFilters({
 
   const legsPill = (
     <div id="onborda-legs" className="flex h-9 items-center rounded-full border bg-card/95 backdrop-blur shadow-sm overflow-hidden mobile-filter-pill whitespace-nowrap">
-      <span className="pl-4 pr-2 text-sm text-muted-foreground font-medium">Legs:</span>
+      <span className="pl-4 pr-2 text-sm text-muted-foreground font-medium">Loads:</span>
       {(isRoundTrip ? [2, 3] : [1, 2, 3]).map((n) => (
         <button
           key={n}

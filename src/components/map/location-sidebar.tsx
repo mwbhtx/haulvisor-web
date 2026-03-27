@@ -287,7 +287,7 @@ export function LocationSidebar({ location, selectedIndex, onSelectIndex, onClos
                     >
                       <div className="flex-1 h-px bg-border" />
                       <span className="text-xs font-medium text-muted-foreground whitespace-nowrap group-hover:text-foreground transition-colors">
-                        Single Leg Routes &times;
+                        Single Load Routes &times;
                       </span>
                       <div className="flex-1 h-px bg-border" />
                     </button>,
@@ -321,8 +321,8 @@ export function LocationSidebar({ location, selectedIndex, onSelectIndex, onClos
                     onClick={() => setShowSingleLeg(true)}
                     className="w-full rounded-xl border-2 border-dashed border-primary/40 bg-primary/5 hover:bg-primary/10 px-5 py-5 text-center transition-colors"
                   >
-                    <p className="text-base font-semibold text-foreground">Show Single Leg Routes</p>
-                    <p className="text-sm text-muted-foreground mt-1">{singleLegChains.length} single leg route{singleLegChains.length !== 1 ? "s" : ""} with return analysis</p>
+                    <p className="text-base font-semibold text-foreground">Show Single Load Routes</p>
+                    <p className="text-sm text-muted-foreground mt-1">{singleLegChains.length} single load route{singleLegChains.length !== 1 ? "s" : ""} with return analysis</p>
                   </button>,
                 );
               }

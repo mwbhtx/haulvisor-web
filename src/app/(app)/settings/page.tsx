@@ -446,13 +446,13 @@ export default function SettingsPage() {
               <option value="3">3</option>
             </select>
             <p className="text-xs text-muted-foreground">
-              How many orders you can carry at once. Legs beyond this are speculative.
+              How many orders you can carry at once. Loads beyond this are speculative.
             </p>
           </div>
 
-          {/* Max Idle Between Legs */}
+          {/* Max Idle Between Loads */}
           <div className="space-y-3">
-            <label className="text-sm font-medium mb-2 block">Max Idle Between Legs</label>
+            <label className="text-sm font-medium mb-2 block">Max Idle Between Loads</label>
             <select
               value={maxIdle}
               onChange={(e) => handleNumberChange("max_idle_hours", e.target.value, setMaxIdle)}

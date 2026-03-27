@@ -40,10 +40,10 @@ export const tourSteps: Tour[] = [
       },
       {
         icon: <>&#128722;</>,
-        title: "Number of Legs",
+        title: "Number of Loads",
         content: (
           <p>
-            Set how many <span className={hl}>legs</span> (stops) you want in a route. More legs can mean
+            Set how many <span className={hl}>loads</span> (stops) you want in a route. More loads can mean
             better revenue but longer trips.
           </p>
         ),
@@ -70,7 +70,7 @@ export const tourSteps: Tour[] = [
       },
       {
         icon: <>&#9200;</>,
-        title: "Max Idle",
+        title: "Max Idle Time",
         content: (
           <p>
             Limit <span className={hl}>idle time</span> between loads. Lower values keep you moving but may
