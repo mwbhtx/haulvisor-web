@@ -20,7 +20,7 @@ import { ChevronDown, ChevronUpIcon, LocateIcon, SlidersHorizontal, XIcon } from
 import { BorderBeam } from "@/components/ui/border-beam";
 import { Calendar } from "@/components/ui/calendar";
 import { useSettings, useUpdateSettings } from "@/lib/hooks/use-settings";
-import { TRAILER_CATEGORIES, expandTrailerCodes, codesToLabels } from "@/lib/trailer-types";
+import { TRAILER_CATEGORIES, expandTrailerCodes, codesToLabels } from "@mwbhtx/haulvisor-core";
 import type { RouteSearchParams, RoundTripSearchParams } from "@/lib/hooks/use-routes";
 
 export type SearchParams = RouteSearchParams;

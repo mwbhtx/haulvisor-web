@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { useSettings, useUpdateSettings } from "@/lib/hooks/use-settings";
 import { PlaceAutocomplete, type PlaceResult } from "@/components/map/search-form";
-import { TRAILER_CATEGORIES, expandTrailerCodes, codesToLabels } from "@/lib/trailer-types";
+import { TRAILER_CATEGORIES, expandTrailerCodes, codesToLabels } from "@mwbhtx/haulvisor-core";
 import {
   Card,
   CardHeader,
