@@ -6,12 +6,12 @@ Haulvisor analyzes thousands of available loads and builds the most profitable m
 
 ## Tech Stack
 
-- **Frontend:** Next.js 15 (App Router), React, TypeScript, Tailwind CSS
+- **Frontend:** Next.js 16 (App Router), React 19, TypeScript, Tailwind CSS v4
 - **Maps:** Mapbox GL JS with custom route visualization
 - **Data:** REST API with React Query for caching and real-time updates
 - **Auth:** JWT-based authentication with role-based access control
 - **Animations:** Framer Motion, Shader Gradient
-- **UI:** Radix UI primitives, custom component library
+- **UI:** shadcn/ui, Radix UI primitives
 - **Testing:** Vitest, Testing Library
 - **Core:** Shared types, constants, and cost-model utilities published as `@mwbhtx/haulvisor-core`
 
