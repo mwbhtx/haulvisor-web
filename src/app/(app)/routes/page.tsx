@@ -68,12 +68,17 @@ export default function MapPage() {
   const hasHomeBase = !settingsLoading && !!settings?.home_base_lat;
 
   // Start onboarding tour if no search is active and user hasn't completed it
-  const { startOnborda, isOnbordaVisible } = useOnborda();
+  const { startOnborda, closeOnborda, isOnbordaVisible } = useOnborda();
   const tourStarted = useRef(false);
   // Reset tour guard when user changes (e.g. sign out → try demo again)
   useEffect(() => {
     tourStarted.current = false;
   }, [activeCompanyId]);
+  // Close tour if viewport shrinks into mobile layout while it's running
+  useEffect(() => {
+    if (isMobile && isOnbordaVisible) closeOnborda();
+  }, [isMobile, isOnbordaVisible, closeOnborda]);
+
   useEffect(() => {
     if (tourStarted.current || isOnbordaVisible) return;
     if (isMobile) return;
