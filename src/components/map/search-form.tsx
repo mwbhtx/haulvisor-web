@@ -640,8 +640,8 @@ export function SearchFilters({
     onTripModeChange?.(orders);
 
     if (orders === "round-trip") {
-      // Round trip: pre-fill origin from home if available, otherwise clear for user input
-      const place = homePlace ?? origin;
+      // Round trip: keep origin, set destination = origin (come back home)
+      const place = origin ?? homePlace;
       // Clamp legs to round-trip range (2-3)
       const rtLegs = Math.max(2, Math.min(3, legs));
       setLegs(rtLegs);
@@ -666,10 +666,20 @@ export function SearchFilters({
         onClearSearch?.();
       }
     } else {
-      // One way: clear search and locations so user picks fresh
-      setOrigin(null);
+      // One way: keep origin, clear destination
       setDestination(null);
-      onClearSearch?.();
+      onDestinationChange?.(null);
+      if (origin && searchEnabled.current) {
+        onSearch({
+          origin_lat: origin.lat,
+          origin_lng: origin.lng,
+          legs,
+          trailer_types: driverProfile.trailer_types,
+          ...(maxIdle > 0 ? { max_layover_hours: maxIdle } : {}),
+        });
+      } else {
+        onClearSearch?.();
+      }
     }
   }, [orders]);
 
