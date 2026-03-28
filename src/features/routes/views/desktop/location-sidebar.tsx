@@ -10,7 +10,8 @@ import { useAuth } from "@/core/services/auth-provider";
 import { fetchApi } from "@/core/services/api";
 import type { RouteChain, RoundTripChain, RoundTripLeg, LocationGroup } from "@/core/types";
 import { RouteInspector } from "@/features/routes/components/route-inspector";
-import { DEFAULT_COST_PER_MILE, calcAvgLoadedRpm } from "@mwbhtx/haulvisor-core";
+import { DEFAULT_COST_PER_MILE, calcAvgLoadedRpm, ROUTE_SORT_OPTIONS, DEFAULT_SORT_KEY } from "@mwbhtx/haulvisor-core";
+import type { RouteSortKey } from "@mwbhtx/haulvisor-core";
 import { LEG_COLORS } from "@/core/utils/route-colors";
 import { rateColor, netRateColor, routeProfitColor } from "@/core/utils/rate-color";
 
@@ -92,15 +93,8 @@ interface LocationSidebarProps {
   onHoverLeg?: (legIndex: number | null) => void;
 }
 
-type SortKey = "daily_profit" | "profit" | "deadhead";
 
-const SORT_OPTIONS: { key: SortKey; label: string }[] = [
-  { key: "daily_profit", label: "$/Day" },
-  { key: "profit", label: "Profit" },
-  { key: "deadhead", label: "DH %" },
-];
-
-function sortRouteChains(chains: RouteChain[], sortBy: SortKey): RouteChain[] {
+function sortRouteChains(chains: RouteChain[], sortBy: RouteSortKey): RouteChain[] {
   const sorted = [...chains];
   switch (sortBy) {
     case "profit": sorted.sort((a, b) => b.profit - a.profit); break;
@@ -110,7 +104,7 @@ function sortRouteChains(chains: RouteChain[], sortBy: SortKey): RouteChain[] {
   return sorted;
 }
 
-function sortRoundTripChains(chains: RoundTripChain[], sortBy: SortKey): RoundTripChain[] {
+function sortRoundTripChains(chains: RoundTripChain[], sortBy: RouteSortKey): RoundTripChain[] {
   const sorted = [...chains];
   switch (sortBy) {
     case "profit": sorted.sort((a, b) => b.firm_profit - a.firm_profit); break;
@@ -128,7 +122,7 @@ function routeKey(legs: { order_id?: string }[]): string {
 export function LocationSidebar({ location, selectedIndex, onSelectIndex, onClose, onClearFilters, orderCount, maxWeight, isLoading, originFilter, destFilter, costPerMile = DEFAULT_COST_PER_MILE, orderUrlTemplate, onHoverLeg }: LocationSidebarProps) {
   const { activeCompanyId } = useAuth();
   const scrollRef = useRef<HTMLDivElement>(null);
-  const [sortBy, setSortBy] = useState<SortKey>("daily_profit");
+  const [sortBy, setSortBy] = useState<RouteSortKey>(DEFAULT_SORT_KEY);
   const [commentsDialog, setCommentsDialog] = useState<{ orderId: string; comments: string; loading: boolean } | null>(null);
 
   const handleShowComments = useCallback(async (orderId: string) => {
@@ -202,7 +196,7 @@ export function LocationSidebar({ location, selectedIndex, onSelectIndex, onClos
       {hasResults && !isLoading && (
         <div className="flex items-center gap-1.5 px-3 py-2 bg-[#111111e8] rounded-xl mx-2 mt-2">
           <span className="text-sm text-muted-foreground mr-1">Sort</span>
-          {SORT_OPTIONS.map((opt) => (
+          {ROUTE_SORT_OPTIONS.map((opt) => (
             <button
               key={opt.key}
               type="button"

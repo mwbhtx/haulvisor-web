@@ -1,3 +1,12 @@
+import {
+  GROSS_RATE_GREEN_MULTIPLIER,
+  GROSS_RATE_YELLOW_MULTIPLIER,
+  NET_RATE_GREEN,
+  NET_RATE_YELLOW,
+  DAILY_PROFIT_GREEN,
+  DAILY_PROFIT_YELLOW,
+} from "@mwbhtx/haulvisor-core";
+
 /**
  * Returns a Tailwind text color class for a GROSS rate per mile value
  * based on the user's cost per mile setting.
@@ -12,8 +21,8 @@
  */
 export function rateColor(ratePerMile: number, costPerMile: number): string {
   const ratio = ratePerMile / costPerMile;
-  if (ratio >= 1.7) return "text-green-500";
-  if (ratio >= 1.3) return "text-yellow-500";
+  if (ratio >= GROSS_RATE_GREEN_MULTIPLIER) return "text-green-500";
+  if (ratio >= GROSS_RATE_YELLOW_MULTIPLIER) return "text-yellow-500";
   return "text-red-500";
 }
 
@@ -26,8 +35,8 @@ export function rateColor(ratePerMile: number, costPerMile: number): string {
  *   Green:  above $1.00/mi — strong profit margin
  */
 export function netRateColor(netPerMile: number): string {
-  if (netPerMile >= 1.0) return "text-green-500";
-  if (netPerMile >= 0.5) return "text-yellow-500";
+  if (netPerMile >= NET_RATE_GREEN) return "text-green-500";
+  if (netPerMile >= NET_RATE_YELLOW) return "text-yellow-500";
   return "text-red-500";
 }
 
@@ -41,7 +50,7 @@ export function netRateColor(netPerMile: number): string {
  *   Red:    < $150/day  — not worth the time
  */
 export function routeProfitColor(dailyNetProfit: number): string {
-  if (dailyNetProfit >= 300) return "text-green-400";
-  if (dailyNetProfit >= 150) return "text-yellow-500";
+  if (dailyNetProfit >= DAILY_PROFIT_GREEN) return "text-green-400";
+  if (dailyNetProfit >= DAILY_PROFIT_YELLOW) return "text-yellow-500";
   return "text-red-500";
 }

@@ -20,12 +20,13 @@ import { ChevronDown, ChevronUpIcon, LocateIcon, SlidersHorizontal, XIcon } from
 import { BorderBeam } from "@/platform/web/components/ui/border-beam";
 import { Calendar } from "@/platform/web/components/ui/calendar";
 import { useSettings, useUpdateSettings } from "@/core/hooks/use-settings";
-import { TRAILER_CATEGORIES, expandTrailerCodes, codesToLabels } from "@mwbhtx/haulvisor-core";
+import { TRAILER_CATEGORIES, expandTrailerCodes, codesToLabels, IDLE_OPTIONS, ALL_WORK_DAYS, DEFAULT_MAX_IDLE_HOURS } from "@mwbhtx/haulvisor-core";
+import type { RiskLevel } from "@mwbhtx/haulvisor-core";
 import type { RouteSearchParams, RoundTripSearchParams } from "@/core/hooks/use-routes";
 
 export type SearchParams = RouteSearchParams;
 
-export type RiskLevel = "any" | "safe" | "moderate" | "bold";
+export type { RiskLevel };
 
 function formatDateShort(iso: string): string {
   const d = new Date(iso + "T00:00:00");
@@ -150,14 +151,6 @@ export function PlaceAutocomplete({
 
 /* ---- Max Idle Pill ---- */
 
-const IDLE_OPTIONS = [
-  { value: 24, label: "1 Day" },
-  { value: 48, label: "2 Days" },
-  { value: 72, label: "3 Days" },
-  { value: 96, label: "4 Days" },
-  { value: 120, label: "5 Days" },
-  { value: 0, label: "Any" },
-] as const;
 
 function MaxIdlePill({ value, onChange }: { value: number; onChange: (v: number) => void }) {
   const [open, setOpen] = useState(false);
@@ -258,10 +251,6 @@ function DeadheadPctPill({ value, onChange }: { value: number; onChange: (v: num
     </Popover>
   );
 }
-
-/* ---- Work Days constants (used in AllFiltersPopover) ---- */
-
-const ALL_DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"] as const;
 
 /* ---- Home By Pill (calendar popover) ---- */
 
@@ -520,7 +509,7 @@ export function SearchFilters({
   const [destination, setDestination] = useState<PlaceResult | null>(r.destination ?? null);
   const [homeBy, setHomeBy] = useState<string>(r.homeBy ?? "");
   const [maxDeadheadPct, setMaxDeadheadPct] = useState(r.maxDeadheadPct ?? 15);
-  const [maxIdle, setMaxIdle] = useState<number>(r.maxIdle ?? settings?.max_idle_hours ?? 48);
+  const [maxIdle, setMaxIdle] = useState<number>(r.maxIdle ?? settings?.max_idle_hours ?? DEFAULT_MAX_IDLE_HOURS);
   const [workDays, setWorkDays] = useState<string[]>(r.workDays ?? settings?.work_days ?? []);
   const [legs, setLegs] = useState<number>(r.legs ?? (initialOrders === "one-way" ? 1 : 2));
   const [defaultsLoaded, setDefaultsLoaded] = useState(!!r.origin);
@@ -1203,7 +1192,7 @@ function AllFiltersPopover({
           <div className="space-y-2">
             <p className="text-sm font-medium">Work Days</p>
             <div className="flex flex-wrap gap-1.5">
-              {ALL_DAYS.map((day) => {
+              {ALL_WORK_DAYS.map((day) => {
                 const allSelected = workDays.length === 0 || workDays.length === 7;
                 const selected = allSelected || workDays.includes(day);
                 return (

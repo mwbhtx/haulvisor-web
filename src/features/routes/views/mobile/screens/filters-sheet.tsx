@@ -7,6 +7,7 @@ import { Button } from "@/platform/web/components/ui/button";
 import { Input } from "@/platform/web/components/ui/input";
 import { Slider } from "@/platform/web/components/ui/slider";
 import { cn } from "@/core/utils";
+import { LEG_OPTIONS, DEFAULT_LEGS, DEFAULT_MAX_IDLE_HOURS } from "@mwbhtx/haulvisor-core";
 
 export interface AdvancedFilters {
   legs: number;
@@ -22,12 +23,10 @@ interface FiltersSheetProps {
   initialFilters?: Partial<AdvancedFilters>;
 }
 
-const LEG_OPTIONS = [1, 2, 3, 4, 5];
-
 export function FiltersSheet({ onBack, onApply, initialFilters }: FiltersSheetProps) {
-  const [legs, setLegs] = useState(initialFilters?.legs ?? 3);
+  const [legs, setLegs] = useState(initialFilters?.legs ?? DEFAULT_LEGS);
   const [maxDeadheadPct, setMaxDeadheadPct] = useState(initialFilters?.maxDeadheadPct ?? 30);
-  const [maxIdleHours, setMaxIdleHours] = useState(initialFilters?.maxIdleHours ?? 48);
+  const [maxIdleHours, setMaxIdleHours] = useState(initialFilters?.maxIdleHours ?? DEFAULT_MAX_IDLE_HOURS);
   const [homeBy, setHomeBy] = useState(initialFilters?.homeBy ?? "");
   const [trailerType, setTrailerType] = useState(initialFilters?.trailerType ?? "");
 
