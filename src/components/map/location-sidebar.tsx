@@ -411,6 +411,8 @@ function routeChainToRoundTrip(route: RouteChain): RoundTripChain {
       delivery_date_late: leg.delivery_date_late,
       lane_rank: leg.lane_rank,
     })),
+    timeline: route.timeline,
+    trip_summary: route.trip_summary,
   };
 }
 
