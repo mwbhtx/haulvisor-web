@@ -166,7 +166,8 @@ export function RouteMap({
       }
 
       // Return deadhead: last dropoff → origin (round-trip) or → destination (one-way)
-      const returnTarget = tripMode === "one-way" ? (destCoords ?? originCoords) : (originCoords ?? destCoords);
+      // Skip return deadhead for one-way with no destination — there's nowhere to return to
+      const returnTarget = tripMode === "one-way" ? destCoords : (originCoords ?? destCoords);
       if (returnTarget && route) {
         const lastLegData = route.legs[route.legs.length - 1];
         const dropoffPt: [number, number] = [lastLegData.destination_lng, lastLegData.destination_lat];

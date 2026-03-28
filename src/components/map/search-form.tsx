@@ -915,7 +915,7 @@ export function SearchFilters({
         {/* Expandable filter overlay */}
         {mobileFiltersOpen && (
           <div className="flex flex-wrap items-center gap-1.5 p-2 rounded-lg bg-muted/50 border border-border/50">
-            <HomeByPill value={homeBy} onChange={setHomeBy} />
+            {isRoundTrip && <HomeByPill value={homeBy} onChange={setHomeBy} />}
             <MaxIdlePill value={maxIdle} onChange={setMaxIdle} />
             <DeadheadPctPill value={maxDeadheadPct} onChange={setMaxDeadheadPct} />
             <AllFiltersPopover risk={risk} onRiskChange={setRisk} workDays={workDays} onWorkDaysChange={setWorkDays} />
@@ -964,7 +964,7 @@ export function SearchFilters({
       </div>
       {destPill}
       {legsPill}
-      <div id="onborda-home-by"><HomeByPill value={homeBy} onChange={setHomeBy} /></div>
+      {isRoundTrip && <div id="onborda-home-by"><HomeByPill value={homeBy} onChange={setHomeBy} /></div>}
       <div id="onborda-idle"><MaxIdlePill value={maxIdle} onChange={setMaxIdle} /></div>
       <div id="onborda-deadhead"><DeadheadPctPill value={maxDeadheadPct} onChange={setMaxDeadheadPct} /></div>
       <div id="onborda-all-filters"><AllFiltersPopover risk={risk} onRiskChange={setRisk} workDays={workDays} onWorkDaysChange={setWorkDays} /></div>
