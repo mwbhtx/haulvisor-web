@@ -2,17 +2,17 @@
 
 import { useState, useCallback, useRef, useEffect } from "react";
 import { XIcon, ChevronDownIcon, ChevronUpIcon, ChevronRightIcon, ChevronLeftIcon, FlameIcon, BookmarkIcon, ClipboardListIcon } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { useAuth } from "@/components/auth-provider";
-import { fetchApi } from "@/lib/api";
-import type { RouteChain, RoundTripChain, RoundTripLeg, LocationGroup } from "@/lib/types";
-import { RouteInspector } from "@/components/map/route-inspector";
+import { Button } from "@/platform/web/components/ui/button";
+import { Badge } from "@/platform/web/components/ui/badge";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/platform/web/components/ui/dialog";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/platform/web/components/ui/tooltip";
+import { useAuth } from "@/core/services/auth-provider";
+import { fetchApi } from "@/core/services/api";
+import type { RouteChain, RoundTripChain, RoundTripLeg, LocationGroup } from "@/core/types";
+import { RouteInspector } from "@/features/routes/components/route-inspector";
 import { DEFAULT_COST_PER_MILE, calcAvgLoadedRpm } from "@mwbhtx/haulvisor-core";
-import { LEG_COLORS } from "@/lib/route-colors";
-import { rateColor, netRateColor, routeProfitColor } from "@/lib/rate-color";
+import { LEG_COLORS } from "@/core/utils/route-colors";
+import { rateColor, netRateColor, routeProfitColor } from "@/core/utils/rate-color";
 
 function formatCurrency(value: number): string {
   return new Intl.NumberFormat("en-US", {
@@ -79,7 +79,7 @@ function formatRpm(value: number): string {
 interface LocationSidebarProps {
   location: LocationGroup;
   selectedIndex: number;
-  onSelectIndex: (index: number, legs?: import("@/lib/map/draw-route").DrawableRouteLeg[]) => void;
+  onSelectIndex: (index: number, legs?: import("@/core/utils/map/draw-route").DrawableRouteLeg[]) => void;
   onClose: () => void;
   onClearFilters?: () => void;
   orderCount?: number;

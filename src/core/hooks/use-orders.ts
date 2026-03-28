@@ -4,8 +4,8 @@ import {
   useQuery,
   useInfiniteQuery,
 } from "@tanstack/react-query";
-import { fetchApi } from "@/lib/api";
-import type { Order, PaginatedOrders, OrderFilters } from "@/lib/types";
+import { fetchApi } from "@/core/services/api";
+import type { Order, PaginatedOrders, OrderFilters } from "@/core/types";
 
 /** Order with optional task fields from the API response envelope */
 export type OrderWithTask = Order & { task_status?: string; task_id?: string };

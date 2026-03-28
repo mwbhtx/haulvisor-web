@@ -6,15 +6,15 @@ import {
   CardContent,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
+} from "@/platform/web/components/ui/card";
 import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
   type ChartConfig,
-} from "@/components/ui/chart";
-import { Skeleton } from "@/components/ui/skeleton";
-import { useAnalyticsTrailerBreakdown } from "@/lib/hooks/use-analytics";
+} from "@/platform/web/components/ui/chart";
+import { Skeleton } from "@/platform/web/components/ui/skeleton";
+import { useAnalyticsTrailerBreakdown } from "@/core/hooks/use-analytics";
 
 const chartConfig = {
   count: {

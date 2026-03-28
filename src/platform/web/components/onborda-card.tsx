@@ -4,8 +4,8 @@ import { useRef, useEffect } from "react";
 import type { CardComponentProps } from "onborda";
 import { useOnborda } from "onborda";
 import { X } from "lucide-react";
-import { useUpdateSettings } from "@/lib/hooks/use-settings";
-import { isDemoUser } from "@/lib/auth";
+import { useUpdateSettings } from "@/core/hooks/use-settings";
+import { isDemoUser } from "@/core/services/auth";
 
 export function OnbordaCard({
   step,

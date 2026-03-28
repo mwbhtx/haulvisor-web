@@ -3,16 +3,16 @@
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { useRouter } from "next/navigation";
-import { useAuth } from "@/components/auth-provider";
-import { fetchApi } from "@/lib/api";
-import { Button } from "@/components/ui/button";
+import { useAuth } from "@/core/services/auth-provider";
+import { fetchApi } from "@/core/services/api";
+import { Button } from "@/platform/web/components/ui/button";
 import {
   Card,
   CardAction,
   CardContent,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
+} from "@/platform/web/components/ui/card";
 import {
   Dialog,
   DialogContent,
@@ -20,7 +20,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
+} from "@/platform/web/components/ui/dialog";
 import {
   Table,
   TableBody,
@@ -28,24 +28,24 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Input } from "@/components/ui/input";
+} from "@/platform/web/components/ui/table";
+import { Badge } from "@/platform/web/components/ui/badge";
+import { Skeleton } from "@/platform/web/components/ui/skeleton";
+import { Input } from "@/platform/web/components/ui/input";
 import { toast } from "sonner";
 import { ChevronDownIcon, CheckIcon, ClockIcon } from "lucide-react";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover";
+} from "@/platform/web/components/ui/popover";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from "@/platform/web/components/ui/select";
 import type { FetchSchedule } from "@mwbhtx/haulvisor-core";
 
 interface Company {

@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useEffect, useCallback, useRef } from "react";
-import { useSettings, useUpdateSettings } from "@/lib/hooks/use-settings";
-import { PlaceAutocomplete, type PlaceResult } from "@/components/map/search-form";
+import { useSettings, useUpdateSettings } from "@/core/hooks/use-settings";
+import { PlaceAutocomplete, type PlaceResult } from "@/features/routes/components/search-form";
 import { TRAILER_CATEGORIES, expandTrailerCodes, codesToLabels } from "@mwbhtx/haulvisor-core";
 import {
   Card,
@@ -10,10 +10,10 @@ import {
   CardTitle,
   CardDescription,
   CardContent,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Separator } from "@/components/ui/separator";
-import { Skeleton } from "@/components/ui/skeleton";
+} from "@/platform/web/components/ui/card";
+import { Input } from "@/platform/web/components/ui/input";
+import { Separator } from "@/platform/web/components/ui/separator";
+import { Skeleton } from "@/platform/web/components/ui/skeleton";
 import { CheckIcon } from "lucide-react";
 
 /** Debounce hook — returns a function that delays calling `fn` */

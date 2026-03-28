@@ -2,16 +2,16 @@
 
 import { useState } from "react";
 import { SlidersHorizontal } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Button } from "@/platform/web/components/ui/button";
+import { Input } from "@/platform/web/components/ui/input";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import type { OrderFilters } from "@/lib/types";
+} from "@/platform/web/components/ui/select";
+import type { OrderFilters } from "@/core/types";
 
 const US_STATES = [
   "AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA",

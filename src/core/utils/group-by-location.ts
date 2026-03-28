@@ -1,4 +1,4 @@
-import type { Order, RouteChain, LocationGroup } from "./types";
+import type { Order, RouteChain, LocationGroup } from "@/core/types";
 
 /** Group orders by origin city/state into LocationGroups */
 export function groupOrdersByLocation(orders: Order[]): LocationGroup[] {

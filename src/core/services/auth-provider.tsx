@@ -22,8 +22,8 @@ import {
   logout as authLogout,
   logoutDemo,
   isDemoUser,
-} from "@/lib/auth";
-import { fetchApi } from "@/lib/api";
+} from "@/core/services/auth";
+import { fetchApi } from "@/core/services/api";
 
 interface AuthContextValue {
   user: AuthUser | null;

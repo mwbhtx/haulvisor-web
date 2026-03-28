@@ -4,9 +4,9 @@ import { useMemo } from "react";
 import {
   Card,
   CardContent,
-} from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
-import { useAnalyticsStats, useAnalyticsHistory } from "@/lib/hooks/use-analytics";
+} from "@/platform/web/components/ui/card";
+import { Skeleton } from "@/platform/web/components/ui/skeleton";
+import { useAnalyticsStats, useAnalyticsHistory } from "@/core/hooks/use-analytics";
 import { LineChart, Line, ResponsiveContainer } from "recharts";
 
 interface StatCardProps {

@@ -1,8 +1,8 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { fetchApi } from "@/lib/api";
-import type { RouteSearchResult } from "@/lib/types";
+import { fetchApi } from "@/core/services/api";
+import type { RouteSearchResult } from "@/core/types";
 import type { RoundTripSearchResult } from "@mwbhtx/haulvisor-core";
 
 export interface RouteSearchParams {

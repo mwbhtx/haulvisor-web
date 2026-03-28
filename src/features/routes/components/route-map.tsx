@@ -2,8 +2,8 @@
 
 import { useEffect, useRef, useCallback } from "react";
 import mapboxgl from "mapbox-gl";
-import { cleanupRouteLayers, type DrawableRouteLeg } from "@/lib/map/draw-route";
-import { LEG_COLORS, DEADHEAD_COLOR } from "@/lib/route-colors";
+import { cleanupRouteLayers, type DrawableRouteLeg } from "@/core/utils/map/draw-route";
+import { LEG_COLORS, DEADHEAD_COLOR } from "@/core/utils/route-colors";
 
 /** Minimal selected route — works with both RouteChain and RoundTripChain */
 type SelectedRoute = { legs: DrawableRouteLeg[] };

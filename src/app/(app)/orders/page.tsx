@@ -2,12 +2,12 @@
 
 import { useState } from "react";
 import { SearchIcon } from "lucide-react";
-import { Input } from "@/components/ui/input";
-import { OrdersFilters } from "@/components/orders/orders-filters";
-import { OrdersTable } from "@/components/orders/orders-table";
-import { useOrders, useOrderSearch, useAllActiveOrders } from "@/lib/hooks/use-orders";
-import { useAuth } from "@/components/auth-provider";
-import type { OrderFilters } from "@/lib/types";
+import { Input } from "@/platform/web/components/ui/input";
+import { OrdersFilters } from "@/features/orders/components/orders-filters";
+import { OrdersTable } from "@/features/orders/components/orders-table";
+import { useOrders, useOrderSearch, useAllActiveOrders } from "@/core/hooks/use-orders";
+import { useAuth } from "@/core/services/auth-provider";
+import type { OrderFilters } from "@/core/types";
 
 export default function OrdersPage() {
   const { activeCompanyId } = useAuth();

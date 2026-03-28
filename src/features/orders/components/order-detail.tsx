@@ -3,18 +3,18 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { ArrowLeftIcon, Loader2Icon } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/platform/web/components/ui/button";
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
-import { Skeleton } from "@/components/ui/skeleton";
-import { OrderSummaryCard } from "@/components/orders/order-summary-card";
-import { StopoffsTable } from "@/components/orders/stopoffs-table";
-import { useOrder, useTask } from "@/lib/hooks/use-orders";
+} from "@/platform/web/components/ui/card";
+import { Separator } from "@/platform/web/components/ui/separator";
+import { Skeleton } from "@/platform/web/components/ui/skeleton";
+import { OrderSummaryCard } from "@/features/orders/components/order-summary-card";
+import { StopoffsTable } from "@/features/orders/components/stopoffs-table";
+import { useOrder, useTask } from "@/core/hooks/use-orders";
 import { useQueryClient } from "@tanstack/react-query";
 
 export function OrderDetail({

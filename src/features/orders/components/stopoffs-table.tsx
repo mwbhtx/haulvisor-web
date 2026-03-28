@@ -7,9 +7,9 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
-import type { Stopoff } from "@/lib/types";
+} from "@/platform/web/components/ui/table";
+import { Badge } from "@/platform/web/components/ui/badge";
+import type { Stopoff } from "@/core/types";
 
 function formatDate(d: string): string {
   return new Date(d).toLocaleDateString("en-US", {

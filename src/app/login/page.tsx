@@ -3,11 +3,11 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { useAuth } from "@/components/auth-provider";
-import { MarketingNav } from "@/components/marketing-nav";
-import { BackgroundBeams } from "@/components/ui/beams";
+import { Button } from "@/platform/web/components/ui/button";
+import { Input } from "@/platform/web/components/ui/input";
+import { useAuth } from "@/core/services/auth-provider";
+import { MarketingNav } from "@/platform/web/components/marketing-nav";
+import { BackgroundBeams } from "@/platform/web/components/ui/beams";
 
 export default function LoginPage() {
   const router = useRouter();

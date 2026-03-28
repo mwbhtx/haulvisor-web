@@ -6,13 +6,13 @@ import {
   CardContent,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
+} from "@/platform/web/components/ui/card";
 import {
   ChartContainer,
   type ChartConfig,
-} from "@/components/ui/chart";
-import { Skeleton } from "@/components/ui/skeleton";
-import { useAnalyticsHistory } from "@/lib/hooks/use-analytics";
+} from "@/platform/web/components/ui/chart";
+import { Skeleton } from "@/platform/web/components/ui/skeleton";
+import { useAnalyticsHistory } from "@/core/hooks/use-analytics";
 
 const chartConfig = {
   avg_rate_per_mile: {

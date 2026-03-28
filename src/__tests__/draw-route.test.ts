@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { drawRouteChain, cleanupRouteLayers, type MapLike, type RouteChainLike } from "@/lib/map/draw-route";
+import { drawRouteChain, cleanupRouteLayers, type MapLike, type RouteChainLike } from "@/core/utils/map/draw-route";
 
 /** Create a mock map that tracks which sources/layers exist */
 function createMockMap(): MapLike & {

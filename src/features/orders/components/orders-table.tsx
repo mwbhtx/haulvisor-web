@@ -8,16 +8,16 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
+} from "@/platform/web/components/ui/table";
+import { Button } from "@/platform/web/components/ui/button";
+import { Skeleton } from "@/platform/web/components/ui/skeleton";
+import { Badge } from "@/platform/web/components/ui/badge";
+import { Separator } from "@/platform/web/components/ui/separator";
 import { ChevronDownIcon, ChevronRightIcon, Loader2Icon } from "lucide-react";
-import { StopoffsTable } from "@/components/orders/stopoffs-table";
-import { useOrder, useTask } from "@/lib/hooks/use-orders";
+import { StopoffsTable } from "@/features/orders/components/stopoffs-table";
+import { useOrder, useTask } from "@/core/hooks/use-orders";
 import { useQueryClient } from "@tanstack/react-query";
-import type { Order } from "@/lib/types";
+import type { Order } from "@/core/types";
 
 function formatCurrency(value: number): string {
   return new Intl.NumberFormat("en-US", {

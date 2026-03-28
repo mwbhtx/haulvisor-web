@@ -2,10 +2,10 @@
 
 import React, { useRef, useCallback, useEffect, useState } from "react";
 import { ChevronLeftIcon, ChevronRightIcon, ChevronDownIcon, ChevronUpIcon, FlameIcon, BookmarkIcon } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
-import type { RouteChain, RoundTripChain, RoundTripLeg, LocationGroup } from "@/lib/types";
-import { LEG_COLORS } from "@/lib/route-colors";
-import { rateColor, netRateColor, routeProfitColor } from "@/lib/rate-color";
+import { Badge } from "@/platform/web/components/ui/badge";
+import type { RouteChain, RoundTripChain, RoundTripLeg, LocationGroup } from "@/core/types";
+import { LEG_COLORS } from "@/core/utils/route-colors";
+import { rateColor, netRateColor, routeProfitColor } from "@/core/utils/rate-color";
 import { DEFAULT_COST_PER_MILE } from "@mwbhtx/haulvisor-core";
 
 function formatCurrency(value: number): string {
@@ -139,7 +139,7 @@ export { SORT_OPTIONS };
 interface MobileCarouselProps {
   location: LocationGroup;
   selectedIndex: number;
-  onSelectIndex: (index: number, legs?: import("@/lib/map/draw-route").DrawableRouteLeg[]) => void;
+  onSelectIndex: (index: number, legs?: import("@/core/utils/map/draw-route").DrawableRouteLeg[]) => void;
   originCity?: string;
   destCity?: string;
   sortBy: SortKey;

@@ -1,7 +1,7 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { fetchApi } from "@/lib/api";
+import { fetchApi } from "@/core/services/api";
 import type {
   AnalyticsStats,
   AnalyticsHistoryEntry,
@@ -10,7 +10,7 @@ import type {
   AnalyticsBreakdownEntry,
   AnalyticsAvailabilityEntry,
   AnalyticsTopCitiesEntry,
-} from "@/lib/types";
+} from "@/core/types";
 
 function buildQuery(params: Record<string, string | undefined>): string {
   const entries = Object.entries(params).filter(

@@ -4,9 +4,9 @@ import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { RouteIcon, ClipboardList, BarChart3, Settings, Shield, LogOut, Menu, X } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { useAuth } from "@/components/auth-provider";
-import { Button } from "@/components/ui/button";
+import { cn } from "@/core/utils";
+import { useAuth } from "@/core/services/auth-provider";
+import { Button } from "@/platform/web/components/ui/button";
 
 const navItems = [
   { href: "/routes", label: "Routes", icon: RouteIcon },

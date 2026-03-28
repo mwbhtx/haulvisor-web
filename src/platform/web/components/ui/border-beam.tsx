@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, type Transition } from "framer-motion";
-import { cn } from "@/lib/utils";
+import { cn } from "@/core/utils";
 
 interface BorderBeamProps {
   size?: number;

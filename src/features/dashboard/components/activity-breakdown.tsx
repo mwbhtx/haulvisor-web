@@ -5,9 +5,9 @@ import {
   CardContent,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
-import { useAnalyticsHistory, useAnalyticsStats } from "@/lib/hooks/use-analytics";
+} from "@/platform/web/components/ui/card";
+import { Skeleton } from "@/platform/web/components/ui/skeleton";
+import { useAnalyticsHistory, useAnalyticsStats } from "@/core/hooks/use-analytics";
 
 interface StatRowProps {
   label: string;

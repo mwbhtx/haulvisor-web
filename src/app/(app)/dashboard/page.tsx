@@ -1,17 +1,17 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { StatsCards } from "@/components/dashboard/stats-cards";
-import { ActiveOrdersChart, OrderFlowChart } from "@/components/dashboard/order-history-chart";
-import { ActivityBreakdown } from "@/components/dashboard/activity-breakdown";
-import { RatePayChart } from "@/components/dashboard/rate-pay-chart";
-import { ChurnChart } from "@/components/dashboard/churn-chart";
-import { StateBreakdown } from "@/components/dashboard/state-breakdown";
-import { TrailerTypeChart } from "@/components/dashboard/trailer-type-chart";
-import { TopLanesChart } from "@/components/dashboard/top-lanes-chart";
-import { AvailabilityChart } from "@/components/dashboard/availability-chart";
-import { TopCitiesChart } from "@/components/dashboard/top-cities-chart";
-import { useAuth } from "@/components/auth-provider";
+import { StatsCards } from "@/features/dashboard/components/stats-cards";
+import { ActiveOrdersChart, OrderFlowChart } from "@/features/dashboard/components/order-history-chart";
+import { ActivityBreakdown } from "@/features/dashboard/components/activity-breakdown";
+import { RatePayChart } from "@/features/dashboard/components/rate-pay-chart";
+import { ChurnChart } from "@/features/dashboard/components/churn-chart";
+import { StateBreakdown } from "@/features/dashboard/components/state-breakdown";
+import { TrailerTypeChart } from "@/features/dashboard/components/trailer-type-chart";
+import { TopLanesChart } from "@/features/dashboard/components/top-lanes-chart";
+import { AvailabilityChart } from "@/features/dashboard/components/availability-chart";
+import { TopCitiesChart } from "@/features/dashboard/components/top-cities-chart";
+import { useAuth } from "@/core/services/auth-provider";
 
 type TimeRange = "1h" | "24h" | "7d" | "30d" | "90d";
 

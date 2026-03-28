@@ -1,27 +1,27 @@
 "use client";
 
 import { useState, useRef, useEffect, useCallback } from "react";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Slider } from "@/components/ui/slider";
+import { Input } from "@/platform/web/components/ui/input";
+import { Button } from "@/platform/web/components/ui/button";
+import { Slider } from "@/platform/web/components/ui/slider";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover";
+} from "@/platform/web/components/ui/popover";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from "@/platform/web/components/ui/select";
 import { ChevronDown, ChevronUpIcon, LocateIcon, SlidersHorizontal, XIcon } from "lucide-react";
-import { BorderBeam } from "@/components/ui/border-beam";
-import { Calendar } from "@/components/ui/calendar";
-import { useSettings, useUpdateSettings } from "@/lib/hooks/use-settings";
+import { BorderBeam } from "@/platform/web/components/ui/border-beam";
+import { Calendar } from "@/platform/web/components/ui/calendar";
+import { useSettings, useUpdateSettings } from "@/core/hooks/use-settings";
 import { TRAILER_CATEGORIES, expandTrailerCodes, codesToLabels } from "@mwbhtx/haulvisor-core";
-import type { RouteSearchParams, RoundTripSearchParams } from "@/lib/hooks/use-routes";
+import type { RouteSearchParams, RoundTripSearchParams } from "@/core/hooks/use-routes";
 
 export type SearchParams = RouteSearchParams;
 

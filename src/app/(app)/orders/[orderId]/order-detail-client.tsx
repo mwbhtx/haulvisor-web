@@ -1,7 +1,7 @@
 "use client";
 
-import { OrderDetail } from "@/components/orders/order-detail";
-import { useAuth } from "@/components/auth-provider";
+import { OrderDetail } from "@/features/orders/components/order-detail";
+import { useAuth } from "@/core/services/auth-provider";
 
 export function OrderDetailClient({ orderId }: { orderId: string }) {
   const { activeCompanyId } = useAuth();

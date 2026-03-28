@@ -1,7 +1,7 @@
 "use client";
 
 import { ArrowRight } from "lucide-react";
-import { Magnetic } from "@/components/ui/magnetic";
+import { Magnetic } from "@/platform/web/components/ui/magnetic";
 
 export default function ShaderGradientButton({ onClick }: { onClick: () => void }) {
   return (

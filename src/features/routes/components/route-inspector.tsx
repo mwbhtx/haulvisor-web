@@ -1,7 +1,7 @@
 "use client";
 
 import { TruckIcon, ClockIcon, Package, PackageOpen, Fuel, Coffee, Bed } from "lucide-react";
-import type { RoundTripChain, TripPhase } from "@/lib/types";
+import type { RoundTripChain, TripPhase } from "@/core/types";
 import { TRIP_DEFAULTS } from "@mwbhtx/haulvisor-core";
 
 function formatDuration(hours: number | undefined): string {

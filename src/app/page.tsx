@@ -3,14 +3,14 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { useAuth } from "@/components/auth-provider";
-import { RoutePathsBackground } from "@/components/route-paths-background";
-import { MarketingNav } from "@/components/marketing-nav";
+import { useAuth } from "@/core/services/auth-provider";
+import { RoutePathsBackground } from "@/platform/web/components/route-paths-background";
+import { MarketingNav } from "@/platform/web/components/marketing-nav";
 import { ArrowRight, CalendarCheck, Bookmark, DollarSign, BarChart3 } from "lucide-react";
 import { motion } from "framer-motion";
 import dynamic from "next/dynamic";
-import ShaderGradientButton from "@/components/shader-gradient-button";
-import { BackgroundBeamsWithCollision } from "@/components/ui/background-beams-with-collision";
+import ShaderGradientButton from "@/platform/web/components/shader-gradient-button";
+import { BackgroundBeamsWithCollision } from "@/platform/web/components/ui/background-beams-with-collision";
 const ShaderGradientCanvas = dynamic(() => import("@shadergradient/react").then(m => ({ default: m.ShaderGradientCanvas })), { ssr: false });
 const ShaderGradient = dynamic(() => import("@shadergradient/react").then(m => ({ default: m.ShaderGradient })), { ssr: false });
 

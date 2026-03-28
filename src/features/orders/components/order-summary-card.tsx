@@ -5,10 +5,10 @@ import {
   CardContent,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+} from "@/platform/web/components/ui/card";
+import { Badge } from "@/platform/web/components/ui/badge";
 
-import type { Order } from "@/lib/types";
+import type { Order } from "@/core/types";
 
 function formatCurrency(value: number): string {
   return new Intl.NumberFormat("en-US", {

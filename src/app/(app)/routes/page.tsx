@@ -3,19 +3,19 @@
 import { useEffect, useRef, useState, useMemo, useCallback } from "react";
 import { useOnborda } from "onborda";
 import { SlidersHorizontal, ArrowUpDown, XIcon, ChevronUpIcon } from "lucide-react";
-import { RouteMap } from "@/components/map/route-map";
-import { SearchFilters } from "@/components/map/search-form";
-import { LocationSidebar } from "@/components/map/location-sidebar";
-import { MobileCarousel, SORT_OPTIONS, type SortKey } from "@/components/map/mobile-carousel";
-import { MobileFilterSheet } from "@/components/map/search-form";
-import { useRouteSearch, useRoundTripSearch, type RouteSearchParams, type RoundTripSearchParams } from "@/lib/hooks/use-routes";
-import { useActiveOrderCount } from "@/lib/hooks/use-orders";
-import { useAuth } from "@/components/auth-provider";
-import { useSettings } from "@/lib/hooks/use-settings";
-import { isDemoUser } from "@/lib/auth";
-import { groupRoutesByLocation } from "@/lib/group-by-location";
-import type { LocationGroup } from "@/lib/types";
-import type { DrawableRouteLeg } from "@/lib/map/draw-route";
+import { RouteMap } from "@/features/routes/components/route-map";
+import { SearchFilters } from "@/features/routes/components/search-form";
+import { LocationSidebar } from "@/features/routes/views/desktop/location-sidebar";
+import { MobileCarousel, SORT_OPTIONS, type SortKey } from "@/features/routes/components/mobile-carousel";
+import { MobileFilterSheet } from "@/features/routes/components/search-form";
+import { useRouteSearch, useRoundTripSearch, type RouteSearchParams, type RoundTripSearchParams } from "@/core/hooks/use-routes";
+import { useActiveOrderCount } from "@/core/hooks/use-orders";
+import { useAuth } from "@/core/services/auth-provider";
+import { useSettings } from "@/core/hooks/use-settings";
+import { isDemoUser } from "@/core/services/auth";
+import { groupRoutesByLocation } from "@/core/utils/group-by-location";
+import type { LocationGroup } from "@/core/types";
+import type { DrawableRouteLeg } from "@/core/utils/map/draw-route";
 import { DEFAULT_COST_PER_MILE } from "@mwbhtx/haulvisor-core";
 
 const EMPTY_LOCATION: LocationGroup = {

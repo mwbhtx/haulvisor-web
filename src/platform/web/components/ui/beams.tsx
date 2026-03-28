@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion"
 import React from "react"
-import { cn } from "@/lib/utils"
+import { cn } from "@/core/utils"
 
 export interface BackgroundBeamsProps {
   className?: string
