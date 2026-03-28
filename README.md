@@ -13,7 +13,7 @@ Haulvisor analyzes thousands of available loads and builds the most profitable m
 - **Animations:** Framer Motion, Shader Gradient
 - **UI:** shadcn/ui, Radix UI primitives
 - **Testing:** Vitest, Testing Library
-- **Core:** Shared types, constants, and cost-model utilities published as `@mwbhtx/haulvisor-core`
+- **Core:** [`@mwbhtx/haulvisor-core`](https://github.com/mwbhtx/haulvisor-core) — shared types, constants, cost model, and search defaults
 
 ## Key Features
 
@@ -22,27 +22,64 @@ Haulvisor analyzes thousands of available loads and builds the most profitable m
 - **Real-time cost modeling** — Per-driver cost-per-mile settings with color-coded rate tiers (red/yellow/green) based on industry benchmarks and individual operating costs
 - **Interactive map** — Mapbox-powered route visualization with animated arcs, origin/destination markers, and click-to-select locations
 - **Guided onboarding** — Step-by-step tour walks new users through the filter bar using Onborda
-- **Lane watchlists** — Save and monitor preferred lanes for rate changes
 - **Analytics dashboard** — Track earnings, costs, and profit per lane over time
-- **Mobile-first design** — Fully responsive with swipeable route cards and touch-optimized filters
+- **Mobile experience** — Uber-inspired sequential flow with bottom tab navigation, screen stack navigation, and touch-optimized filters
 
 ## Architecture
 
+Feature-based module structure designed for cross-platform reuse (web + future React Native):
+
 ```
 src/
-  app/              # Next.js App Router pages and layouts
-  components/       # React components (map, layout, UI primitives)
-  lib/              # Shared utilities, hooks, API client, type definitions
-    hooks/          # React Query hooks for data fetching
-    map/            # Mapbox route drawing and map utilities
+  core/               # Platform-agnostic data layer
+    hooks/            # React Query hooks (routes, orders, analytics, settings)
+    services/         # API client, auth provider
+    types/            # Re-exports from @mwbhtx/haulvisor-core
+    utils/            # Pure functions (formatters, map utilities, rate colors)
+
+  features/           # Feature modules
+    routes/           # Route search and optimization
+      hooks/          # useRecentSearches, useMobileRouteNav
+      components/     # RouteCard, RouteMap, SearchForm, RouteInspector
+      views/
+        desktop/      # DesktopRoutesView, LocationSidebar
+        mobile/       # MobileRoutesView + 5 screen components
+    orders/           # Order board and detail views
+    dashboard/        # Analytics charts and stats
+    settings/         # User settings management
+    admin/            # Admin panel
+
+  platform/
+    web/
+      components/
+        ui/           # shadcn/ui primitives (Button, Card, Dialog, etc.)
+        layouts/      # AppShell (desktop), MobileBottomNav
+      hooks/          # useIsMobile
+
+  app/                # Next.js App Router — thin page shells only
 ```
+
+**Dependency rules:**
+- `core/` has no imports from `features/`, `platform/`, or `app/`
+- `features/` can import from `core/` and `platform/web/components/ui/`
+- `platform/` can import from `core/` only
+- `app/` is the composition layer — imports from everything
+
+## Related Repos
+
+| Repo | Purpose |
+|------|---------|
+| [haulvisor-core](https://github.com/mwbhtx/haulvisor-core) | Shared types, constants, cost model |
+| [haulvisor-backend](https://github.com/mwbhtx/haulvisor-backend) | NestJS API + Lambda functions |
 
 ## Development
 
 ```bash
 npm install
-npm run dev
+npm run dev        # Starts on localhost:3001
 ```
+
+Requires the API running on `localhost:3100` (proxied via Next.js rewrites).
 
 ## License
 
