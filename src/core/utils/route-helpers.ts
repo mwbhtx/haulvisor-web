@@ -32,6 +32,11 @@ export function getDeadheadPct(chain: RouteChain | RoundTripChain): number {
   return chain.deadhead_pct ?? 0;
 }
 
+export function getEstimatedDays(chain: RouteChain | RoundTripChain): number | null {
+  if ("estimated_days" in chain && typeof chain.estimated_days === "number") return chain.estimated_days;
+  return null;
+}
+
 // ── Formatters ──────────────────────────────────────────────────────────────
 
 export function formatCurrency(value: number): string {

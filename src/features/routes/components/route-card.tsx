@@ -3,7 +3,7 @@
 import { MapPin, TrendingUp } from "lucide-react";
 import { cn } from "@/core/utils";
 import { routeProfitColor } from "@/core/utils/rate-color";
-import { getOriginCity, getDestCity, getDailyProfit, getNetProfit, getNetPerMile, formatCurrency, formatRpm } from "@/core/utils/route-helpers";
+import { getOriginCity, getDestCity, getDailyProfit, getNetProfit, getNetPerMile, getEstimatedDays, formatCurrency, formatRpm } from "@/core/utils/route-helpers";
 import type { RouteChain, RoundTripChain } from "@/core/types";
 
 interface RouteCardProps {
@@ -19,6 +19,7 @@ export function RouteCard({ chain, isRoundTrip, onClick, className }: RouteCardP
   const dailyProfit = getDailyProfit(chain);
   const netProfit = getNetProfit(chain);
   const netPerMile = getNetPerMile(chain);
+  const estDays = getEstimatedDays(chain);
   const color = dailyProfit !== null ? routeProfitColor(dailyProfit) : "text-muted-foreground";
 
   return (
@@ -56,6 +57,11 @@ export function RouteCard({ chain, isRoundTrip, onClick, className }: RouteCardP
         {netPerMile !== null && (
           <span className={cn("font-semibold", color)}>
             {formatRpm(netPerMile)}
+          </span>
+        )}
+        {estDays !== null && (
+          <span className="text-muted-foreground">
+            {estDays % 1 === 0 ? estDays : estDays.toFixed(1)} {estDays === 1 ? "Day" : "Days"}
           </span>
         )}
       </div>
