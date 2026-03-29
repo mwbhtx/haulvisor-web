@@ -183,18 +183,18 @@ function MetricCard({
 function SegmentCard({ leg, index }: { leg: RouteLeg | RoundTripLeg; index: number }) {
   return (
     <div className="rounded-xl border border-white/10 bg-card p-4">
-      <div className="flex items-center gap-2 mb-2">
+      <div className="flex items-center gap-2.5 mb-3">
         <div
-          className="flex items-center justify-center h-5 w-5 rounded-full text-[10px] font-bold shrink-0 text-black"
+          className="flex items-center justify-center h-6 w-6 rounded-full text-xs font-bold shrink-0 text-black"
           style={{ backgroundColor: LEG_COLORS[index % LEG_COLORS.length] }}
         >
           {index + 1}
         </div>
-        <span className="text-sm font-medium" style={{ color: LEG_COLORS[index % LEG_COLORS.length] }}>
+        <span className="text-base font-medium" style={{ color: LEG_COLORS[index % LEG_COLORS.length] }}>
           {leg.origin_city}, {leg.origin_state} → {leg.destination_city}, {leg.destination_state}
         </span>
       </div>
-      <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-xs text-muted-foreground">
+      <div className="grid grid-cols-2 gap-x-4 gap-y-1.5 text-sm text-muted-foreground">
         <div className="flex justify-between">
           <span>Pay</span>
           <span className="font-medium text-foreground">${leg.pay.toLocaleString()}</span>
