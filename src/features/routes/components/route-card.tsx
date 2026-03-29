@@ -36,8 +36,8 @@ export function RouteCard({ chain, isRoundTrip, onClick, className }: RouteCardP
         <span className="text-base font-medium">
           {routeStates}
         </span>
-        <span className="ml-auto shrink-0 rounded-full bg-white/10 px-2.5 py-0.5 text-sm font-medium uppercase tracking-wider text-muted-foreground">
-          {isRoundTrip ? "Round trip" : "One way"}
+        <span className="ml-auto shrink-0 rounded-full bg-white px-2.5 py-0.5 text-sm text-black font-[800]">
+          {isRoundTrip ? "RT" : "OW"}
         </span>
       </div>
 
