@@ -1,6 +1,6 @@
 "use client";
 
-import { MapPin, TrendingUp, Truck } from "lucide-react";
+import { MapPin, TrendingUp } from "lucide-react";
 import { cn } from "@/core/utils";
 import { routeProfitColor } from "@/core/utils/rate-color";
 import type { RouteChain, RoundTripChain } from "@/core/types";
@@ -13,19 +13,11 @@ interface RouteCardProps {
 }
 
 function getOriginCity(chain: RouteChain | RoundTripChain): string {
-  const firstLeg = chain.legs[0];
-  if (!firstLeg) return "Unknown";
-  return firstLeg.origin_city ?? "Unknown";
+  return chain.legs[0]?.origin_city ?? "Unknown";
 }
 
 function getDestCity(chain: RouteChain | RoundTripChain): string {
-  const lastLeg = chain.legs[chain.legs.length - 1];
-  if (!lastLeg) return "Unknown";
-  return lastLeg.destination_city ?? "Unknown";
-}
-
-function getTotalMiles(chain: RouteChain | RoundTripChain): number {
-  return chain.legs.reduce((sum, leg) => sum + (leg.miles ?? 0), 0);
+  return chain.legs[chain.legs.length - 1]?.destination_city ?? "Unknown";
 }
 
 function getDailyProfit(chain: RouteChain | RoundTripChain): number | null {
@@ -35,20 +27,23 @@ function getDailyProfit(chain: RouteChain | RoundTripChain): number | null {
   return null;
 }
 
-function getDeadheadPct(chain: RouteChain | RoundTripChain): number | null {
-  if ("deadhead_pct" in chain && typeof chain.deadhead_pct === "number") {
-    return chain.deadhead_pct;
-  }
+function getNetProfit(chain: RouteChain | RoundTripChain): number | null {
+  if ("firm_profit" in chain && typeof chain.firm_profit === "number") return chain.firm_profit;
+  if ("profit" in chain && typeof chain.profit === "number") return chain.profit;
+  return null;
+}
+
+function getNetPerMile(chain: RouteChain | RoundTripChain): number | null {
+  if ("effective_rpm" in chain && typeof chain.effective_rpm === "number") return chain.effective_rpm;
   return null;
 }
 
 export function RouteCard({ chain, isRoundTrip, onClick, className }: RouteCardProps) {
   const origin = getOriginCity(chain);
   const dest = getDestCity(chain);
-  const miles = getTotalMiles(chain);
   const dailyProfit = getDailyProfit(chain);
-  const deadhead = getDeadheadPct(chain);
-  const legCount = chain.legs.length;
+  const netProfit = getNetProfit(chain);
+  const netPerMile = getNetPerMile(chain);
 
   return (
     <button
@@ -77,13 +72,11 @@ export function RouteCard({ chain, isRoundTrip, onClick, className }: RouteCardP
             </span>
           </span>
         )}
-        <span>{miles.toLocaleString()} mi</span>
-        <span className="flex items-center gap-1.5">
-          <Truck className="h-4 w-4" />
-          {legCount} {legCount === 1 ? "leg" : "legs"}
-        </span>
-        {deadhead !== null && (
-          <span>{Math.round(deadhead)}% DH</span>
+        {netProfit !== null && (
+          <span>${Math.round(netProfit).toLocaleString()}</span>
+        )}
+        {netPerMile !== null && (
+          <span>${netPerMile.toFixed(2)}/mi</span>
         )}
       </div>
     </button>
