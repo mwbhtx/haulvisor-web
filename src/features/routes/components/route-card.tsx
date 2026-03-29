@@ -59,27 +59,27 @@ export function RouteCard({ chain, isRoundTrip, onClick, className }: RouteCardP
         className,
       )}
     >
-      <div className="flex items-center gap-2 mb-2">
-        <MapPin className="h-4 w-4 shrink-0 text-muted-foreground" />
-        <span className="text-sm font-medium truncate">
+      <div className="flex items-center gap-2.5 mb-2.5">
+        <MapPin className="h-5 w-5 shrink-0 text-muted-foreground" />
+        <span className="text-base font-medium truncate">
           {origin} → {dest}
         </span>
-        <span className="ml-auto shrink-0 rounded-full bg-white/10 px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
+        <span className="ml-auto shrink-0 rounded-full bg-white/10 px-2.5 py-0.5 text-xs font-medium uppercase tracking-wider text-muted-foreground">
           {isRoundTrip ? "Round trip" : "One way"}
         </span>
       </div>
-      <div className="flex items-center gap-4 text-xs text-muted-foreground">
+      <div className="flex items-center gap-4 text-sm text-muted-foreground">
         {dailyProfit !== null && (
-          <span className="flex items-center gap-1">
-            <TrendingUp className="h-3 w-3" />
+          <span className="flex items-center gap-1.5">
+            <TrendingUp className="h-4 w-4" />
             <span className={cn("font-semibold", routeProfitColor(dailyProfit))}>
               ${Math.round(dailyProfit)}/day
             </span>
           </span>
         )}
         <span>{miles.toLocaleString()} mi</span>
-        <span className="flex items-center gap-1">
-          <Truck className="h-3 w-3" />
+        <span className="flex items-center gap-1.5">
+          <Truck className="h-4 w-4" />
           {legCount} {legCount === 1 ? "leg" : "legs"}
         </span>
         {deadhead !== null && (
