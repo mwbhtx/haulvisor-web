@@ -7,6 +7,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/platform/web/compone
 import { RouteMap } from "@/features/routes/components/route-map";
 import { RouteInspector } from "@/features/routes/components/route-inspector";
 import { routeProfitColor } from "@/core/utils/rate-color";
+import { LEG_COLORS } from "@/core/utils/route-colors";
 import type { RouteChain, RoundTripChain, RoundTripLeg, RouteLeg } from "@/core/types";
 
 interface DetailScreenProps {
@@ -183,10 +184,13 @@ function SegmentCard({ leg, index }: { leg: RouteLeg | RoundTripLeg; index: numb
   return (
     <div className="rounded-xl border border-white/10 bg-card p-4">
       <div className="flex items-center gap-2 mb-2">
-        <div className="flex items-center justify-center h-5 w-5 rounded-full bg-white/10 text-[10px] font-bold shrink-0">
+        <div
+          className="flex items-center justify-center h-5 w-5 rounded-full text-[10px] font-bold shrink-0 text-black"
+          style={{ backgroundColor: LEG_COLORS[index % LEG_COLORS.length] }}
+        >
           {index + 1}
         </div>
-        <span className="text-sm font-medium">
+        <span className="text-sm font-medium" style={{ color: LEG_COLORS[index % LEG_COLORS.length] }}>
           {leg.origin_city}, {leg.origin_state} → {leg.destination_city}, {leg.destination_state}
         </span>
       </div>
