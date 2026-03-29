@@ -1,6 +1,6 @@
 "use client";
 
-import { Search, SlidersHorizontal, Clock } from "lucide-react";
+import { Search, Clock } from "lucide-react";
 import { useRecentSearches, type RecentSearch } from "@/features/routes/hooks/use-recent-searches";
 
 interface HomeScreenProps {
@@ -34,16 +34,6 @@ export function HomeScreen({ onSearchBarTap, onFiltersTap, onRecentTap }: HomeSc
         >
           <Search className="h-4 w-4 text-muted-foreground shrink-0" />
           <span className="flex-1 text-sm text-muted-foreground">Search Routes</span>
-          <button
-            type="button"
-            onClick={(e) => {
-              e.stopPropagation();
-              onFiltersTap();
-            }}
-            className="rounded-full p-1 hover:bg-white/10 transition-colors"
-          >
-            <SlidersHorizontal className="h-4 w-4 text-muted-foreground" />
-          </button>
         </div>
       </div>
 
