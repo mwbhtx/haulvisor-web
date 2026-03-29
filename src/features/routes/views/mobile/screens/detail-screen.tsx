@@ -2,8 +2,9 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { ArrowLeft, ArrowRight, TrendingUp, Truck, MapPin, Gauge } from "lucide-react";
+import { ArrowLeft, ArrowRight, TrendingUp, Truck, MapPin, Gauge, ChevronDown, ChevronUp } from "lucide-react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/platform/web/components/ui/tabs";
+import { RouteMap } from "@/features/routes/components/route-map";
 import { RouteInspector } from "@/features/routes/components/route-inspector";
 import { routeProfitColor } from "@/core/utils/rate-color";
 import type { RouteChain, RoundTripChain, RoundTripLeg, RouteLeg } from "@/core/types";
@@ -55,6 +56,10 @@ export function DetailScreen({ chain, isRoundTrip, originCity, onBack }: DetailS
   const totalMiles = chain.total_miles;
   const totalPay = chain.total_pay;
 
+  const originCoords = chain.legs[0]
+    ? { lat: chain.legs[0].origin_lat, lng: chain.legs[0].origin_lng }
+    : null;
+
   return (
     <motion.div
       initial={{ x: "100%" }}
@@ -90,7 +95,7 @@ export function DetailScreen({ chain, isRoundTrip, originCity, onBack }: DetailS
         <TabsList className="mx-4 mt-2 w-auto">
           <TabsTrigger value="overview">Overview</TabsTrigger>
           <TabsTrigger value="segments">Segments</TabsTrigger>
-          <TabsTrigger value="timeline">Timeline</TabsTrigger>
+          <TabsTrigger value="map">Map</TabsTrigger>
         </TabsList>
 
         {/* Overview tab */}
@@ -146,29 +151,26 @@ export function DetailScreen({ chain, isRoundTrip, originCity, onBack }: DetailS
           {chain.legs.map((leg, i) => (
             <SegmentCard key={i} leg={leg} index={i} />
           ))}
+
+          {/* Segment Details — collapsible, shows RouteInspector timeline */}
+          {isRoundTrip && (chain as RoundTripChain).trip_summary && (
+            <SegmentDetailsCollapsible
+              chain={chain as RoundTripChain}
+              originCity={originCity}
+              onBack={onBack}
+            />
+          )}
         </TabsContent>
 
-        {/* Timeline tab */}
-        <TabsContent value="timeline" className="flex-1 overflow-y-auto">
-          {chain.trip_summary && isRoundTrip ? (
-            <RouteInspector
-              chain={chain as RoundTripChain}
-              originCity={originCity}
-              onClose={onBack}
+        {/* Map tab */}
+        <TabsContent value="map" className="flex-1 min-h-0">
+          <div className="h-full w-full">
+            <RouteMap
+              selectedRoute={{ legs: chain.legs }}
+              originCoords={originCoords}
+              tripMode={isRoundTrip ? "round-trip" : "one-way"}
             />
-          ) : chain.timeline && chain.timeline.length > 0 && isRoundTrip ? (
-            <RouteInspector
-              chain={chain as RoundTripChain}
-              originCity={originCity}
-              onClose={onBack}
-            />
-          ) : (
-            <div className="flex flex-col items-center justify-center py-16 text-center px-4">
-              <p className="text-sm text-muted-foreground/50">
-                Timeline data is not available for this route.
-              </p>
-            </div>
-          )}
+          </div>
         </TabsContent>
       </Tabs>
     </motion.div>
@@ -242,6 +244,40 @@ function SegmentCard({ leg, index }: { leg: RouteLeg | RoundTripLeg; index: numb
           </div>
         )}
       </div>
+    </div>
+  );
+}
+
+function SegmentDetailsCollapsible({
+  chain,
+  originCity,
+  onBack,
+}: {
+  chain: RoundTripChain;
+  originCity: string;
+  onBack: () => void;
+}) {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <div className="rounded-xl border border-white/10 bg-card overflow-hidden">
+      <button
+        type="button"
+        onClick={() => setOpen(!open)}
+        className="flex items-center justify-between w-full px-4 py-3 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+      >
+        <span>Segment Details</span>
+        {open ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+      </button>
+      {open && (
+        <div className="border-t border-white/[0.05]">
+          <RouteInspector
+            chain={chain}
+            originCity={originCity}
+            onClose={onBack}
+          />
+        </div>
+      )}
     </div>
   );
 }
