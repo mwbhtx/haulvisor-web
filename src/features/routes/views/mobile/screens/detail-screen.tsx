@@ -118,14 +118,12 @@ export function DetailScreen({ chain, isRoundTrip, originCity, onBack }: DetailS
               <SegmentCard key={i} leg={leg} index={i} />
             ))}
 
-            {/* Collapsible timeline details */}
-            {isRoundTrip && (
-              <SegmentDetailsCollapsible
-                chain={chain as RoundTripChain}
-                originCity={originCity}
-                onBack={onBack}
-              />
-            )}
+            {/* Collapsible trip itinerary */}
+            <SegmentDetailsCollapsible
+              chain={chain as RoundTripChain}
+              originCity={originCity}
+              onBack={onBack}
+            />
           </div>
         </TabsContent>
 
