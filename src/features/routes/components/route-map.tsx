@@ -49,6 +49,7 @@ export function RouteMap({
       center: [-95.7, 37.1],
       zoom: 4,
       attributionControl: !isMobile,
+      projection: isMobile ? "mercator" : "globe",
     });
 
     mapRef.current = map;
