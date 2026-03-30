@@ -39,7 +39,6 @@ export function DesktopOrdersView() {
   if (!activeCompanyId) {
     return (
       <div className="space-y-6">
-        <h1 className="text-3xl font-bold tracking-tight">Orders</h1>
         <div className="rounded-lg border p-8 text-center text-muted-foreground">
           No company assigned. Contact an administrator to get access.
         </div>
@@ -51,8 +50,7 @@ export function DesktopOrdersView() {
     <div className="flex h-full flex-col">
       <div className="shrink-0 space-y-6 pb-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Orders</h1>
-          <p className="mt-1 text-muted-foreground">
+          <p className="text-muted-foreground">
             {isSearching
               ? `${orders.length} result${orders.length !== 1 ? "s" : ""} found`
               : totalCount > 0

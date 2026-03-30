@@ -223,12 +223,6 @@ export function DesktopSettingsView() {
   if (isLoading) {
     return (
       <div className="space-y-6">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">Settings</h1>
-          <p className="mt-2 text-muted-foreground">
-            Configure your haulvisor preferences.
-          </p>
-        </div>
         <Card className="max-w-2xl">
           <CardHeader>
             <Skeleton className="h-5 w-32" />
@@ -249,13 +243,6 @@ export function DesktopSettingsView() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight">Settings</h1>
-        <p className="mt-2 text-muted-foreground">
-          Configure your driver profile. Changes save automatically.
-        </p>
-      </div>
-
       {/* Theme */}
       <div className="space-y-3">
         <h3 className="text-sm font-medium uppercase tracking-wide text-muted-foreground">

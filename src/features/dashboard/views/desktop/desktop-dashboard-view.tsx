@@ -79,15 +79,11 @@ export function DesktopDashboardView() {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div>
-        <h1 className="text-2xl font-semibold">Dashboard</h1>
-        {lastUpdated && (
-          <p className="text-sm text-muted-foreground mt-0.5">
-            Last updated &middot; {lastUpdated}
-          </p>
-        )}
-      </div>
+      {lastUpdated && (
+        <p className="text-sm text-muted-foreground">
+          Last updated &middot; {lastUpdated}
+        </p>
+      )}
 
       {/* Current Stats */}
       <div>
