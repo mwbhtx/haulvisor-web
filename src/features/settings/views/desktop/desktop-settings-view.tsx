@@ -325,7 +325,7 @@ export function DesktopSettingsView() {
             <p className="text-sm text-muted-foreground">
               {homeCity && homeState
                 ? "Route searches will find the best way home."
-                : "Set a home location to enable Routes Home."}
+                : "Set a home location to default your round trip origin location."}
             </p>
           </div>
 
