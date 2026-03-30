@@ -49,16 +49,6 @@ export function DesktopOrdersView() {
   return (
     <div className="flex h-full flex-col">
       <div className="shrink-0 space-y-6 pb-4">
-        <div>
-          <p className="text-muted-foreground">
-            {isSearching
-              ? `${orders.length} result${orders.length !== 1 ? "s" : ""} found`
-              : totalCount > 0
-                ? `${totalCount.toLocaleString()} orders available`
-                : "Browse and filter available orders."}
-          </p>
-        </div>
-
         <OrdersFilters onSearch={setFilters}>
           <div className="relative flex-1 sm:max-w-sm">
             <SearchIcon className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
