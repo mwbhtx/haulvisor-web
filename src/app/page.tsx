@@ -60,9 +60,9 @@ export default function HomePage() {
   };
 
   return (
-    <div className="dark min-h-screen bg-primary text-foreground">
+    <div className="dark min-h-screen bg-primary/50 text-foreground">
       <ShaderGradientCanvas
-        style={{ position: "fixed", inset: 0, pointerEvents: "none", zIndex: 0, opacity: 0, animation: "fade-in 0.5s ease-in 0.5s forwards" }}
+        style={{ position: "fixed", inset: 0, pointerEvents: "none", zIndex: 0, opacity: 0, animation: "fade-in 1s ease-in 0.5s forwards" }}
         pixelDensity={1}
         fov={40}
       >
