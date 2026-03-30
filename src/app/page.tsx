@@ -66,7 +66,7 @@ export default function HomePage() {
         const preset = SHADER_PRESETS.find(p => p.name === DEFAULT_SHADER) ?? SHADER_PRESETS[0];
         return (
           <ShaderGradientCanvas
-            style={{ position: "fixed", inset: 0, pointerEvents: "none", zIndex: 0, opacity: 0, animation: "fade-in 1s ease-in 0.5s forwards" }}
+            style={{ position: "fixed", inset: 0, pointerEvents: "none", zIndex: 0, opacity: 0, animation: "fade-in 0.5s ease-in 0.3s forwards" }}
             pixelDensity={2}
             fov={preset.fov}
           >
