@@ -15,6 +15,7 @@ import { Input } from "@/platform/web/components/ui/input";
 import { Separator } from "@/platform/web/components/ui/separator";
 import { Skeleton } from "@/platform/web/components/ui/skeleton";
 import { CheckIcon, LogOut, Shield } from "lucide-react";
+import { ThemeSelector } from "@/features/settings/components/theme-selector";
 import { useIsMobile } from "@/platform/web/hooks/use-is-mobile";
 import { useAuth } from "@/core/services/auth-provider";
 import { Button } from "@/platform/web/components/ui/button";
@@ -254,6 +255,16 @@ export function DesktopSettingsView() {
           Configure your driver profile. Changes save automatically.
         </p>
       </div>
+
+      {/* Theme */}
+      <div className="space-y-3">
+        <h3 className="text-sm font-medium uppercase tracking-wide text-muted-foreground">
+          Appearance
+        </h3>
+        <ThemeSelector />
+      </div>
+
+      <Separator />
 
       <Card className="max-w-2xl">
         <CardHeader>
