@@ -64,6 +64,7 @@ interface RouteListProps {
   onSelectIndex: (index: number, chain: RoundTripChain | null) => void;
   isLoading?: boolean;
   onClearFilters?: () => void;
+  onWatchlistChange?: (watchlist: Set<string>, toggle: (key: string) => void) => void;
 }
 
 export function RouteList({
@@ -73,6 +74,7 @@ export function RouteList({
   onSelectIndex,
   isLoading,
   onClearFilters,
+  onWatchlistChange,
 }: RouteListProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [sortBy, setSortBy] = useState<RouteSortKey>(DEFAULT_SORT_KEY);
@@ -95,6 +97,10 @@ export function RouteList({
       return next;
     });
   }, []);
+
+  useEffect(() => {
+    onWatchlistChange?.(watchlist, toggleWatchlist);
+  }, [watchlist, toggleWatchlist, onWatchlistChange]);
 
   const isRoundTripMode = roundTripChains.length > 0;
   const isOneWayMode = !isRoundTripMode && routeChains.length > 0;

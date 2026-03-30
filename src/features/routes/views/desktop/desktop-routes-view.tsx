@@ -44,6 +44,19 @@ export function DesktopRoutesView() {
   const [filterPending, setFilterPending] = useState(false);
   const hoverLegRef = useRef<((legIndex: number | null) => void) | null>(null);
 
+  const [watchlistSet, setWatchlistSet] = useState<Set<string>>(new Set());
+  const toggleWatchlistRef = useRef<((key: string) => void) | null>(null);
+
+  const handleWatchlistChange = useCallback((wl: Set<string>, toggle: (key: string) => void) => {
+    setWatchlistSet(wl);
+    toggleWatchlistRef.current = toggle;
+  }, []);
+
+  const selectedRouteKey = useMemo(() => {
+    if (!selectedChain) return "";
+    return selectedChain.legs.map((l) => l.order_id ?? "spec").join("|");
+  }, [selectedChain]);
+
   const { data, isLoading, isFetched } = useRouteSearch(activeCompanyId ?? "", searchParams);
   const routes = useMemo(() => data?.routes ?? [], [data?.routes]);
 
@@ -287,6 +300,7 @@ export function DesktopRoutesView() {
               onSelectIndex={handleRouteSelect}
               onClearFilters={hasActiveSearch ? handleClearSearch : undefined}
               isLoading={!ready || isLoading || isRoundTripLoading || filterPending || (hasPersistedFilters && !hasActiveSearch && !hasSearchedOnce.current)}
+              onWatchlistChange={handleWatchlistChange}
             />
           </div>
         )}
@@ -301,6 +315,8 @@ export function DesktopRoutesView() {
             orderUrlTemplate={orderUrlTemplate}
             onHoverLeg={(idx) => hoverLegRef.current?.(idx)}
             onShowComments={handleShowComments}
+            isWatchlisted={watchlistSet.has(selectedRouteKey)}
+            onToggleWatchlist={selectedRouteKey ? () => toggleWatchlistRef.current?.(selectedRouteKey) : undefined}
           />
         )}
 
