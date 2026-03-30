@@ -64,36 +64,36 @@ export default function HomePage() {
       <ShaderGradientCanvas
         style={{ position: "fixed", inset: 0, pointerEvents: "none", zIndex: 0, opacity: 0, animation: "fade-in 0.5s ease-in 0.5s forwards" }}
         pixelDensity={1}
-        fov={45}
+        fov={40}
       >
         <ShaderGradient
           animate="on"
-          brightness={1.2}
+          brightness={0.5}
           cAzimuthAngle={180}
-          cDistance={3.79}
-          cPolarAngle={90}
+          cDistance={3.9}
+          cPolarAngle={115}
           cameraZoom={1}
-          color1="#276e48"
-          color2="#164275"
-          color3="#24294f"
-          envPreset="city"
+          color1="#ff5eea"
+          color2="#8570fe"
+          color3="#35185e"
+          envPreset="dawn"
           grain="off"
-          lightType="3d"
-          positionX={-1.4}
-          positionY={0}
+          lightType="env"
+          positionX={-0.5}
+          positionY={0.8}
           positionZ={0}
-          reflection={0.1}
+          reflection={0.4}
           rotationX={0}
-          rotationY={10}
-          rotationZ={50}
+          rotationY={0}
+          rotationZ={235}
           shader="defaults"
           type="waterPlane"
-          uAmplitude={1}
-          uDensity={1.4}
+          uAmplitude={0}
+          uDensity={1.1}
           uFrequency={5.5}
           uSpeed={0.1}
-          uStrength={3.3}
-          uTime={0}
+          uStrength={2.4}
+          uTime={0.2}
           wireframe={false}
         />
       </ShaderGradientCanvas>
