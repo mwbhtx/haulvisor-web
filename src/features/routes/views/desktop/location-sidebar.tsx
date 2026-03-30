@@ -129,11 +129,11 @@ export function LocationSidebar({ location, selectedIndex, onSelectIndex, onClos
   }, [selectedIndex, isLoading, sortBy, sortedRoundTrips, sortedRoutes, isRoundTripMode, onSelectIndex]);
 
   return (
-    <div className="flex h-full w-full bg-card/95 backdrop-blur border border-border rounded-2xl flex-col overflow-hidden relative">
+    <div className="flex h-full w-full bg-card/95 backdrop-blur flex-col overflow-hidden relative">
 
       {/* Sort bar + watchlist toggle */}
       {hasResults && !isLoading && (
-        <div className="flex items-center gap-1.5 px-3 py-2 bg-card/95 rounded-xl mx-2 mt-2">
+        <div className="flex items-center gap-1.5 p-3 bg-sidebar">
           <span className="text-sm text-muted-foreground mr-1">Sort</span>
           {ROUTE_SORT_OPTIONS.map((opt) => (
             <button
@@ -163,14 +163,11 @@ export function LocationSidebar({ location, selectedIndex, onSelectIndex, onClos
               {watchlist.size}
             </button>
           )}
-          <span className="ml-auto text-sm text-muted-foreground tabular-nums">
-            {itemCount} route{itemCount !== 1 ? "s" : ""}
-          </span>
         </div>
       )}
 
       {/* Scrollable order/route list */}
-      <div ref={scrollRef} className="flex-1 overflow-y-auto p-2 space-y-2" style={{ scrollPadding: "8px" }}>
+      <div ref={scrollRef} className="flex-1 overflow-y-auto" style={{ scrollPadding: "8px" }}>
         {isLoading ? (
           <div className="space-y-2">
             {Array.from({ length: 5 }).map((_, i) => (
@@ -401,14 +398,14 @@ function RoundTripChainCard({
   return (
     <div
       data-route-idx={routeIdx}
-      className={`relative flex rounded-xl overflow-hidden border ${
-        isSelected ? "border-white/30 shadow-[inset_2px_0_0_rgba(255,255,255,0.18)]" : "border-white/[0.10]"
+      className={`relative flex overflow-hidden border-b border-border ${
+        isSelected ? "bg-surface-elevated" : ""
       }`}
     >
       {/* Route details */}
       <div
         className={`flex-1 min-w-0 transition-colors ${
-          isSelected ? "bg-card" : "rounded-xl bg-card hover:bg-surface-elevated"
+          isSelected ? "" : "hover:bg-surface-elevated"
         }`}
       >
         {/* Key metrics + bookmark — click here to toggle selection */}
@@ -439,7 +436,7 @@ function RoundTripChainCard({
           <div>
             <p className="text-sm uppercase tracking-wide text-text-secondary">Miles</p>
             <p className="text-xl font-bold tabular-nums">{chain.total_miles.toLocaleString()}</p>
-            <p className={`text-xs tabular-nums mt-0.5 ${chain.deadhead_pct > 30 ? "text-warning" : "text-text-tertiary"}`}>{chain.deadhead_pct.toFixed(0)}% DH</p>
+            <p className="text-xs tabular-nums mt-0.5 text-text-tertiary">{chain.deadhead_pct.toFixed(0)}% DH</p>
           </div>
           {onToggleWatchlist && (
             <button
@@ -452,18 +449,9 @@ function RoundTripChainCard({
           )}
         </div>
 
-        {/* Date range + load count row — also toggles selection */}
-        {dateRange && (
-          <div onClick={onClick} className="flex items-center justify-between px-4 py-2 cursor-pointer">
-            <span className="rounded-full bg-white/10 px-2 py-0.5 text-xs tabular-nums text-muted-foreground">
-              {chain.legs.length} {chain.legs.length === 1 ? "load" : "loads"}
-            </span>
-            <span className="text-sm text-text-secondary">{dateRange}</span>
-          </div>
-        )}
 
         {/* Route detail (expanded) */}
-        {isSelected && (() => {
+        {(() => {
           const costPerDhMile = chain.total_deadhead_miles > 0
             ? chain.estimated_deadhead_cost / chain.total_deadhead_miles
             : 0;
@@ -476,6 +464,11 @@ function RoundTripChainCard({
           const returnCity = destCity || origin;
 
           return (
+            <div
+              className="grid transition-[grid-template-rows] duration-300 ease-in-out"
+              style={{ gridTemplateRows: isSelected ? "1fr" : "0fr" }}
+            >
+            <div className="overflow-hidden">
             <div className="border-t border-white/[0.05] bg-surface-overlay">
               {/* Cost breakdown toggle */}
               <div className="border-b border-white/[0.05] bg-card">
@@ -567,7 +560,7 @@ function RoundTripChainCard({
                             ) : (
                               <span className="truncate">{leg.origin_city} → {leg.destination_city}</span>
                             )}
-                            {leg.lane_rank != null && <FlameIcon className="h-4 w-4 text-brand shrink-0" />}
+                            {leg.lane_rank != null && <FlameIcon className="h-4 w-4 text-primary shrink-0" />}
                             {leg.order_id && leg.type === "firm" && onShowComments && (
                               <button
                                 type="button"
@@ -580,7 +573,7 @@ function RoundTripChainCard({
                             )}
                           </p>
                           <span className={`shrink-0 text-base font-semibold tabular-nums ${
-                            leg.type === "speculative" ? "text-text-body" : "text-green-400"
+                            leg.type === "speculative" ? "text-text-body" : "text-positive"
                           }`}>
                             {leg.type === "speculative" ? `~${formatCurrency(leg.pay)}` : formatCurrency(leg.pay)}
                           </span>
@@ -627,6 +620,8 @@ function RoundTripChainCard({
                   </div>
                 </div>
               )}
+            </div>
+            </div>
             </div>
           );
         })()}

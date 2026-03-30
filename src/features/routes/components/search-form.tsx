@@ -378,8 +378,8 @@ function LocationPill({
             <BorderBeam
               size={40}
               duration={4}
-              colorFrom="var(--brand)"
-              colorTo="var(--brand)"
+              colorFrom="var(--primary)"
+              colorTo="var(--primary)"
               borderWidth={2}
             />
           )}

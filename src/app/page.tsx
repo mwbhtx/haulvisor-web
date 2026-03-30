@@ -10,7 +10,6 @@ import { ArrowRight, CalendarCheck, Bookmark, DollarSign, BarChart3 } from "luci
 import { motion } from "framer-motion";
 import dynamic from "next/dynamic";
 import ShaderGradientButton from "@/platform/web/components/shader-gradient-button";
-import { BackgroundBeamsWithCollision } from "@/platform/web/components/ui/background-beams-with-collision";
 const ShaderGradientCanvas = dynamic(() => import("@shadergradient/react").then(m => ({ default: m.ShaderGradientCanvas })), { ssr: false });
 const ShaderGradient = dynamic(() => import("@shadergradient/react").then(m => ({ default: m.ShaderGradient })), { ssr: false });
 
@@ -61,7 +60,7 @@ export default function HomePage() {
   };
 
   return (
-    <div className="min-h-screen bg-brand text-foreground">
+    <div className="dark min-h-screen bg-primary text-foreground">
       <ShaderGradientCanvas
         style={{ position: "fixed", inset: 0, pointerEvents: "none", zIndex: 0, opacity: 0, animation: "fade-in 0.5s ease-in 0.5s forwards" }}
         pixelDensity={1}
@@ -71,30 +70,30 @@ export default function HomePage() {
           animate="on"
           brightness={1.2}
           cAzimuthAngle={180}
-          cDistance={2.4}
-          cPolarAngle={95}
+          cDistance={3.79}
+          cPolarAngle={90}
           cameraZoom={1}
-          color1="#ff6a1a"
-          color2="#c73c00"
-          color3="#FD4912"
+          color1="#276e48"
+          color2="#164275"
+          color3="#24294f"
           envPreset="city"
           grain="off"
           lightType="3d"
-          positionX={0}
-          positionY={-2.1}
+          positionX={-1.4}
+          positionY={0}
           positionZ={0}
           reflection={0.1}
           rotationX={0}
-          rotationY={0}
-          rotationZ={235}
+          rotationY={10}
+          rotationZ={50}
           shader="defaults"
           type="waterPlane"
-          uAmplitude={0}
-          uDensity={1.8}
+          uAmplitude={1}
+          uDensity={1.4}
           uFrequency={5.5}
-          uSpeed={0.2}
-          uStrength={3}
-          uTime={0.2}
+          uSpeed={0.1}
+          uStrength={3.3}
+          uTime={0}
           wireframe={false}
         />
       </ShaderGradientCanvas>
@@ -117,7 +116,7 @@ export default function HomePage() {
       </div>
 
       {/* ── Value prop + Feature sections (joined for beam effect) ── */}
-      <BackgroundBeamsWithCollision className="relative z-10 border-t border-white/[0.06] !bg-surface-deep !h-auto flex-col items-center">
+      <div className="relative z-10 border-t border-white/[0.06] bg-surface-deep flex flex-col items-center">
         <div className="relative max-w-4xl mx-auto px-6 py-16 sm:py-20 text-center w-full">
           <p className="text-xl sm:text-2xl md:text-[1.7rem] leading-relaxed text-text-body">
             Built for owner-operators who'd rather drive than stare at a load board. We analyze every route, calculate your real profit, and find the
@@ -136,7 +135,7 @@ export default function HomePage() {
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ duration: 0.5, delay: i * 0.1, ease: "easeOut" }}
               >
-                <feature.icon className="h-7 w-7 text-brand mb-6" />
+                <feature.icon className="h-7 w-7 text-primary mb-6" />
                 <h3 className="text-xl sm:text-2xl font-bold text-foreground leading-snug whitespace-pre-line">
                   {feature.hook}
                 </h3>
@@ -147,7 +146,7 @@ export default function HomePage() {
             ))}
           </div>
         </div>
-      </BackgroundBeamsWithCollision>
+      </div>
 
       {/* ── Bottom CTA ── */}
       <section className="relative z-10 border-t border-white/[0.06]">

@@ -279,7 +279,7 @@ export function DesktopRoutesView() {
       <div className="flex flex-1 min-h-0">
         {/* Column 1: Route list */}
         {hasActiveSearch && (
-          <div className="w-[300px] shrink-0 min-h-0">
+          <div className="w-[35%] min-w-[280px] max-w-[450px] shrink-0 min-h-0">
             <RouteList
               roundTripChains={displayLocation.roundTripChains}
               routeChains={displayLocation.routeChains}

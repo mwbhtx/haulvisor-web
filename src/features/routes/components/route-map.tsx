@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useCallback } from "react";
+import { useTheme } from "next-themes";
 import mapboxgl from "mapbox-gl";
 import { cleanupRouteLayers, type DrawableRouteLeg } from "@/core/utils/map/draw-route";
 import { LEG_COLORS, DEADHEAD_COLOR } from "@/core/utils/route-colors";
@@ -38,6 +39,7 @@ export function RouteMap({
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<mapboxgl.Map | null>(null);
   const legCountRef = useRef(0);
+  const { resolvedTheme } = useTheme();
 
   // Initialize map (once)
   useEffect(() => {
@@ -48,7 +50,7 @@ export function RouteMap({
     const isMobile = window.innerWidth < 768;
     const map = new mapboxgl.Map({
       container: containerRef.current,
-      style: "mapbox://styles/mapbox/dark-v11",
+      style: "mapbox://styles/mwbhtx/cmncvt3ha007401qs35xhdqfg",
       center: [-95.7, 37.1],
       zoom: 4,
       attributionControl: !isMobile,
@@ -57,38 +59,11 @@ export function RouteMap({
 
     mapRef.current = map;
 
-    // Hide non-US labels
+    // Apply theme config on style load
     map.on("style.load", () => {
-      const style = map.getStyle();
-      if (!style?.layers) return;
-      for (const layer of style.layers) {
-        if (layer.type !== "symbol") continue;
-        const id = layer.id;
-        // Hide continent labels entirely
-        if (id.includes("continent")) {
-          map.setLayoutProperty(id, "visibility", "none");
-          continue;
-        }
-        // Hide country labels entirely
-        if (id.includes("country")) {
-          map.setLayoutProperty(id, "visibility", "none");
-          continue;
-        }
-        // For place/state/city labels, filter to US only
-        if (id.includes("place") || id.includes("state") || id.includes("settlement")) {
-          const existing = map.getFilter(id);
-          map.setFilter(id, [
-            "all",
-            ...(existing ? [existing] : []),
-            ["any",
-              ["!", ["has", "iso_3166_1"]],
-              ["==", ["get", "iso_3166_1"], "US"],
-            ],
-          ]);
-        }
-        // Dim all text labels so they don't compete with route lines
-        map.setPaintProperty(id, "text-color", "rgba(255,255,255,0.4)");
-      }
+      const isDark = document.documentElement.classList.contains("dark");
+      map.setConfigProperty("basemap", "lightPreset", isDark ? "night" : "day");
+      map.setConfigProperty("basemap", "theme", isDark ? "default" : "monochrome");
     });
 
     return () => {
@@ -96,6 +71,26 @@ export function RouteMap({
       mapRef.current = null;
     };
   }, []);
+
+  // Swap map style when theme changes
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map) return;
+    const newStyle = resolvedTheme === "light"
+      ? "mapbox://styles/mwbhtx/cmncvt3ha007401qs35xhdqfg"
+      : "mapbox://styles/mapbox/dark-v11";
+    map.setStyle(newStyle);
+  }, [resolvedTheme]);
+
+
+  // Swap theme config when theme changes
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map) return;
+    const isDark = resolvedTheme === "dark";
+    map.setConfigProperty("basemap", "lightPreset", isDark ? "night" : "day");
+    map.setConfigProperty("basemap", "theme", isDark ? "default" : "monochrome");
+  }, [resolvedTheme]);
 
   // Draw selected route on map
   useEffect(() => {
@@ -136,7 +131,7 @@ export function RouteMap({
           layout: { "line-join": "round", "line-cap": "round" },
           paint: {
             "line-color": LEG_COLORS[i % LEG_COLORS.length],
-            "line-width": 3,
+            "line-width": 5,
           },
         });
       }
@@ -192,7 +187,7 @@ export function RouteMap({
           type: "line",
           source: seg.id,
           layout: { "line-join": "round", "line-cap": "round" },
-          paint: { "line-color": DEADHEAD_COLOR, "line-width": 2, "line-dasharray": [6, 4] },
+          paint: { "line-color": "#ff2200", "line-width": 4, "line-dasharray": [6, 4] },
         });
       }
 
@@ -300,7 +295,7 @@ export function RouteMap({
       map.fitBounds(bounds, {
         padding: mobile
           ? { top: 60, bottom: mobileBotPad, left: 40, right: 40 }
-          : { top: 60, bottom: 50, left: 700, right: 50 },
+          : { top: 60, bottom: 50, left: 50, right: 50 },
         maxZoom: 10,
         duration: 500,
       });
@@ -359,13 +354,13 @@ export function RouteMap({
       if (!map.getLayer(layerId)) continue;
       if (legIndex === null) {
         map.setPaintProperty(layerId, "line-opacity", 1);
-        map.setPaintProperty(layerId, "line-width", 3);
+        map.setPaintProperty(layerId, "line-width", 5);
       } else if (i === legIndex) {
         map.setPaintProperty(layerId, "line-opacity", 1);
-        map.setPaintProperty(layerId, "line-width", 5);
+        map.setPaintProperty(layerId, "line-width", 7);
       } else {
         map.setPaintProperty(layerId, "line-opacity", 0.2);
-        map.setPaintProperty(layerId, "line-width", 3);
+        map.setPaintProperty(layerId, "line-width", 5);
       }
     }
   }, []);

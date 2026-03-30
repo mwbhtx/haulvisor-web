@@ -130,7 +130,7 @@ export function ActivityBreakdown({
               label="Peak Active"
               sublabel={derived.peakTimeLabel}
               value={derived.peakActive.toLocaleString()}
-              valueColor="text-green-500"
+              valueColor="text-positive"
             />
             <StatRow
               label="Avg / Hour"
@@ -141,7 +141,7 @@ export function ActivityBreakdown({
               label="Net Change"
               sublabel="Added − Removed"
               value={`${derived.netChange >= 0 ? "+" : ""}${derived.netChange.toLocaleString()}`}
-              valueColor={derived.netChange >= 0 ? "text-green-500" : "text-red-500"}
+              valueColor={derived.netChange >= 0 ? "text-positive" : "text-negative"}
             />
             <StatRow
               label="Removal Rate"

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ChevronDownIcon, ChevronUpIcon, FlameIcon, ClipboardListIcon } from "lucide-react";
+import { ChevronDownIcon, ChevronUpIcon, FlameIcon, ClipboardListIcon, BookmarkIcon } from "lucide-react";
 import { Badge } from "@/platform/web/components/ui/badge";
 import { RouteInspector } from "@/features/routes/components/route-inspector";
 import { calcAvgLoadedRpm } from "@mwbhtx/haulvisor-core";
@@ -24,6 +24,8 @@ export interface RouteDetailPanelProps {
   orderUrlTemplate?: string;
   onHoverLeg?: (legIndex: number | null) => void;
   onShowComments?: (orderId: string) => void;
+  isWatchlisted?: boolean;
+  onToggleWatchlist?: () => void;
 }
 
 export function RouteDetailPanel({
@@ -34,6 +36,8 @@ export function RouteDetailPanel({
   orderUrlTemplate,
   onHoverLeg,
   onShowComments,
+  isWatchlisted,
+  onToggleWatchlist,
 }: RouteDetailPanelProps) {
   const [showCosts, setShowCosts] = useState(false);
   const [showInspector, setShowInspector] = useState(false);
@@ -42,8 +46,8 @@ export function RouteDetailPanel({
 
   return (
     <div
-      className="flex flex-col h-full border-l border-border bg-surface-elevated overflow-hidden shrink-0 transition-[width] duration-300 ease-in-out"
-      style={{ width: isExpanded ? 400 : 48 }}
+      className="flex flex-col h-full bg-surface-elevated overflow-hidden shrink-0 transition-[width] duration-300 ease-in-out"
+      style={{ width: isExpanded ? '40%' : 48, maxWidth: 600 }}
     >
       {/* Collapsed state — rotated label */}
       {!isExpanded && (
@@ -68,6 +72,8 @@ export function RouteDetailPanel({
             orderUrlTemplate={orderUrlTemplate}
             onHoverLeg={onHoverLeg}
             onShowComments={onShowComments}
+            isWatchlisted={isWatchlisted}
+            onToggleWatchlist={onToggleWatchlist}
             showCosts={showCosts}
             onToggleCosts={() => setShowCosts((v) => !v)}
             showInspector={showInspector}
@@ -93,6 +99,8 @@ interface RouteDetailContentProps {
   onToggleCosts: () => void;
   showInspector: boolean;
   onToggleInspector: () => void;
+  isWatchlisted?: boolean;
+  onToggleWatchlist?: () => void;
 }
 
 function RouteDetailContent({
@@ -107,6 +115,8 @@ function RouteDetailContent({
   onToggleCosts,
   showInspector,
   onToggleInspector,
+  isWatchlisted,
+  onToggleWatchlist,
 }: RouteDetailContentProps) {
   const hasSpeculative = chain.legs.some((leg) => leg.type === "speculative");
   const firmLegs = chain.legs.filter((leg) => leg.type === "firm");
@@ -131,50 +141,44 @@ function RouteDetailContent({
       {/* Scrollable main content */}
       <div className="flex-1 overflow-y-auto min-h-0">
 
-        {/* Metrics summary */}
-        <div className="flex justify-around text-center items-start px-4 py-3 border-b border-white/[0.05]">
-          <div>
-            <p className="text-sm uppercase tracking-wide text-text-secondary">$/Day</p>
-            <p className={`text-xl font-bold tabular-nums ${routeProfitColor(chain.daily_net_profit)}`}>
-              {formatCurrency(chain.daily_net_profit)}
-            </p>
-            <p className="text-xs tabular-nums mt-0.5 text-text-tertiary">
-              {chain.estimated_days.toFixed(1)} days est.
-            </p>
-          </div>
-          <div>
-            <p className="text-sm uppercase tracking-wide text-text-secondary">Profit</p>
-            <p className={`text-xl font-bold tabular-nums ${routeProfitColor(chain.daily_net_profit)}`}>
-              {formatCurrency(profit)}
-            </p>
-            <p className="text-xs tabular-nums mt-0.5 text-text-tertiary">
-              {formatCurrency(chain.total_pay)} gross
-            </p>
-          </div>
-          <div>
-            <p className="text-sm uppercase tracking-wide text-text-secondary">Net/mi</p>
-            <p className={`text-xl font-bold tabular-nums ${routeProfitColor(chain.daily_net_profit)}`}>
-              {formatRpm(chain.effective_rpm)}
-            </p>
-            {avgLoadedRpm !== null && (
-              <p className="text-xs tabular-nums mt-0.5 text-text-tertiary">
-                ${avgLoadedRpm.toFixed(2)}/mi loaded
-              </p>
+        {/* Route summary + bookmark */}
+        <div className="px-4 py-3">
+          <div className="flex items-start justify-between mb-2">
+            <p className="text-xs font-semibold uppercase tracking-widest text-text-subtle">Route Summary</p>
+            {onToggleWatchlist && (
+              <button
+                type="button"
+                onClick={onToggleWatchlist}
+                className="shrink-0 p-1 -mt-1 rounded transition-colors hover:bg-white/10"
+              >
+                <BookmarkIcon className={`h-5 w-5 ${isWatchlisted ? "fill-primary text-primary" : "text-muted-foreground/40"}`} />
+              </button>
             )}
           </div>
-          <div>
-            <p className="text-sm uppercase tracking-wide text-text-secondary">Miles</p>
-            <p className="text-xl font-bold tabular-nums">
-              {chain.total_miles.toLocaleString()}
-            </p>
-            <p className="text-xs tabular-nums mt-0.5 text-text-tertiary">
-              {chain.deadhead_pct.toFixed(0)}% DH
-            </p>
+          <div className="text-sm">
+            {[
+              { label1: "$/Day", value1: formatCurrency(chain.daily_net_profit), color1: routeProfitColor(chain.daily_net_profit), label2: "Profit", value2: formatCurrency(profit), color2: routeProfitColor(chain.daily_net_profit) },
+              { label1: "Net/mi", value1: formatRpm(chain.effective_rpm), color1: routeProfitColor(chain.daily_net_profit), label2: "Gross", value2: formatCurrency(chain.total_pay), color2: "" },
+              { label1: "Miles", value1: chain.total_miles.toLocaleString(), color1: "", label2: "DH %", value2: `${chain.deadhead_pct.toFixed(0)}%`, color2: "" },
+              { label1: "Days", value1: chain.estimated_days.toFixed(1), color1: "", label2: avgLoadedRpm !== null ? "$/mi loaded" : "", value2: avgLoadedRpm !== null ? `$${avgLoadedRpm.toFixed(2)}` : "", color2: "" },
+            ].map((row, i) => (
+              <div
+                key={i}
+                className={`grid grid-cols-[auto_1fr_auto_1fr] gap-x-3 px-3 py-1.5 ${
+                  i % 2 === 0 ? "bg-[#ebeced] dark:bg-[#232323]" : ""
+                }`}
+              >
+                <span className="text-text-secondary">{row.label1}</span>
+                <span className={`text-right tabular-nums font-medium ${row.color1 || "text-text-body"}`}>{row.value1}</span>
+                <span className="text-text-secondary">{row.label2}</span>
+                <span className={`text-right tabular-nums font-medium ${row.color2 || "text-text-body"}`}>{row.value2}</span>
+              </div>
+            ))}
           </div>
         </div>
 
         {/* Cost breakdown (collapsible) */}
-        <div className="border-b border-white/[0.05] bg-card">
+        <div>
           <button
             type="button"
             className="flex items-center gap-1.5 text-sm transition-colors w-full px-4 py-2.5 text-text-secondary"
@@ -197,33 +201,31 @@ function RouteDetailContent({
               <span className="text-right tabular-nums">{formatCurrency(chain.cost_breakdown.tires)}</span>
               <span>Daily costs</span>
               <span className="text-right tabular-nums">{formatCurrency(chain.cost_breakdown.daily_costs)}</span>
-              <span className="font-medium border-t border-white/[0.05] pt-1.5">Total</span>
-              <span className="text-right tabular-nums font-medium border-t border-white/[0.05] pt-1.5">
+              <span className="font-medium  pt-1.5">Total</span>
+              <span className="text-right tabular-nums font-medium  pt-1.5">
                 {formatCurrency(chain.cost_breakdown.total)}
               </span>
             </div>
           )}
         </div>
 
-        {/* Segments header */}
-        <div className="px-4 pt-3 pb-1.5 border-b border-white/[0.05]">
+        {/* Segments section */}
+        <div className="bg-[#ebeced] dark:bg-transparent">
+        <div className="px-4 pt-3 pb-1.5 ">
           <p className="text-xs font-semibold uppercase tracking-widest text-text-subtle">Segments</p>
         </div>
 
         {/* Start deadhead */}
         {startDh > 0 && firstLeg.origin_city !== origin && (
-          <div className="flex items-stretch gap-3 pl-4 pr-4 border-b border-white/[0.05] bg-surface-elevated">
+          <div className="flex items-stretch gap-3 pl-4 pr-4">
             <div className="flex flex-col items-center shrink-0">
-              <div className="w-px flex-1 bg-white/[0.07]" />
-              <div className="h-3.5 w-3.5 rounded-full border-2 border-white/20 bg-surface-elevated shrink-0" />
-              <div className="w-px flex-1 bg-white/[0.07]" />
+              <div className="w-px flex-1 bg-black/10 dark:bg-white/[0.07]" />
+              <div className="h-3.5 w-3.5 rounded-full border-2 border-black/20 dark:border-white/20 shrink-0" />
+              <div className="w-px flex-1 bg-black/10 dark:bg-white/[0.07]" />
             </div>
             <div className="flex items-center flex-1 gap-3 py-3">
-              <span className="flex-1 text-base text-text-body">
-                {origin} → {firstLeg.origin_city}
-              </span>
-              <span className="text-base tabular-nums text-negative">
-                −{formatCurrency(startDh * costPerDhMile)} DH
+              <span className="flex-1 text-base font-semibold text-text-body">
+                {origin} → {firstLeg.origin_city} · {startDh.toLocaleString()} mi
               </span>
             </div>
           </div>
@@ -237,41 +239,38 @@ function RouteDetailContent({
             <div key={leg.leg_number}>
               {/* Between-leg deadhead */}
               {showBetweenDh && (
-                <div className="flex items-stretch gap-3 pl-4 pr-4 border-b border-white/[0.05] bg-surface-elevated">
+                <div className="flex items-stretch gap-3 pl-4 pr-4">
                   <div className="flex flex-col items-center shrink-0">
-                    <div className="w-px flex-1 bg-white/[0.07]" />
-                    <div className="h-3.5 w-3.5 rounded-full border-2 border-white/20 bg-surface-elevated shrink-0" />
-                    <div className="w-px flex-1 bg-white/[0.07]" />
+                    <div className="w-px flex-1 bg-black/10 dark:bg-white/[0.07]" />
+                    <div className="h-3.5 w-3.5 rounded-full border-2 border-black/20 dark:border-white/20 shrink-0" />
+                    <div className="w-px flex-1 bg-black/10 dark:bg-white/[0.07]" />
                   </div>
                   <div className="flex items-center flex-1 gap-3 py-3">
-                    <span className="flex-1 text-base text-text-body">
-                      {chain.legs[legIdx - 1].destination_city} → {leg.origin_city}
+                    <span className="flex-1 text-base font-semibold text-text-body">
+                      {chain.legs[legIdx - 1].destination_city} → {leg.origin_city} · {leg.deadhead_miles.toLocaleString()} mi
                     </span>
-                    <span className="text-base tabular-nums text-negative">
-                      −{formatCurrency(leg.deadhead_miles * costPerDhMile)} DH
-                    </span>
-                  </div>
+                        </div>
                 </div>
               )}
 
               {/* Leg row */}
               <div
-                className="flex items-stretch gap-3 pl-4 pr-4 border-b border-white/[0.05]"
+                className="flex items-stretch gap-3 pl-4 pr-4 "
                 onMouseEnter={() => onHoverLeg?.(legIdx)}
                 onMouseLeave={() => onHoverLeg?.(null)}
               >
                 <div className="flex flex-col items-center shrink-0">
-                  <div className="w-px flex-1 bg-white/[0.07]" />
+                  <div className="w-px flex-1 bg-black/10 dark:bg-white/[0.07]" />
                   <div
                     className="h-3.5 w-3.5 rounded-full shrink-0"
                     style={{ backgroundColor: color }}
                   />
-                  <div className="w-px flex-1 bg-white/[0.07]" />
+                  <div className="w-px flex-1 bg-black/10 dark:bg-white/[0.07]" />
                 </div>
                 <div className="flex-1 py-3">
                   <div className="flex items-center gap-3">
                     <p
-                      className="flex-1 text-base font-semibold flex items-center gap-1.5 min-w-0"
+                      className="flex-1 text-base font-bold flex items-center gap-1.5 min-w-0"
                       style={{ color }}
                     >
                       {leg.order_id && orderUrlTemplate ? (
@@ -290,7 +289,7 @@ function RouteDetailContent({
                         </span>
                       )}
                       {leg.lane_rank != null && (
-                        <FlameIcon className="h-4 w-4 text-primary shrink-0" />
+                        <FlameIcon className="h-4 w-4 shrink-0" style={{ color: '#ff2200' }} />
                       )}
                       {leg.order_id && leg.type === "firm" && onShowComments && (
                         <button
@@ -299,22 +298,13 @@ function RouteDetailContent({
                             e.stopPropagation();
                             onShowComments(leg.order_id!);
                           }}
-                          className="text-muted-foreground/40 hover:text-primary transition-colors shrink-0"
+                          className="text-text-body hover:text-primary transition-colors shrink-0"
                           title="View comments"
                         >
                           <ClipboardListIcon className="h-4 w-4" />
                         </button>
                       )}
                     </p>
-                    <span
-                      className={`shrink-0 text-base font-semibold tabular-nums ${
-                        leg.type === "speculative" ? "text-text-body" : "text-positive"
-                      }`}
-                    >
-                      {leg.type === "speculative"
-                        ? `~${formatCurrency(leg.pay)}`
-                        : formatCurrency(leg.pay)}
-                    </span>
                   </div>
                   {leg.type === "firm" ? (
                     <div className="text-sm mt-1 space-y-0.5 text-text-body">
@@ -333,6 +323,7 @@ function RouteDetailContent({
                             </span>
                           </>
                         )}
+                        {" · "}{formatCurrency(leg.pay)}
                       </p>
                       {(leg.pickup_date_early || leg.delivery_date_early) && (
                         <div>
@@ -370,25 +361,23 @@ function RouteDetailContent({
 
         {/* Return deadhead */}
         {returnDh > 0 && lastLeg.destination_city !== returnCity && (
-          <div className="flex items-stretch gap-3 pl-4 pr-4 border-b border-white/[0.05] bg-surface-elevated">
+          <div className="flex items-stretch gap-3 pl-4 pr-4">
             <div className="flex flex-col items-center shrink-0">
-              <div className="w-px flex-1 bg-white/[0.07]" />
-              <div className="h-3.5 w-3.5 rounded-full border-2 border-white/20 bg-surface-elevated shrink-0" />
-              <div className="w-px flex-1 bg-white/[0.07]" />
+              <div className="w-px flex-1 bg-black/10 dark:bg-white/[0.07]" />
+              <div className="h-3.5 w-3.5 rounded-full border-2 border-black/20 dark:border-white/20 shrink-0" />
+              <div className="w-px flex-1 bg-black/10 dark:bg-white/[0.07]" />
             </div>
             <div className="flex items-center flex-1 gap-3 py-3">
-              <span className="flex-1 text-base text-text-body">
-                {lastLeg.destination_city} → {returnCity}
-              </span>
-              <span className="text-base tabular-nums text-negative">
-                −{formatCurrency(returnDh * costPerDhMile)} DH
+              <span className="flex-1 text-base font-semibold text-text-body">
+                {lastLeg.destination_city} → {returnCity} · {returnDh.toLocaleString()} mi
               </span>
             </div>
           </div>
         )}
 
+        </div>
         {/* Segment Details section (RouteInspector, collapsible) */}
-        <div className="border-t border-white/[0.05]">
+        <div className="">
           <button
             type="button"
             className="flex items-center gap-1.5 text-sm transition-colors w-full px-4 py-2.5 text-text-secondary"
@@ -402,7 +391,7 @@ function RouteDetailContent({
             )}
           </button>
           {showInspector && (
-            <div className="border-t border-white/[0.05]">
+            <div className="">
               <RouteInspector
                 chain={chain}
                 originCity={origin}

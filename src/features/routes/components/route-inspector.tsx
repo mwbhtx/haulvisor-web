@@ -37,13 +37,6 @@ export function RouteInspector({
 
   return (
     <div className="flex flex-col h-full bg-card">
-      {/* Header */}
-      <div className="flex items-center px-3 py-2.5 border-b border-white/10 shrink-0">
-        <p className="flex-1 text-center text-sm font-semibold uppercase tracking-widest text-muted-foreground">
-          Segment Breakdown
-        </p>
-      </div>
-
       {/* Phase rows */}
       <div className="flex-1 overflow-y-auto">
         {timeline.map((phase, i) => (
@@ -164,8 +157,8 @@ function PhaseRow({ phase }: { phase: TripPhase }) {
     case 'waiting':
       return (
         <div className="flex items-center gap-2.5 px-3 py-2.5 border-b border-white/[0.05]">
-          <ClockIcon className="h-5 w-5 text-brand/60 shrink-0" />
-          <span className="flex-1 text-sm text-brand/70">
+          <ClockIcon className="h-5 w-5 text-primary/60 shrink-0" />
+          <span className="flex-1 text-sm text-primary/70">
             Waiting for {phase.waiting_for === 'pickup_window' ? 'pickup' : 'delivery'} window
             {phase.origin_city ? ` at ${phase.origin_city}` : ''}
             {phase.destination_city ? ` at ${phase.destination_city}` : ''}

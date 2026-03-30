@@ -2,10 +2,10 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { RouteIcon, ClipboardList, BarChart3, Settings, Shield, LogOut } from "lucide-react";
+import { RouteIcon, ClipboardList, BarChart3, Settings, Shield, LogOut, Moon, Sun } from "lucide-react";
+import { useTheme } from "next-themes";
 import { cn } from "@/core/utils";
 import { useAuth } from "@/core/services/auth-provider";
-import { Button } from "@/platform/web/components/ui/button";
 
 const navItems = [
   { href: "/routes", label: "Routes", icon: RouteIcon },
@@ -21,6 +21,7 @@ const adminNavItems = [
 export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const { user, logout } = useAuth();
+  const { theme, setTheme } = useTheme();
 
   const allNavItems =
     user?.role === "admin"
@@ -30,7 +31,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex h-screen flex-col overflow-hidden">
       {/* Top nav bar */}
-      <header className="flex h-14 shrink-0 items-center border-b bg-sidebar px-4">
+      <header className="flex h-14 shrink-0 items-center bg-sidebar px-4">
         {/* Logo */}
         <Link href="/routes" className="font-display text-3xl text-sidebar-foreground tracking-wide">
           HAULVISOR
@@ -47,8 +48,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                 className={cn(
                   "flex items-center gap-2 rounded-md px-3 py-1.5 text-sm font-medium transition-colors",
                   isActive
-                    ? "bg-[#161616] text-sidebar-foreground"
-                    : "text-sidebar-foreground/50 hover:bg-white/10 hover:text-sidebar-foreground",
+                    ? "bg-primary text-primary-foreground"
+                    : "text-sidebar-foreground/50 hover:bg-sidebar-accent hover:text-sidebar-foreground",
                 )}
               >
                 <item.icon className="h-4 w-4" />
@@ -62,20 +63,27 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         <div className="flex-1" />
 
         {/* User section */}
-        <div className="flex items-center gap-3">
-          <span className="text-sm text-sidebar-foreground/70">
+        <div className="flex items-center gap-1">
+          <span className="text-sm text-sidebar-foreground/70 mr-2">
             {user?.email || user?.username || "Guest"}
           </span>
-          <Button
-            variant="default"
-            size="sm"
+          <button
+            type="button"
+            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+            title="Toggle theme"
+            className="flex items-center justify-center rounded-md p-1.5 text-sidebar-foreground/50 hover:bg-sidebar-accent hover:text-sidebar-foreground transition-colors"
+          >
+            {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+          </button>
+          <button
+            type="button"
             onClick={logout}
             title="Log out"
-            className="gap-1.5"
+            className="flex items-center gap-2 rounded-md px-3 py-1.5 text-sm font-medium text-sidebar-foreground/50 hover:bg-sidebar-accent hover:text-sidebar-foreground transition-colors"
           >
             <LogOut className="h-4 w-4" />
-            <span className="text-xs">Sign Out</span>
-          </Button>
+            Sign Out
+          </button>
         </div>
       </header>
 

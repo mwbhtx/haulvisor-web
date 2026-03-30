@@ -51,7 +51,7 @@ export const BackgroundBeams = React.memo(({ className }: BackgroundBeamsProps) 
         {/* Static faint paths for depth */}
         <g opacity="0.015">
           {pathData.map((d, i) => (
-            <path key={`static-${i}`} d={d} stroke="#ff5601" strokeWidth="0.5" />
+            <path key={`static-${i}`} d={d} stroke="var(--primary)" strokeWidth="0.5" />
           ))}
         </g>
 
@@ -87,11 +87,11 @@ export const BackgroundBeams = React.memo(({ className }: BackgroundBeamsProps) 
               x2="100%"
               y2="100%"
             >
-              <stop offset="0%" stopColor="#ff5601" stopOpacity="0" />
-              <stop offset="20%" stopColor="#ff5601" stopOpacity="1" />
-              <stop offset="50%" stopColor="#ff7a33" stopOpacity="1" />
-              <stop offset="80%" stopColor="#ff5601" stopOpacity="1" />
-              <stop offset="100%" stopColor="#ff5601" stopOpacity="0" />
+              <stop offset="0%" stopColor="var(--primary)" stopOpacity="0" />
+              <stop offset="20%" stopColor="var(--primary)" stopOpacity="1" />
+              <stop offset="50%" stopColor="var(--primary)" stopOpacity="1" />
+              <stop offset="80%" stopColor="var(--primary)" stopOpacity="1" />
+              <stop offset="100%" stopColor="var(--primary)" stopOpacity="0" />
             </linearGradient>
           ))}
         </defs>
