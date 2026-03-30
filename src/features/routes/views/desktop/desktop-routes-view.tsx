@@ -182,12 +182,22 @@ export function DesktopRoutesView() {
     return null;
   }, [selectedRouteLegs]);
 
-  // Reset selection when results change (sidebar sync effect will set the correct legs)
+  // Reset selection when results change — auto-select first route
   const prevResultsRef = useRef(displayLocation);
   useEffect(() => {
     if (prevResultsRef.current !== displayLocation) {
       prevResultsRef.current = displayLocation;
       setSelectedItemIndex(0);
+      // Auto-select first result from whichever mode has data
+      const firstRt = displayLocation.roundTripChains[0] ?? null;
+      if (firstRt) {
+        setSelectedChain(firstRt);
+        setSelectedRouteLegs(firstRt.legs as DrawableRouteLeg[]);
+      } else {
+        // One-way results need conversion — handled by RouteList's onSelectIndex callback
+        setSelectedChain(null);
+        setSelectedRouteLegs(null);
+      }
     }
   }, [displayLocation]);
 
