@@ -49,8 +49,7 @@ function Calendar({ className, classNames, ...props }: CalendarProps) {
         day: "h-9 w-9 text-center text-sm p-0 relative flex items-center justify-center",
         day_button:
           "h-9 w-9 p-0 font-normal rounded-md hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground inline-flex items-center justify-center transition-colors",
-        selected:
-          "[&>button]:bg-primary [&>button]:text-primary-foreground [&>button]:hover:bg-primary [&>button]:hover:text-primary-foreground rounded-md",
+        selected: "rdp-selected",
         today: "bg-accent text-accent-foreground rounded-md",
         outside: "text-muted-foreground/50",
         disabled: "text-muted-foreground/30",

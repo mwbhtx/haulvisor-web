@@ -223,3 +223,14 @@ html {
   border-color: var(--card) !important;
 }
 
+/* react-day-picker v9: selected day highlight */
+.rdp-selected > button {
+  background-color: var(--primary) !important;
+  color: var(--primary-foreground) !important;
+  border-radius: 0.375rem;
+}
+.rdp-selected > button:hover {
+  background-color: var(--primary) !important;
+  color: var(--primary-foreground) !important;
+}
+
