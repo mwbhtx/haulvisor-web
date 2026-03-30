@@ -53,7 +53,7 @@ export function RouteMap({
       style: "mapbox://styles/mwbhtx/cmncvt3ha007401qs35xhdqfg",
       center: [-95.7, 37.1],
       zoom: 4,
-      attributionControl: !isMobile,
+      attributionControl: false,
       projection: isMobile ? "mercator" : "globe",
     });
 
