@@ -178,14 +178,14 @@ function RouteDetailContent({
           </div>
         </div>
 
-        {/* Cost breakdown (collapsible) */}
+        {/* Expenses (collapsible) */}
         <div>
           <button
             type="button"
             className="flex items-center gap-1.5 text-sm transition-colors w-full px-4 py-2.5 text-text-secondary"
             onClick={onToggleCosts}
           >
-            <span>Cost breakdown</span>
+            <span>Expenses</span>
             {showCosts ? (
               <ChevronUpIcon className="h-3.5 w-3.5" />
             ) : (

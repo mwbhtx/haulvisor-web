@@ -373,14 +373,14 @@ function RouteChainCard({
             >
             <div className="overflow-hidden">
             <div className="border-t border-white/[0.05] bg-surface-overlay">
-              {/* Cost breakdown toggle */}
+              {/* Expenses toggle */}
               <div className="border-b border-white/[0.05] bg-card">
                 <button
                   type="button"
                   className="flex items-center gap-1.5 text-sm transition-colors w-full px-4 py-2.5 text-text-secondary"
                   onClick={(e) => { e.stopPropagation(); setShowCosts(!showCosts); }}
                 >
-                  <span>Cost breakdown</span>
+                  <span>Expenses</span>
                   {showCosts ? <ChevronUpIcon className="h-3.5 w-3.5" /> : <ChevronDownIcon className="h-3.5 w-3.5" />}
                 </button>
                 {showCosts && (
