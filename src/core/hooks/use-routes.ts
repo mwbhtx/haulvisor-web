@@ -19,6 +19,7 @@ export interface RouteSearchParams {
   hazmat_certified?: boolean;
   twic_card?: boolean;
   team_driver?: boolean;
+  no_tarps?: boolean;
   // Cost model
   cost_per_mile?: number;
   diesel_price_per_gallon?: number;
