@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { ArrowLeft, XIcon } from "lucide-react";
 import { Button } from "@/platform/web/components/ui/button";
 import { PlaceAutocomplete, type PlaceResult } from "@/features/routes/components/search-form";
+import { useSettings } from "@/core/hooks/use-settings";
 
 interface SearchSheetProps {
   onBack: () => void;
@@ -24,6 +25,12 @@ export function SearchSheet({
 }: SearchSheetProps) {
   const [origin, setOrigin] = useState<PlaceResult | null>(initialOrigin);
   const [destination, setDestination] = useState<PlaceResult | null>(initialDestination);
+  const { data: settings } = useSettings();
+
+  const homePlace: PlaceResult | null =
+    settings?.home_base_lat != null && settings?.home_base_lng != null && settings?.home_base_city
+      ? { name: settings.home_base_city, lat: settings.home_base_lat as number, lng: settings.home_base_lng as number }
+      : null;
 
   const canSearch = origin !== null;
 
@@ -76,6 +83,11 @@ export function SearchSheet({
             onSelect={setOrigin}
             large
           />
+          {homePlace && (
+            <Button size="sm" variant="outline" className="w-full" onClick={() => setOrigin(homePlace)}>
+              Use Home ({homePlace.name.split(",")[0]})
+            </Button>
+          )}
         </div>
 
         {/* Destination (optional) */}
@@ -101,6 +113,11 @@ export function SearchSheet({
             onSelect={setDestination}
             large
           />
+          {homePlace && (
+            <Button size="sm" variant="outline" className="w-full" onClick={() => setDestination(homePlace)}>
+              Use Home ({homePlace.name.split(",")[0]})
+            </Button>
+          )}
         </div>
 
         {/* Search button — only visible once origin is selected */}
