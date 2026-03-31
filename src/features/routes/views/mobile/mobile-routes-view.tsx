@@ -30,6 +30,7 @@ export function MobileRoutesView() {
     legs: DEFAULT_LEGS_ROUND_TRIP,
     homeBy: "",
     trailerType: "",
+    noTarps: false,
   });
 
   // Query params
@@ -96,6 +97,7 @@ export function MobileRoutesView() {
         ...driverProfile,
         // Override trailer_types from filters if user specified one
         ...(filters.trailerType ? { trailer_types: filters.trailerType } : {}),
+        ...(filters.noTarps ? { no_tarps: true } : {}),
       };
       setSearchParams(params);
     },
@@ -147,6 +149,7 @@ export function MobileRoutesView() {
         legs: search.filters.legs ?? DEFAULT_LEGS_ROUND_TRIP,
         homeBy: search.filters.homeBy ?? "",
         trailerType: search.filters.trailerType ?? "",
+        noTarps: false,
       };
 
       setOrigin(orig);

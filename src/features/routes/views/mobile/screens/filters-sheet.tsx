@@ -12,6 +12,7 @@ export interface AdvancedFilters {
   legs: number;
   homeBy: string;
   trailerType: string;
+  noTarps: boolean;
 }
 
 interface FiltersSheetProps {
@@ -76,13 +77,14 @@ export function FiltersSheet({ onBack, onApply, initialFilters }: FiltersSheetPr
   const [legs, setLegs] = useState(initialFilters?.legs ?? DEFAULT_LEGS_ROUND_TRIP);
   const [homeBy, setHomeBy] = useState(initialFilters?.homeBy ?? "");
   const [trailerType, setTrailerType] = useState(initialFilters?.trailerType ?? "");
+  const [noTarps, setNoTarps] = useState(initialFilters?.noTarps ?? false);
 
   const [expandedRow, setExpandedRow] = useState<string | null>(null);
 
   const toggle = (row: string) => setExpandedRow((prev) => (prev === row ? null : row));
 
   const handleBack = () => {
-    onApply({ legs, homeBy, trailerType });
+    onApply({ legs, homeBy, trailerType, noTarps });
   };
 
   const selectedDate = homeBy ? new Date(homeBy + "T00:00:00") : undefined;
@@ -163,6 +165,23 @@ export function FiltersSheet({ onBack, onApply, initialFilters }: FiltersSheetPr
             )}
           </div>
         </FilterRow>
+
+        {/* No Tarps */}
+        <button
+          type="button"
+          onClick={() => setNoTarps((v) => !v)}
+          className="flex w-full items-center justify-between px-4 py-4 border-b border-white/5"
+        >
+          <span className="text-base text-muted-foreground">No Tarps</span>
+          <div
+            className={cn(
+              "flex h-6 w-6 items-center justify-center rounded border transition-colors",
+              noTarps ? "border-primary bg-primary text-primary-foreground" : "border-white/20",
+            )}
+          >
+            {noTarps && <span className="text-sm font-bold">✓</span>}
+          </div>
+        </button>
       </div>
 
     </motion.div>
