@@ -160,22 +160,34 @@ function RouteDetailContent({
               <ChevronDownIcon className="h-3.5 w-3.5" />
             )}
           </button>
-          {showCosts && (
-            <div className="text-sm">
-              {[
-                { label: "Fuel", value: formatCurrency(chain.cost_breakdown.fuel) },
-                { label: "Maintenance", value: formatCurrency(chain.cost_breakdown.maintenance) },
-                { label: "Tires", value: formatCurrency(chain.cost_breakdown.tires) },
-                { label: "Daily costs", value: formatCurrency(chain.cost_breakdown.daily_costs) },
-                { label: "Total", value: formatCurrency(chain.cost_breakdown.total), bold: true },
-              ].map((row, i) => (
-                <div key={i} className={`flex justify-between px-3 py-1.5 ${i % 2 === 0 ? "bg-[#ebeced] dark:bg-[#232323]" : ""}`}>
-                  <span className={`text-text-secondary ${row.bold ? "font-medium" : ""}`}>{row.label}</span>
-                  <span className={`tabular-nums text-text-body ${row.bold ? "font-medium" : ""}`}>{row.value}</span>
-                </div>
-              ))}
-            </div>
-          )}
+          {showCosts && (() => {
+            const items = [
+              { label: "Fuel", value: formatCurrency(chain.cost_breakdown.fuel) },
+              { label: "Maintenance", value: formatCurrency(chain.cost_breakdown.maintenance) },
+              { label: "Tires", value: formatCurrency(chain.cost_breakdown.tires) },
+              { label: "Daily costs", value: formatCurrency(chain.cost_breakdown.daily_costs) },
+              { label: "Total", value: formatCurrency(chain.cost_breakdown.total), bold: true },
+            ];
+            const rows: { label1: string; value1: string; bold1?: boolean; label2?: string; value2?: string; bold2?: boolean }[] = [];
+            for (let i = 0; i < items.length; i += 2) {
+              rows.push({
+                label1: items[i].label, value1: items[i].value, bold1: items[i].bold,
+                label2: items[i + 1]?.label, value2: items[i + 1]?.value, bold2: items[i + 1]?.bold,
+              });
+            }
+            return (
+              <div className="text-sm grid grid-cols-4 gap-x-3">
+                {rows.map((row, i) => (
+                  <div key={i} className={`grid grid-cols-subgrid col-span-4 px-3 py-1.5 ${i % 2 === 0 ? "bg-[#ebeced] dark:bg-[#232323]" : ""}`}>
+                    <span className={`text-text-secondary text-left ${row.bold1 ? "font-medium" : ""}`}>{row.label1}</span>
+                    <span className={`tabular-nums text-text-body text-right ${row.bold1 ? "font-medium" : ""}`}>{row.value1}</span>
+                    {row.label2 ? <span className={`text-text-secondary text-left ${row.bold2 ? "font-medium" : ""}`}>{row.label2}</span> : <span />}
+                    {row.value2 ? <span className={`tabular-nums text-text-body text-right ${row.bold2 ? "font-medium" : ""}`}>{row.value2}</span> : <span />}
+                  </div>
+                ))}
+              </div>
+            );
+          })()}
         </div>
 
         {/* Route summary + bookmark */}
