@@ -2,19 +2,12 @@
 
 import { useState } from "react";
 import { ChevronDownIcon, ChevronUpIcon, FlameIcon, ClipboardListIcon, BookmarkIcon } from "lucide-react";
-import { Badge } from "@/platform/web/components/ui/badge";
 import { RouteInspector } from "@/features/routes/components/route-inspector";
 import { calcAvgLoadedRpm } from "@mwbhtx/haulvisor-core";
 import { LEG_COLORS } from "@/core/utils/route-colors";
 import { rateColor, routeProfitColor } from "@/core/utils/rate-color";
 import { formatCurrency, formatDateRange, formatRpm } from "@/core/utils/route-helpers";
 import type { RoundTripChain, RoundTripLeg } from "@/core/types";
-
-function ConfidenceBadge({ score }: { score: number }) {
-  if (score >= 70) return <Badge variant="default">High confidence</Badge>;
-  if (score >= 40) return <Badge variant="secondary">Moderate</Badge>;
-  return <Badge variant="outline">Low confidence</Badge>;
-}
 
 export interface RouteDetailPanelProps {
   chain: RoundTripChain | null;
@@ -128,9 +121,8 @@ function RouteDetailContent({
   departureTime,
   returnByTime,
 }: RouteDetailContentProps) {
-  const hasSpeculative = chain.legs.some((leg) => leg.type === "speculative");
   const firmLegs = chain.legs.filter((leg) => leg.type === "firm");
-  const profit = hasSpeculative ? chain.estimated_total_profit : chain.firm_profit;
+  const profit = chain.firm_profit;
   const avgLoadedRpm = calcAvgLoadedRpm(firmLegs);
   const needsTarp = chain.legs.some(
     (l) => l.tarp_height != null && parseInt(l.tarp_height, 10) > 0,
@@ -299,7 +291,7 @@ function RouteDetailContent({
                       {leg.lane_rank != null && (
                         <FlameIcon className="h-4 w-4 shrink-0" style={{ color: '#ff2200' }} />
                       )}
-                      {leg.order_id && leg.type === "firm" && onShowComments && (
+                      {leg.order_id && onShowComments && (
                         <button
                           type="button"
                           onClick={(e) => {
@@ -314,8 +306,7 @@ function RouteDetailContent({
                       )}
                     </p>
                   </div>
-                  {leg.type === "firm" ? (
-                    <div className="text-sm mt-1 space-y-0.5 text-text-body">
+                  <div className="text-sm mt-1 space-y-0.5 text-text-body">
                       <p>
                         {[
                           leg.weight != null ? `${leg.weight.toLocaleString()} lbs` : null,
@@ -352,23 +343,6 @@ function RouteDetailContent({
                         </div>
                       )}
                     </div>
-                  ) : (
-                    <p className="text-sm mt-1 text-text-body">
-                      {[
-                        `${leg.miles.toLocaleString()} mi`,
-                        leg.lane_confidence
-                          ? `${leg.lane_confidence.loads_per_week.toFixed(1)} loads/wk`
-                          : null,
-                      ]
-                        .filter(Boolean)
-                        .join(" · ")}
-                    </p>
-                  )}
-                  {leg.type === "speculative" && leg.lane_confidence && (
-                    <div className="mt-1.5">
-                      <ConfidenceBadge score={leg.lane_confidence.confidence_score} />
-                    </div>
-                  )}
                 </div>
               </div>
             </div>

@@ -3,7 +3,6 @@
 import { useState, useCallback, useRef, useEffect } from "react";
 import { XIcon, ChevronDownIcon, ChevronUpIcon, ChevronRightIcon, ChevronLeftIcon, FlameIcon, BookmarkIcon, ClipboardListIcon } from "lucide-react";
 import { Button } from "@/platform/web/components/ui/button";
-import { Badge } from "@/platform/web/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/platform/web/components/ui/dialog";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/platform/web/components/ui/tooltip";
 import { useAuth } from "@/core/services/auth-provider";
@@ -16,12 +15,6 @@ import { LEG_COLORS } from "@/core/utils/route-colors";
 import { rateColor, netRateColor, routeProfitColor } from "@/core/utils/rate-color";
 import { formatCurrency, formatDateTime, formatDateRange, formatDate, formatRpm } from "@/core/utils/route-helpers";
 import { type SortKey, SORT_OPTIONS, sortRouteChains, sortRoundTripChains } from "@/features/routes/utils/sort-options";
-
-function ConfidenceBadge({ score }: { score: number }) {
-  if (score >= 70) return <Badge variant="default">High confidence</Badge>;
-  if (score >= 40) return <Badge variant="secondary">Moderate</Badge>;
-  return <Badge variant="outline">Low confidence</Badge>;
-}
 
 function formatPickupDates(early?: string, late?: string): string {
   if (!early) return "";
@@ -343,25 +336,7 @@ function RoundTripChainCard({
   onHoverLeg?: (legIndex: number | null) => void;
   costPerMile: number;
 }) {
-  const hasSpeculative = chain.legs.some((leg) => leg.type === "speculative");
   const firmLegs = chain.legs.filter((leg) => leg.type === "firm");
-  const speculativeLegs = chain.legs.filter((leg) => leg.type === "speculative");
-
-  // Build collapsed summary line
-  const highestConfidenceSpecLeg = speculativeLegs.reduce<RoundTripLeg | null>((best, leg) => {
-    const score = leg.lane_confidence?.confidence_score ?? 0;
-    const bestScore = best?.lane_confidence?.confidence_score ?? 0;
-    return score > bestScore ? leg : best;
-  }, null);
-
-  const confidenceSummary = () => {
-    if (!highestConfidenceSpecLeg?.lane_confidence) return null;
-    const score = highestConfidenceSpecLeg.lane_confidence.confidence_score;
-    const legNum = highestConfidenceSpecLeg.leg_number;
-    if (score >= 70) return `Order ${legNum}: High confidence`;
-    if (score >= 40) return `Order ${legNum}: Moderate confidence`;
-    return `Order ${legNum}: Low confidence`;
-  };
 
   // Compute overall date range: first pickup → estimated arrival at final destination
   const startDates = chain.legs
@@ -387,7 +362,7 @@ function RoundTripChainCard({
 
   const [showCosts, setShowCosts] = useState(false);
   const [showInspector, setShowInspector] = useState(false);
-  const profit = hasSpeculative ? chain.estimated_total_profit : chain.firm_profit;
+  const profit = chain.firm_profit;
 
   const avgLoadedRpm = calcAvgLoadedRpm(firmLegs);
 
@@ -572,10 +547,8 @@ function RoundTripChainCard({
                               </button>
                             )}
                           </p>
-                          <span className={`shrink-0 text-base font-semibold tabular-nums ${
-                            leg.type === "speculative" ? "text-text-body" : "text-positive"
-                          }`}>
-                            {leg.type === "speculative" ? `~${formatCurrency(leg.pay)}` : formatCurrency(leg.pay)}
+                          <span className="shrink-0 text-base font-semibold tabular-nums text-positive">
+                            {formatCurrency(leg.pay)}
                           </span>
                         </div>
                         {leg.type === "firm" ? (
@@ -593,13 +566,8 @@ function RoundTripChainCard({
                           </div>
                         ) : (
                           <p className="text-sm mt-1 text-text-body">
-                            {[`${leg.miles.toLocaleString()} mi`, leg.lane_confidence ? `${leg.lane_confidence.loads_per_week.toFixed(1)} loads/wk` : null].filter(Boolean).join(" · ")}
+                            {leg.miles.toLocaleString()} mi
                           </p>
-                        )}
-                        {leg.type === "speculative" && leg.lane_confidence && (
-                          <div className="mt-1.5">
-                            <ConfidenceBadge score={leg.lane_confidence.confidence_score} />
-                          </div>
                         )}
                       </div>
                     </div>

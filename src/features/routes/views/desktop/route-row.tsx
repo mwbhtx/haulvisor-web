@@ -23,9 +23,8 @@ export function RouteRow({
   onToggleWatchlist,
   routeIdx,
 }: RouteRowProps) {
-  const hasSpeculative = chain.legs.some((leg) => leg.type === "speculative");
   const firmLegs = chain.legs.filter((leg) => leg.type === "firm");
-  const profit = hasSpeculative ? chain.estimated_total_profit : chain.firm_profit;
+  const profit = chain.firm_profit;
   const avgLoadedRpm = calcAvgLoadedRpm(firmLegs);
   const suggestedDep = chain.suggested_departure
     ? new Date(chain.suggested_departure)
