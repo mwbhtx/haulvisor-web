@@ -171,25 +171,24 @@ function DaysOutPill({ value, onChange, departureDate }: { value: number; onChan
           </span>
         </button>
       </PopoverTrigger>
-      <PopoverContent className="w-64" align="start">
-        <div className="space-y-3 p-1">
-          <p className="text-sm font-medium">Days Out</p>
-          <div className="flex items-center gap-3">
-            <span className="text-xs text-muted-foreground w-4">1</span>
-            <input
-              type="range"
-              min={1}
-              max={10}
-              value={value}
-              onChange={(e) => onChange(Number(e.target.value))}
-              className="flex-1 accent-primary"
-            />
-            <span className="text-xs text-muted-foreground w-5">10</span>
+      <PopoverContent className="w-56" align="start">
+        <div className="space-y-4 p-1">
+          <div className="flex items-center justify-between">
+            <p className="text-sm font-medium">Days Out</p>
+            <span className="text-sm font-semibold">{value} {value === 1 ? "day" : "days"}</span>
           </div>
-          <div className="text-center">
-            <span className="text-lg font-bold">{value} {value === 1 ? "day" : "days"}</span>
+          <Slider
+            value={[value]}
+            onValueChange={([v]) => onChange(v)}
+            min={1}
+            max={10}
+            step={1}
+          />
+          <div className="flex justify-between text-xs text-muted-foreground">
+            <span>1 day</span>
+            <span>10 days</span>
           </div>
-          <p className="text-xs text-muted-foreground text-center">
+          <p className="text-xs text-muted-foreground">
             Home by {returnLabel}
           </p>
         </div>
@@ -202,12 +201,9 @@ function DaysOutPill({ value, onChange, departureDate }: { value: number; onChan
 
 function DeadheadPctPill({ value, onChange }: { value: number; onChange: (v: number) => void }) {
   const [open, setOpen] = useState(false);
-  const [draft, setDraft] = useState(value);
-
-  useEffect(() => { setDraft(value); }, [value]);
 
   return (
-    <Popover open={open} onOpenChange={(o) => { setOpen(o); setDraft(value); }}>
+    <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <button
           type="button"
@@ -224,11 +220,11 @@ function DeadheadPctPill({ value, onChange }: { value: number; onChange: (v: num
         <div className="space-y-4 p-1">
           <div className="flex items-center justify-between">
             <p className="text-sm font-medium">Max Deadhead %</p>
-            <span className="text-sm font-semibold">{draft}%</span>
+            <span className="text-sm font-semibold">{value}%</span>
           </div>
           <Slider
-            value={[draft]}
-            onValueChange={([v]) => setDraft(v)}
+            value={[value]}
+            onValueChange={([v]) => onChange(v)}
             min={MIN_DEADHEAD_PCT}
             max={MAX_DEADHEAD_PCT}
             step={5}
@@ -238,14 +234,8 @@ function DeadheadPctPill({ value, onChange }: { value: number; onChange: (v: num
             <span>{MAX_DEADHEAD_PCT}%</span>
           </div>
           <p className="text-xs text-muted-foreground">
-            Total deadhead miles must not exceed {draft}% of total miles driven
+            Total deadhead miles must not exceed {value}% of total miles driven
           </p>
-          <Button
-            className="w-full"
-            onClick={() => { onChange(draft); setOpen(false); }}
-          >
-            Apply
-          </Button>
         </div>
       </PopoverContent>
     </Popover>
