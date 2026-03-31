@@ -914,8 +914,8 @@ export function SearchFilters({
       </div>
       {destPill}
       {departureDatePill}
-      {legsPill}
       <div id="onborda-days-out"><DaysOutPill value={daysOut} onChange={setDaysOut} departureDate={departureDate} /></div>
+      {legsPill}
       <div id="onborda-all-filters"><AllFiltersPopover workDays={workDays} onWorkDaysChange={setWorkDays} /></div>
       {clearButton}
     </div>
