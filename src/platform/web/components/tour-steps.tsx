@@ -4,19 +4,28 @@ const hl = "font-semibold"; // driver.js uses inline HTML, not JSX
 
 export const tourSteps: DriveStep[] = [
   {
-    element: "#onborda-trip-mode",
+    element: "#onborda-origin",
     popover: {
-      title: "🚛 Trip Mode",
-      description: `Choose between <strong class="${hl}">Round Trip</strong> (out and back) or <strong class="${hl}">One Way</strong> routing.`,
+      title: "📍 Set Your Origin",
+      description: `Select a <strong class="${hl}">starting city</strong> to see available routes from that location. This is the only required field to begin searching.`,
       side: "bottom",
       align: "center",
     },
   },
   {
-    element: "#onborda-origin",
+    element: "#onborda-destination",
     popover: {
-      title: "📍 Set Your Origin",
-      description: `Select a <strong class="${hl}">starting city</strong> to see available routes from that location. This is the only required field to begin searching.`,
+      title: "📍 Destination",
+      description: `Optionally set a <strong class="${hl}">destination</strong> — where you want to end up. Leave it empty if you'll go anywhere, or set it to your home base to find routes that bring you back.`,
+      side: "bottom",
+      align: "center",
+    },
+  },
+  {
+    element: "#onborda-departure-date",
+    popover: {
+      title: "📅 Departure Date",
+      description: `Set the <strong class="${hl}">date you want to leave</strong>. Routes are simulated starting at your work start hour on this date.`,
       side: "bottom",
       align: "center",
     },
@@ -31,19 +40,10 @@ export const tourSteps: DriveStep[] = [
     },
   },
   {
-    element: "#onborda-leave-by",
+    element: "#onborda-days-out",
     popover: {
-      title: "🚀 Leave By",
-      description: `Set a <strong class="${hl}">departure date and time</strong>. Routes are simulated from this point to check if pickups, deliveries, and return deadlines can be met.`,
-      side: "bottom",
-      align: "center",
-    },
-  },
-  {
-    element: "#onborda-home-by",
-    popover: {
-      title: "🏠 Return By",
-      description: `Set a <strong class="${hl}">date and time</strong> you need to be back. Routes that can't get you home in time will be filtered out.`,
+      title: "🗓️ Days Out",
+      description: `Set how many <strong class="${hl}">days</strong> you want to be on the road. Only routes that fit within this timeframe are shown. The return date is calculated automatically.`,
       side: "bottom",
       align: "center",
     },

@@ -1030,7 +1030,7 @@ export function SearchFilters({
       {destPill}
       {departureDatePill}
       {legsPill}
-      <DaysOutPill value={daysOut} onChange={setDaysOut} departureDate={departureDate} />
+      <div id="onborda-days-out"><DaysOutPill value={daysOut} onChange={setDaysOut} departureDate={departureDate} /></div>
       <div id="onborda-idle"><MaxIdlePill value={maxIdle} onChange={setMaxIdle} /></div>
       <div id="onborda-deadhead"><DeadheadPctPill value={maxDeadheadPct} onChange={setMaxDeadheadPct} /></div>
       <div id="onborda-all-filters"><AllFiltersPopover workDays={workDays} onWorkDaysChange={setWorkDays} /></div>
