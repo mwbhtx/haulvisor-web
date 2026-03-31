@@ -8,11 +8,10 @@
     "start": "next start",
     "lint": "eslint",
     "test": "vitest run",
-    "test:watch": "vitest",
-    "predev": "npm update @mwbhtx/haulvisor-core"
+    "test:watch": "vitest"
   },
   "dependencies": {
-    "@mwbhtx/haulvisor-core": "^1.6.19",
+    "@mwbhtx/haulvisor-core": "*",
     "@react-three/drei": "^10.7.7",
     "@react-three/fiber": "^9.5.0",
     "@shadergradient/react": "^2.4.20",

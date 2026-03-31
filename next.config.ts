@@ -1,8 +1,20 @@
 import type { NextConfig } from "next";
+import fs from "fs";
 
 const isProd = process.env.NODE_ENV === "production";
+const hasLocalCore = fs.existsSync(".core");
 
 const nextConfig: NextConfig = {
+  ...(hasLocalCore
+    ? {
+        turbopack: {
+          resolveAlias: {
+            "@mwbhtx/haulvisor-core": "./.core",
+            "@mwbhtx/haulvisor-core/dist/*": "./.core/*",
+          },
+        },
+      }
+    : {}),
   // Static export for production builds only.
   ...(isProd ? { output: "export", trailingSlash: true } : {}),
 

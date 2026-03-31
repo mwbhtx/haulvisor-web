@@ -81,7 +81,7 @@ npm run dev        # Starts on localhost:3001
 
 Requires the API running on `localhost:3100` (proxied via Next.js rewrites). Also requires a `GITHUB_PACKAGES_AUTH_TOKEN` env var for pulling `@mwbhtx/haulvisor-core` from GitHub Packages (see `.npmrc`).
 
-The `predev` script automatically checks for the latest `@mwbhtx/haulvisor-core` version on each `npm run dev`.
+For local haulvisor-core development, run `npm run dev` in the [haulvisor-core](https://github.com/mwbhtx/haulvisor-core) repo — it watches for changes, rebuilds `dist/`, and syncs it to `.core/` in this project. Turbopack's `resolveAlias` in `next.config.ts` redirects `@mwbhtx/haulvisor-core` imports to `.core/` when it exists, so changes hot reload instantly. In CI (where `.core/` doesn't exist), imports resolve from `node_modules` as normal.
 
 ## License
 
