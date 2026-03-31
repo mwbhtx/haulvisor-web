@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { ChevronDownIcon, ChevronUpIcon, FlameIcon, ClipboardListIcon, BookmarkIcon } from "lucide-react";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/platform/web/components/ui/tooltip";
 import { RouteInspector } from "@/features/routes/components/route-inspector";
 import { calcAvgLoadedRpm } from "@mwbhtx/haulvisor-core";
 import { LEG_COLORS } from "@/core/utils/route-colors";
@@ -156,7 +157,7 @@ function RouteDetailContent({
           <div className="text-sm grid grid-cols-4 gap-x-3">
             {[
               { label1: "$/Day", value1: formatCurrency(chain.daily_net_profit), color1: routeProfitColor(chain.daily_net_profit), label2: "Profit", value2: formatCurrency(profit), color2: routeProfitColor(chain.daily_net_profit) },
-              { label1: "Net/mi", value1: formatRpm(chain.effective_rpm), color1: routeProfitColor(chain.daily_net_profit), label2: "Expenses", value2: formatCurrency(chain.cost_breakdown.total), color2: "" },
+              { label1: "Net/mi", value1: formatRpm(chain.effective_rpm), color1: routeProfitColor(chain.daily_net_profit), label2: "Expenses", value2: formatCurrency(chain.cost_breakdown.total), color2: "", tooltip2: `${chain.total_miles.toLocaleString()} mi × $${costPerMile.toFixed(2)}/mi` },
               { label1: "Miles", value1: chain.total_miles.toLocaleString(), color1: "", label2: "Gross", value2: formatCurrency(chain.total_pay), color2: "" },
               { label1: "Days", value1: chain.estimated_days.toFixed(1), color1: "", label2: "DH %", value2: `${chain.deadhead_pct.toFixed(0)}%`, color2: "" },
               { label1: "Tarp", value1: needsTarp ? "Yes" : "No", color1: needsTarp ? "text-negative" : "", label2: "$/mi loaded", value2: avgLoadedRpm !== null ? `$${avgLoadedRpm.toFixed(2)}` : "—", color2: "" },
@@ -166,7 +167,22 @@ function RouteDetailContent({
                 <span className="text-text-secondary text-left">{row.label1}</span>
                 <span className="text-right">{row.color1 ? <span className={`tabular-nums font-medium ${row.color1} bg-black px-1.5 py-0.5`}>{row.value1}</span> : <span className="tabular-nums font-medium text-text-body">{row.value1}</span>}</span>
                 <span className="text-text-secondary text-left">{row.label2}</span>
-                <span className="text-right">{row.color2 ? <span className={`tabular-nums font-medium ${row.color2} bg-black px-1.5 py-0.5`}>{row.value2}</span> : <span className="tabular-nums font-medium text-text-body">{row.value2}</span>}</span>
+                <span className="text-right">
+                  {'tooltip2' in row && row.tooltip2 ? (
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <span className="tabular-nums font-medium text-text-body underline decoration-dashed underline-offset-2 cursor-default">{row.value2}</span>
+                        </TooltipTrigger>
+                        <TooltipContent side="left">{row.tooltip2}</TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  ) : row.color2 ? (
+                    <span className={`tabular-nums font-medium ${row.color2} bg-black px-1.5 py-0.5`}>{row.value2}</span>
+                  ) : (
+                    <span className="tabular-nums font-medium text-text-body">{row.value2}</span>
+                  )}
+                </span>
               </div>
             ))}
           </div>
