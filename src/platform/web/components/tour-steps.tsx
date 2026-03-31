@@ -49,15 +49,6 @@ export const tourSteps: DriveStep[] = [
     },
   },
   {
-    element: "#onborda-idle",
-    popover: {
-      title: "⏱️ Max Idle Time",
-      description: `Choose how long you're willing to <strong class="${hl}">wait between loads</strong> — from 2 hours to keep rolling, up to 24 hours for maximum flexibility.`,
-      side: "bottom",
-      align: "center",
-    },
-  },
-  {
     element: "#onborda-deadhead",
     popover: {
       title: "🛣️ Max Deadhead",

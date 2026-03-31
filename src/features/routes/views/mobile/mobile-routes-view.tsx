@@ -7,7 +7,7 @@ import { useSettings } from "@/core/hooks/use-settings";
 import { useRouteSearch, type RouteSearchParams } from "@/core/hooks/use-routes";
 import { useMobileRouteNav } from "@/features/routes/hooks/use-mobile-route-nav";
 import { useSaveRecentSearch, type RecentSearch } from "@/features/routes/hooks/use-recent-searches";
-import { DEFAULT_COST_PER_MILE, DEFAULT_LEGS_ROUND_TRIP, DEFAULT_MAX_DEADHEAD_PCT, DEFAULT_MAX_IDLE_HOURS } from "@mwbhtx/haulvisor-core";
+import { DEFAULT_COST_PER_MILE, DEFAULT_LEGS_ROUND_TRIP, DEFAULT_MAX_DEADHEAD_PCT } from "@mwbhtx/haulvisor-core";
 import type { RouteChain } from "@/core/types";
 import type { PlaceResult } from "@/features/routes/components/search-form";
 import type { AdvancedFilters } from "./screens/filters-sheet";
@@ -29,7 +29,6 @@ export function MobileRoutesView() {
   const [advancedFilters, setAdvancedFilters] = useState<AdvancedFilters>({
     legs: DEFAULT_LEGS_ROUND_TRIP,
     maxDeadheadPct: DEFAULT_MAX_DEADHEAD_PCT,
-    maxIdleHours: settings?.max_idle_hours ?? DEFAULT_MAX_IDLE_HOURS,
     homeBy: "",
     trailerType: "",
   });
@@ -96,7 +95,6 @@ export function MobileRoutesView() {
         ...(dest ? { destination_lat: dest.lat, destination_lng: dest.lng } : {}),
         legs: filters.legs,
         max_deadhead_pct: filters.maxDeadheadPct,
-        ...(filters.maxIdleHours > 0 ? { max_layover_hours: filters.maxIdleHours } : {}),
         ...driverProfile,
         // Override trailer_types from filters if user specified one
         ...(filters.trailerType ? { trailer_types: filters.trailerType } : {}),
@@ -133,7 +131,6 @@ export function MobileRoutesView() {
         },
         filters: {
           trailerType: advancedFilters.trailerType || undefined,
-          maxIdle: advancedFilters.maxIdleHours,
           deadheadPercent: advancedFilters.maxDeadheadPct,
           homeBy: advancedFilters.homeBy || undefined,
           legs: advancedFilters.legs,
@@ -153,7 +150,6 @@ export function MobileRoutesView() {
       const filters: AdvancedFilters = {
         legs: search.filters.legs ?? DEFAULT_LEGS_ROUND_TRIP,
         maxDeadheadPct: search.filters.deadheadPercent ?? DEFAULT_MAX_DEADHEAD_PCT,
-        maxIdleHours: search.filters.maxIdle ?? DEFAULT_MAX_IDLE_HOURS,
         homeBy: search.filters.homeBy ?? "",
         trailerType: search.filters.trailerType ?? "",
       };

@@ -7,12 +7,11 @@ import { Button } from "@/platform/web/components/ui/button";
 import { Slider } from "@/platform/web/components/ui/slider";
 import { Calendar } from "@/platform/web/components/ui/calendar";
 import { cn } from "@/core/utils";
-import { LEG_OPTIONS, DEFAULT_LEGS_ROUND_TRIP, DEFAULT_MAX_DEADHEAD_PCT, DEFAULT_MAX_IDLE_HOURS, MIN_DEADHEAD_PCT, MAX_DEADHEAD_PCT, IDLE_OPTIONS } from "@mwbhtx/haulvisor-core";
+import { LEG_OPTIONS, DEFAULT_LEGS_ROUND_TRIP, DEFAULT_MAX_DEADHEAD_PCT, MIN_DEADHEAD_PCT, MAX_DEADHEAD_PCT } from "@mwbhtx/haulvisor-core";
 
 export interface AdvancedFilters {
   legs: number;
   maxDeadheadPct: number;
-  maxIdleHours: number;
   homeBy: string;
   trailerType: string;
 }
@@ -21,10 +20,6 @@ interface FiltersSheetProps {
   onBack: () => void;
   onApply: (filters: AdvancedFilters) => void;
   initialFilters?: Partial<AdvancedFilters>;
-}
-
-function formatIdleLabel(hours: number): string {
-  return IDLE_OPTIONS.find((o) => o.value === hours)?.label ?? `${hours}h`;
 }
 
 function formatHomeBy(iso: string): string {
@@ -82,7 +77,6 @@ function FilterRow({
 export function FiltersSheet({ onBack, onApply, initialFilters }: FiltersSheetProps) {
   const [legs, setLegs] = useState(initialFilters?.legs ?? DEFAULT_LEGS_ROUND_TRIP);
   const [maxDeadheadPct, setMaxDeadheadPct] = useState(initialFilters?.maxDeadheadPct ?? DEFAULT_MAX_DEADHEAD_PCT);
-  const [maxIdleHours, setMaxIdleHours] = useState(initialFilters?.maxIdleHours ?? DEFAULT_MAX_IDLE_HOURS);
   const [homeBy, setHomeBy] = useState(initialFilters?.homeBy ?? "");
   const [trailerType, setTrailerType] = useState(initialFilters?.trailerType ?? "");
 
@@ -91,7 +85,7 @@ export function FiltersSheet({ onBack, onApply, initialFilters }: FiltersSheetPr
   const toggle = (row: string) => setExpandedRow((prev) => (prev === row ? null : row));
 
   const handleBack = () => {
-    onApply({ legs, maxDeadheadPct, maxIdleHours, homeBy, trailerType });
+    onApply({ legs, maxDeadheadPct, homeBy, trailerType });
   };
 
   const selectedDate = homeBy ? new Date(homeBy + "T00:00:00") : undefined;
@@ -157,31 +151,6 @@ export function FiltersSheet({ onBack, onApply, initialFilters }: FiltersSheetPr
               <span>{MIN_DEADHEAD_PCT}%</span>
               <span>{MAX_DEADHEAD_PCT}%</span>
             </div>
-          </div>
-        </FilterRow>
-
-        <FilterRow
-          label="Max Idle"
-          value={formatIdleLabel(maxIdleHours)}
-          expanded={expandedRow === "idle"}
-          onToggle={() => toggle("idle")}
-        >
-          <div className="flex flex-wrap gap-2">
-            {IDLE_OPTIONS.map((opt) => (
-              <button
-                key={opt.value}
-                type="button"
-                onClick={() => setMaxIdleHours(opt.value)}
-                className={cn(
-                  "rounded-lg px-4 py-2.5 text-sm font-medium border transition-colors",
-                  maxIdleHours === opt.value
-                    ? "border-primary bg-primary/15 text-primary"
-                    : "border-white/10 text-muted-foreground hover:text-foreground",
-                )}
-              >
-                {opt.label}
-              </button>
-            ))}
           </div>
         </FilterRow>
 
