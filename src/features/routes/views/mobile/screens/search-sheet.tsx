@@ -150,9 +150,10 @@ export function SearchSheet({
                   className="flex items-center gap-3 w-full px-3 py-3 rounded-xl bg-white/5 hover:bg-white/10 transition-colors text-left"
                 >
                   <ClockIcon className="h-5 w-5 shrink-0 text-muted-foreground" />
-                  <span className="text-base text-foreground truncate">
-                    {isSame ? originLabel : `${originLabel} → ${destLabel}`}
-                  </span>
+                  <div className="flex flex-col min-w-0">
+                    <span className="text-base text-foreground truncate"><span className="text-muted-foreground">Origin: </span>{originLabel}</span>
+                    {!isSame && <span className="text-sm text-foreground truncate"><span className="text-muted-foreground">Dest: </span>{destLabel}</span>}
+                  </div>
                 </button>
               );
             })}
