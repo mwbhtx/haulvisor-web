@@ -12,7 +12,6 @@ export interface RouteSearchParams {
   destination_lng?: number;
   search_radius_miles?: number;
   legs?: number;
-  max_deadhead_pct?: number;
   max_trip_days?: number;
   // Driver profile
   trailer_types?: string;

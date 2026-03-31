@@ -49,15 +49,6 @@ export const tourSteps: DriveStep[] = [
     },
   },
   {
-    element: "#onborda-deadhead",
-    popover: {
-      title: "🛣️ Max Deadhead",
-      description: `Control how far you're willing to <strong class="${hl}">drive empty</strong> between loads, as a percentage of the total trip.`,
-      side: "bottom",
-      align: "center",
-    },
-  },
-  {
     element: "#onborda-all-filters",
     popover: {
       title: "⚙️ All Filters",

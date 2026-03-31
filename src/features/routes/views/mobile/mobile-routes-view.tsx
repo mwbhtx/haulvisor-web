@@ -7,7 +7,7 @@ import { useSettings } from "@/core/hooks/use-settings";
 import { useRouteSearch, type RouteSearchParams } from "@/core/hooks/use-routes";
 import { useMobileRouteNav } from "@/features/routes/hooks/use-mobile-route-nav";
 import { useSaveRecentSearch, type RecentSearch } from "@/features/routes/hooks/use-recent-searches";
-import { DEFAULT_COST_PER_MILE, DEFAULT_LEGS_ROUND_TRIP, DEFAULT_MAX_DEADHEAD_PCT } from "@mwbhtx/haulvisor-core";
+import { DEFAULT_COST_PER_MILE, DEFAULT_LEGS_ROUND_TRIP } from "@mwbhtx/haulvisor-core";
 import type { RouteChain } from "@/core/types";
 import type { PlaceResult } from "@/features/routes/components/search-form";
 import type { AdvancedFilters } from "./screens/filters-sheet";
@@ -28,7 +28,6 @@ export function MobileRoutesView() {
   const [destination, setDestination] = useState<PlaceResult | null>(null);
   const [advancedFilters, setAdvancedFilters] = useState<AdvancedFilters>({
     legs: DEFAULT_LEGS_ROUND_TRIP,
-    maxDeadheadPct: DEFAULT_MAX_DEADHEAD_PCT,
     homeBy: "",
     trailerType: "",
   });
@@ -94,7 +93,6 @@ export function MobileRoutesView() {
         departure_date: tomorrow,
         ...(dest ? { destination_lat: dest.lat, destination_lng: dest.lng } : {}),
         legs: filters.legs,
-        max_deadhead_pct: filters.maxDeadheadPct,
         ...driverProfile,
         // Override trailer_types from filters if user specified one
         ...(filters.trailerType ? { trailer_types: filters.trailerType } : {}),
@@ -130,7 +128,6 @@ export function MobileRoutesView() {
         },
         filters: {
           trailerType: advancedFilters.trailerType || undefined,
-          deadheadPercent: advancedFilters.maxDeadheadPct,
           homeBy: advancedFilters.homeBy || undefined,
           legs: advancedFilters.legs,
         },
@@ -148,7 +145,6 @@ export function MobileRoutesView() {
       const dest: PlaceResult = { name: search.destination.label, lat: search.destination.coordinates[0], lng: search.destination.coordinates[1] };
       const filters: AdvancedFilters = {
         legs: search.filters.legs ?? DEFAULT_LEGS_ROUND_TRIP,
-        maxDeadheadPct: search.filters.deadheadPercent ?? DEFAULT_MAX_DEADHEAD_PCT,
         homeBy: search.filters.homeBy ?? "",
         trailerType: search.filters.trailerType ?? "",
       };

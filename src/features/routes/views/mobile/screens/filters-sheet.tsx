@@ -4,14 +4,12 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, ChevronDown } from "lucide-react";
 import { Button } from "@/platform/web/components/ui/button";
-import { Slider } from "@/platform/web/components/ui/slider";
 import { Calendar } from "@/platform/web/components/ui/calendar";
 import { cn } from "@/core/utils";
-import { LEG_OPTIONS, DEFAULT_LEGS_ROUND_TRIP, DEFAULT_MAX_DEADHEAD_PCT, MIN_DEADHEAD_PCT, MAX_DEADHEAD_PCT } from "@mwbhtx/haulvisor-core";
+import { LEG_OPTIONS, DEFAULT_LEGS_ROUND_TRIP } from "@mwbhtx/haulvisor-core";
 
 export interface AdvancedFilters {
   legs: number;
-  maxDeadheadPct: number;
   homeBy: string;
   trailerType: string;
 }
@@ -76,7 +74,6 @@ function FilterRow({
 
 export function FiltersSheet({ onBack, onApply, initialFilters }: FiltersSheetProps) {
   const [legs, setLegs] = useState(initialFilters?.legs ?? DEFAULT_LEGS_ROUND_TRIP);
-  const [maxDeadheadPct, setMaxDeadheadPct] = useState(initialFilters?.maxDeadheadPct ?? DEFAULT_MAX_DEADHEAD_PCT);
   const [homeBy, setHomeBy] = useState(initialFilters?.homeBy ?? "");
   const [trailerType, setTrailerType] = useState(initialFilters?.trailerType ?? "");
 
@@ -85,7 +82,7 @@ export function FiltersSheet({ onBack, onApply, initialFilters }: FiltersSheetPr
   const toggle = (row: string) => setExpandedRow((prev) => (prev === row ? null : row));
 
   const handleBack = () => {
-    onApply({ legs, maxDeadheadPct, homeBy, trailerType });
+    onApply({ legs, homeBy, trailerType });
   };
 
   const selectedDate = homeBy ? new Date(homeBy + "T00:00:00") : undefined;
@@ -130,27 +127,6 @@ export function FiltersSheet({ onBack, onApply, initialFilters }: FiltersSheetPr
                 {n}
               </button>
             ))}
-          </div>
-        </FilterRow>
-
-        <FilterRow
-          label="Max Deadhead"
-          value={`${maxDeadheadPct}%`}
-          expanded={expandedRow === "deadhead"}
-          onToggle={() => toggle("deadhead")}
-        >
-          <div className="space-y-3">
-            <Slider
-              value={[maxDeadheadPct]}
-              onValueChange={(v) => setMaxDeadheadPct(v[0])}
-              min={MIN_DEADHEAD_PCT}
-              max={MAX_DEADHEAD_PCT}
-              step={5}
-            />
-            <div className="flex justify-between text-sm text-muted-foreground">
-              <span>{MIN_DEADHEAD_PCT}%</span>
-              <span>{MAX_DEADHEAD_PCT}%</span>
-            </div>
           </div>
         </FilterRow>
 

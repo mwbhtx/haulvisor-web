@@ -14,7 +14,7 @@ import { ChevronDown, ChevronUpIcon, LocateIcon, SlidersHorizontal, XIcon } from
 import { BorderBeam } from "@/platform/web/components/ui/border-beam";
 import { Calendar } from "@/platform/web/components/ui/calendar";
 import { useSettings, useUpdateSettings } from "@/core/hooks/use-settings";
-import { TRAILER_CATEGORIES, expandTrailerCodes, codesToLabels, DEFAULT_LEGS_ONE_WAY, DEFAULT_LEGS_ROUND_TRIP, DEFAULT_MAX_DEADHEAD_PCT, DEFAULT_MAX_TRIP_DAYS, MIN_DEADHEAD_PCT, MAX_DEADHEAD_PCT, DEFAULT_COST_PER_MILE, ALL_WORK_DAYS, TIME_PRESETS } from "@mwbhtx/haulvisor-core";
+import { TRAILER_CATEGORIES, expandTrailerCodes, codesToLabels, DEFAULT_LEGS_ONE_WAY, DEFAULT_LEGS_ROUND_TRIP, DEFAULT_MAX_TRIP_DAYS, DEFAULT_COST_PER_MILE, ALL_WORK_DAYS, TIME_PRESETS } from "@mwbhtx/haulvisor-core";
 
 import type { RouteSearchParams } from "@/core/hooks/use-routes";
 
@@ -190,51 +190,6 @@ function DaysOutPill({ value, onChange, departureDate }: { value: number; onChan
           </div>
           <p className="text-xs text-muted-foreground">
             Home by {returnLabel}
-          </p>
-        </div>
-      </PopoverContent>
-    </Popover>
-  );
-}
-
-/* ---- Deadhead % Pill ---- */
-
-function DeadheadPctPill({ value, onChange }: { value: number; onChange: (v: number) => void }) {
-  const [open, setOpen] = useState(false);
-
-  return (
-    <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
-        <button
-          type="button"
-          className="flex h-9 items-center gap-1.5 rounded-full border bg-card/95 backdrop-blur px-4 text-sm font-medium shadow-sm transition-colors hover:bg-accent mobile-filter-pill whitespace-nowrap"
-        >
-          <span className="text-muted-foreground">Max Deadhead:</span>
-          <span className="flex items-center gap-1.5">
-            <span>{value}%</span>
-            <ChevronDown className="h-3.5 w-3.5 text-muted-foreground" />
-          </span>
-        </button>
-      </PopoverTrigger>
-      <PopoverContent className="w-56" align="start">
-        <div className="space-y-4 p-1">
-          <div className="flex items-center justify-between">
-            <p className="text-sm font-medium">Max Deadhead %</p>
-            <span className="text-sm font-semibold">{value}%</span>
-          </div>
-          <Slider
-            value={[value]}
-            onValueChange={([v]) => onChange(v)}
-            min={MIN_DEADHEAD_PCT}
-            max={MAX_DEADHEAD_PCT}
-            step={5}
-          />
-          <div className="flex justify-between text-xs text-muted-foreground">
-            <span>{MIN_DEADHEAD_PCT}%</span>
-            <span>{MAX_DEADHEAD_PCT}%</span>
-          </div>
-          <p className="text-xs text-muted-foreground">
-            Total deadhead miles must not exceed {value}% of total miles driven
           </p>
         </div>
       </PopoverContent>
@@ -578,7 +533,7 @@ export function SearchFilters({
     orders?: string; origin?: PlaceResult | null;
     destination?: PlaceResult | null; homeBy?: string; homeByTime?: string;
     departBy?: string; departByTime?: string; departureDate?: string;
-    maxDeadheadPct?: number; daysOut?: number; workDays?: string[]; legs?: number;
+    daysOut?: number; workDays?: string[]; legs?: number;
   } | null>(null);
   if (restored.current === null && typeof window !== "undefined") {
     try {
@@ -599,7 +554,6 @@ export function SearchFilters({
   const [originPopoverOpen, setOriginPopoverOpen] = useState(false);
   const [destination, setDestination] = useState<PlaceResult | null>(r.destination ?? null);
   const [departureDate, setDepartureDate] = useState<string>(r.departureDate ?? tomorrow);
-  const [maxDeadheadPct, setMaxDeadheadPct] = useState(r.maxDeadheadPct ?? DEFAULT_MAX_DEADHEAD_PCT);
   const [daysOut, setDaysOut] = useState<number>(r.daysOut ?? DEFAULT_MAX_TRIP_DAYS);
   const [workDays, setWorkDays] = useState<string[]>(r.workDays ?? settings?.work_days ?? []);
   const [legs, setLegs] = useState<number>(r.legs ?? DEFAULT_LEGS_ROUND_TRIP);
@@ -625,10 +579,10 @@ export function SearchFilters({
     if (compactBar) return;
     try {
       sessionStorage.setItem("hv-route-filters", JSON.stringify({
-        origin, destination, departureDate, maxDeadheadPct, daysOut, workDays, legs,
+        origin, destination, departureDate, daysOut, workDays, legs,
       }));
     } catch {}
-  }, [origin, destination, departureDate, maxDeadheadPct, daysOut, compactBar, legs]);
+  }, [origin, destination, departureDate, daysOut, compactBar, legs]);
 
   // Reset filters when clear is triggered
   useEffect(() => {
@@ -661,7 +615,6 @@ export function SearchFilters({
                 departure_date: departureDate,
                 ...(destination ? { destination_lat: destination.lat, destination_lng: destination.lng } : {}),
                 legs,
-                max_deadhead_pct: maxDeadheadPct,
                 max_trip_days: daysOut,
                 ...driverProfile,
               });
@@ -685,7 +638,6 @@ export function SearchFilters({
             origin_lng: homePlace.lng,
             departure_date: departureDate,
             legs,
-            max_deadhead_pct: maxDeadheadPct,
             max_trip_days: daysOut,
             ...driverProfile,
           });
@@ -709,17 +661,16 @@ export function SearchFilters({
       departure_date: departureDate,
       ...(destination ? { destination_lat: destination.lat, destination_lng: destination.lng } : {}),
       legs,
-      max_deadhead_pct: maxDeadheadPct,
       max_trip_days: daysOut,
       ...driverProfile,
     });
-  }, [origin, destination, departureDate, maxDeadheadPct, daysOut, legs, profileKey, onClearSearch]);
+  }, [origin, destination, departureDate, daysOut, legs, profileKey, onClearSearch]);
 
   // Auto-search on filter changes (only after initial load settles)
   useEffect(() => {
     if (!searchEnabled.current) return;
     fireSearch();
-  }, [departureDate, maxDeadheadPct, daysOut, legs]);
+  }, [departureDate, daysOut, legs]);
 
   // Auto-search on driver profile changes (debounced)
   // Signal loading immediately so the UI feels responsive, then fire the actual query after 400ms
@@ -890,7 +841,6 @@ export function SearchFilters({
   /* ---- Mobile layout ---- */
   if (mobile) {
     const activeFilterCount = [
-      maxDeadheadPct !== DEFAULT_MAX_DEADHEAD_PCT,
       daysOut !== DEFAULT_MAX_TRIP_DAYS,
     ].filter(Boolean).length;
 
@@ -919,7 +869,6 @@ export function SearchFilters({
         {mobileFiltersOpen && (
           <div className="flex flex-wrap items-center gap-1.5 p-2 rounded-lg bg-muted/50 border border-border/50">
             <DaysOutPill value={daysOut} onChange={setDaysOut} departureDate={departureDate} />
-            <DeadheadPctPill value={maxDeadheadPct} onChange={setMaxDeadheadPct} />
             <AllFiltersPopover workDays={workDays} onWorkDaysChange={setWorkDays} />
           </div>
         )}
@@ -967,7 +916,6 @@ export function SearchFilters({
       {departureDatePill}
       {legsPill}
       <div id="onborda-days-out"><DaysOutPill value={daysOut} onChange={setDaysOut} departureDate={departureDate} /></div>
-      <div id="onborda-deadhead"><DeadheadPctPill value={maxDeadheadPct} onChange={setMaxDeadheadPct} /></div>
       <div id="onborda-all-filters"><AllFiltersPopover workDays={workDays} onWorkDaysChange={setWorkDays} /></div>
       {clearButton}
     </div>
