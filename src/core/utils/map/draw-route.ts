@@ -1,6 +1,6 @@
 import { LEG_COLORS } from "@/core/utils/route-colors";
 
-/** Minimal leg shape — satisfied by both RouteLeg and RoundTripLeg */
+/** Minimal leg shape — satisfied by RouteLeg */
 export interface DrawableRouteLeg {
   origin_lat: number;
   origin_lng: number;

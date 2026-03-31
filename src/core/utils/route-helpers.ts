@@ -1,35 +1,34 @@
-import type { RouteChain, RoundTripChain } from "@/core/types";
+import type { RouteChain } from "@/core/types";
 
 // ── Chain accessors ─────────────────────────────────────────────────────────
 
-export function getOriginCity(chain: RouteChain | RoundTripChain): string {
+export function getOriginCity(chain: RouteChain): string {
   return chain.legs[0]?.origin_city ?? "Unknown";
 }
 
-export function getDestCity(chain: RouteChain | RoundTripChain): string {
+export function getDestCity(chain: RouteChain): string {
   return chain.legs[chain.legs.length - 1]?.destination_city ?? "Unknown";
 }
 
-export function getDailyProfit(chain: RouteChain | RoundTripChain): number | null {
+export function getDailyProfit(chain: RouteChain): number | null {
   if ("daily_net_profit" in chain && typeof chain.daily_net_profit === "number") {
     return chain.daily_net_profit;
   }
   return null;
 }
 
-export function getNetProfit(chain: RouteChain | RoundTripChain): number | null {
-  if ("firm_profit" in chain && typeof chain.firm_profit === "number") return chain.firm_profit;
+export function getNetProfit(chain: RouteChain): number | null {
   if ("profit" in chain && typeof chain.profit === "number") return chain.profit;
   return null;
 }
 
-export function getNetPerMile(chain: RouteChain | RoundTripChain): number | null {
+export function getNetPerMile(chain: RouteChain): number | null {
   if ("effective_rpm" in chain && typeof chain.effective_rpm === "number") return chain.effective_rpm;
   return null;
 }
 
 /** Get unique state abbreviations for the route path, e.g. "TX → LA" or "TX → CO → TX" */
-export function getRouteStates(chain: RouteChain | RoundTripChain): string {
+export function getRouteStates(chain: RouteChain): string {
   const states: string[] = [];
   for (const leg of chain.legs) {
     const os = leg.origin_state;
@@ -41,11 +40,11 @@ export function getRouteStates(chain: RouteChain | RoundTripChain): string {
   return states.join(" → ");
 }
 
-export function getDeadheadPct(chain: RouteChain | RoundTripChain): number {
+export function getDeadheadPct(chain: RouteChain): number {
   return chain.deadhead_pct ?? 0;
 }
 
-export function getEstimatedDays(chain: RouteChain | RoundTripChain): number | null {
+export function getEstimatedDays(chain: RouteChain): number | null {
   if ("estimated_days" in chain && typeof chain.estimated_days === "number") return chain.estimated_days;
   return null;
 }

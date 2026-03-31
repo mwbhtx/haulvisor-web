@@ -67,7 +67,7 @@ const routeB: RouteChainLike = {
   ],
 };
 
-// RoundTripLeg has extra fields beyond DrawableRouteLeg — confirm they don't break drawing
+// RouteLeg may have extra fields beyond DrawableRouteLeg — confirm they don't break drawing
 const homeLeg = {
   ...makeLeg(["Houston", 29.76, -95.37], ["Tampa", 27.95, -82.46]),
   leg_number: 1,
@@ -194,7 +194,7 @@ describe("drawRouteChain", () => {
     expect(map.layers.has("route-leg-1")).toBe(false);
   });
 
-  it("draws routes with RoundTripLeg-shaped legs", async () => {
+  it("draws routes with extra RouteLeg fields", async () => {
     await drawRouteChain(map, routeHome, instantFetch, () => false);
     expect(map.layers.has("route-leg-0")).toBe(true);
   });

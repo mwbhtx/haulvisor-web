@@ -6,7 +6,7 @@ import mapboxgl from "mapbox-gl";
 import { cleanupRouteLayers, type DrawableRouteLeg } from "@/core/utils/map/draw-route";
 import { LEG_COLORS, DEADHEAD_COLOR } from "@/core/utils/route-colors";
 
-/** Minimal selected route — works with both RouteChain and RoundTripChain */
+/** Minimal selected route — works with RouteChain */
 type SelectedRoute = { legs: DrawableRouteLeg[] };
 
 interface RouteMapProps {
