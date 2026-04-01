@@ -147,7 +147,7 @@ export function OrdersTable({
                     {order.destination_city}, {order.destination_state}
                   </TableCell>
                   <TableCell>
-                    {formatPickupDate(order.pickup_date_early, order.pickup_date_late)}
+                    {order.pickup_date_early_local ? formatPickupDate(order.pickup_date_early_local, order.pickup_date_late_local ?? order.pickup_date_early_local) : '—'}
                   </TableCell>
                   <TableCell className="text-right font-medium">
                     {formatCurrency(order.pay)}
@@ -239,7 +239,7 @@ function InlineDetail({ companyId, order }: { companyId: string; order: Order })
         <div>
           <p className="text-xs font-medium text-muted-foreground">Pickup</p>
           <p className="text-sm">
-            {formatPickupDate(order.pickup_date_early, order.pickup_date_late)}
+            {order.pickup_date_early_local ? formatPickupDate(order.pickup_date_early_local, order.pickup_date_late_local ?? order.pickup_date_early_local) : '—'}
           </p>
         </div>
         <div>

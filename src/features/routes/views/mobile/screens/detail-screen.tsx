@@ -201,30 +201,49 @@ function SegmentCard({ leg, index }: { leg: RouteLeg; index: number }) {
       </div>
 
       {/* Single-column section: dates */}
-      {(leg.pickup_date_early || leg.delivery_date_early) && (
-        <div className="mt-3 pt-3 border-t border-white/[0.05] space-y-1.5 text-sm text-muted-foreground">
-          {leg.pickup_date_early && (
-            <div className="flex justify-between">
+      {leg.stopoffs && leg.stopoffs.length > 0 && (
+        <div className="mt-3 pt-3 border-t border-white/[0.05] space-y-2">
+          {leg.stopoffs.map((stop, i) => (
+            <div key={i} className="text-sm text-muted-foreground">
+              <span className="capitalize font-medium text-foreground">{stop.type}</span>
+              {' — '}
+              {stop.city}, {stop.state}
+              {stop.early_date_local && (
+                <div className="mt-0.5">
+                  <span>{formatDateTime(stop.early_date_local)}</span>
+                  {stop.late_date_local && stop.late_date_local !== stop.early_date_local && (
+                    <span> – {formatDateTime(stop.late_date_local)}</span>
+                  )}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+      {!leg.stopoffs && (leg.pickup_date_early_local || leg.delivery_date_early_local) && (
+        <div className="mt-3 pt-3 border-t border-white/[0.05] space-y-1.5">
+          {leg.pickup_date_early_local && (
+            <div className="flex justify-between text-sm text-muted-foreground">
               <span>Pickup Early</span>
-              <span>{formatDateTime(leg.pickup_date_early)}</span>
+              <span>{formatDateTime(leg.pickup_date_early_local)}</span>
             </div>
           )}
-          {leg.pickup_date_late && leg.pickup_date_late !== leg.pickup_date_early && (
-            <div className="flex justify-between">
+          {leg.pickup_date_late_local && leg.pickup_date_late_local !== leg.pickup_date_early_local && (
+            <div className="flex justify-between text-sm text-muted-foreground">
               <span>Pickup Late</span>
-              <span>{formatDateTime(leg.pickup_date_late)}</span>
+              <span>{formatDateTime(leg.pickup_date_late_local)}</span>
             </div>
           )}
-          {leg.delivery_date_early && (
-            <div className="flex justify-between">
+          {leg.delivery_date_early_local && (
+            <div className="flex justify-between text-sm text-muted-foreground">
               <span>Delivery Early</span>
-              <span>{formatDateTime(leg.delivery_date_early)}</span>
+              <span>{formatDateTime(leg.delivery_date_early_local)}</span>
             </div>
           )}
-          {leg.delivery_date_late && leg.delivery_date_late !== leg.delivery_date_early && (
-            <div className="flex justify-between">
+          {leg.delivery_date_late_local && leg.delivery_date_late_local !== leg.delivery_date_early_local && (
+            <div className="flex justify-between text-sm text-muted-foreground">
               <span>Delivery Late</span>
-              <span>{formatDateTime(leg.delivery_date_late)}</span>
+              <span>{formatDateTime(leg.delivery_date_late_local)}</span>
             </div>
           )}
         </div>

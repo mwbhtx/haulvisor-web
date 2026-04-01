@@ -59,8 +59,8 @@ export function StopoffsTable({ stopoffs }: StopoffsTableProps) {
               {stop.city}, {stop.state}
             </TableCell>
             <TableCell>{stop.zip}</TableCell>
-            <TableCell>{formatDate(stop.early_date)}</TableCell>
-            <TableCell>{formatDate(stop.late_date)}</TableCell>
+            <TableCell>{stop.early_date_local ? formatDate(stop.early_date_local) : '—'}</TableCell>
+            <TableCell>{stop.late_date_local ? formatDate(stop.late_date_local) : '—'}</TableCell>
             <TableCell>{stop.contact_phone}</TableCell>
           </TableRow>
         ))}

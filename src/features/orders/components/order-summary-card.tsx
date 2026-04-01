@@ -66,12 +66,14 @@ export function OrderSummaryCard({ order }: OrderSummaryCardProps) {
             <p className="text-xs font-medium text-muted-foreground">
               Pickup Window
             </p>
-            <p className="text-sm">
-              {formatDate(order.pickup_date_early)}
-            </p>
-            {order.pickup_date_early !== order.pickup_date_late && (
+            {order.pickup_date_early_local && (
               <p className="text-sm">
-                to {formatDate(order.pickup_date_late)}
+                {formatDate(order.pickup_date_early_local)}
+              </p>
+            )}
+            {order.pickup_date_late_local && order.pickup_date_early_local !== order.pickup_date_late_local && (
+              <p className="text-sm">
+                to {formatDate(order.pickup_date_late_local)}
               </p>
             )}
           </div>

@@ -310,13 +310,30 @@ function RouteDetailContent({
                         )}
                         {" · "}{formatCurrency(leg.pay)}
                       </p>
-                      {(leg.pickup_date_early || leg.delivery_date_early) && (
-                        <div>
-                          {leg.pickup_date_early && (
-                            <p>Pickup: {formatDateRange(leg.pickup_date_early, leg.pickup_date_late)}</p>
+                      {leg.stopoffs && leg.stopoffs.length > 0 && (
+                        <div className="mt-3 pt-3 border-t border-white/[0.05] space-y-2 text-sm text-muted-foreground">
+                          {leg.stopoffs.map((stop, i) => (
+                            <div key={i}>
+                              <span className="capitalize font-medium text-foreground">{stop.type}</span>
+                              {' — '}
+                              {stop.company_name && <span>{stop.company_name}, </span>}
+                              {stop.city}, {stop.state}
+                              {stop.early_date_local && (
+                                <span className="ml-1">
+                                  {formatDateRange(stop.early_date_local, stop.late_date_local)}
+                                </span>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                      {!leg.stopoffs && (leg.pickup_date_early_local || leg.delivery_date_early_local) && (
+                        <div className="mt-3 pt-3 border-t border-white/[0.05] space-y-1.5 text-sm text-muted-foreground">
+                          {leg.pickup_date_early_local && (
+                            <p>Pickup: {formatDateRange(leg.pickup_date_early_local, leg.pickup_date_late_local)}</p>
                           )}
-                          {leg.delivery_date_early && (
-                            <p>Delivery: {formatDateRange(leg.delivery_date_early, leg.delivery_date_late)}</p>
+                          {leg.delivery_date_early_local && (
+                            <p>Delivery: {formatDateRange(leg.delivery_date_early_local, leg.delivery_date_late_local)}</p>
                           )}
                         </div>
                       )}

@@ -127,9 +127,9 @@ export function RouteInspector({
   const effectiveDeparture = departureTime
     ?? (chain.suggested_departure ? new Date(chain.suggested_departure) : null)
     ?? (() => {
-      const firstLeg = chain.legs.find((l) => l.pickup_date_early);
-      if (!firstLeg?.pickup_date_early) return null;
-      const pickupTime = new Date(firstLeg.pickup_date_early).getTime();
+      const firstLeg = chain.legs.find((l) => l.pickup_date_early_local);
+      if (!firstLeg?.pickup_date_early_local) return null;
+      const pickupTime = new Date(firstLeg.pickup_date_early_local).getTime();
       let prePickupHours = 0;
       for (const phase of timeline) {
         if (phase.kind === "loading") break;
