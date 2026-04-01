@@ -196,7 +196,7 @@ html {
   line-height: 1.5 !important;
 }
 .hv-tour-popover .driver-popover-description strong {
-  color: var(--primary) !important;
+  color: var(--foreground) !important;
 }
 .hv-tour-popover .driver-popover-progress-text {
   color: var(--muted-foreground) !important;
