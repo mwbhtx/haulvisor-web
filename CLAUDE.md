@@ -44,6 +44,20 @@ The user base includes older users with vision difficulties. **Always use these 
 
 **Country labels:** Never show country name (always USA). Use `city, state` format only. The shared helper `shortLabel()` in route-helpers or inline `.split(",").slice(0, 2)` handles this.
 
+## Related Repos
+
+This frontend is one of four repos that form the full system. When making changes, proactively check whether the same change is needed in sibling repos:
+
+- **haulvisor-backend** — API, lambdas, scripts
+- **haulvisor-scraper** — order scraper and stale order refresh
+- **haulvisor-core** — shared types and constants (publish before updating consumers)
+- **haulvisor-mobile** — React Native app (mirrors feature parity with this repo)
+
+Examples of changes that require cross-repo updates:
+- New field on `Order`, `RouteLeg`, or `Stopoff` → core types, backend mapper, frontend display, mobile display
+- New search filter → backend SQL, backend API DTO, frontend UI, mobile UI
+- New user setting → backend settings handler, frontend settings UI, mobile settings UI
+
 ## Architecture
 
 This project uses a feature-based module structure (`core/`, `features/`, `platform/`). See README.md for the full directory layout and dependency rules. Page files in `app/` are thin shells (~10 lines) that delegate to platform-specific views.
