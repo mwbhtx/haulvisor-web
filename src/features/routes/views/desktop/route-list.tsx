@@ -64,6 +64,15 @@ export function RouteList({
     ? allSorted.filter((c) => watchlist.has(routeKey(c.legs)))
     : allSorted;
 
+  // Reset selection to first row whenever sort order changes
+  const prevSortByRef = useRef(sortBy);
+  useEffect(() => {
+    if (prevSortByRef.current === sortBy) return;
+    prevSortByRef.current = sortBy;
+    const firstChain = sorted[0] ?? null;
+    if (firstChain) onSelectIndex(0, firstChain);
+  }, [sortBy, sorted, onSelectIndex]);
+
   // Scroll selected row into view after selection
   useEffect(() => {
     if (selectedIndex < 0 || !scrollRef.current) return;

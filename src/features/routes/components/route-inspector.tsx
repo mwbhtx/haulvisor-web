@@ -345,8 +345,7 @@ function PhaseRow({ phase, timestamp, showTimeOnly, originCity, returnCity }: { 
           <ClockIcon className="h-5 w-5 shrink-0" style={phaseStyle("waiting")} />
           <span className="flex-1 text-sm" style={phaseStyle("waiting")}>
             Waiting for {phase.waiting_for === 'pickup_window' ? 'pickup' : 'delivery'} window
-            {phase.origin_city ? ` at ${phase.origin_city}` : ''}
-            {phase.destination_city ? ` at ${phase.destination_city}` : ''}
+            {phase.origin_city ? ` at ${phase.origin_city}` : phase.destination_city ? ` at ${phase.destination_city}` : ''}
           </span>
           <span className="text-sm tabular-nums w-14 text-right shrink-0" style={phaseStyle("waiting", true)}>
             {formatDuration(phase.duration_hours)}

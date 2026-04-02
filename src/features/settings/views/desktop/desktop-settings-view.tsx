@@ -310,7 +310,7 @@ export function DesktopSettingsView() {
           </div>
 
           <div className="space-y-3">
-            <label className="text-sm font-medium block">Max Deadhead (mi.)</label>
+            <label className="text-sm font-medium block">Search Radius (mi.)</label>
             <Input
               type="number"
               min={10}

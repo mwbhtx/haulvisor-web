@@ -13,7 +13,6 @@ export interface RecentSearch {
     maxIdle?: number;
     deadheadPercent?: number;
     homeBy?: string;
-    legs?: number;
     sort?: string;
   };
   searchedAt: string;

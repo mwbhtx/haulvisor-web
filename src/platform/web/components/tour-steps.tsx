@@ -40,15 +40,6 @@ export const tourSteps: DriveStep[] = [
     },
   },
   {
-    element: "#onborda-legs",
-    popover: {
-      title: "📦 Number of Loads",
-      description: `Set how many <strong class="${hl}">loads</strong> (stops) you want in a route. More loads can mean better revenue but longer trips.`,
-      side: "bottom",
-      align: "center",
-    },
-  },
-  {
     element: "#onborda-all-filters",
     popover: {
       title: "⚙️ All Filters",

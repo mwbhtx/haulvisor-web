@@ -11,6 +11,7 @@ import {
  * based on the user's cost per mile setting.
  */
 export function rateColor(ratePerMile: number, costPerMile: number): string {
+  if (!costPerMile) return "text-negative";
   const ratio = ratePerMile / costPerMile;
   if (ratio >= GROSS_RATE_GREEN_MULTIPLIER) return "text-positive";
   if (ratio >= GROSS_RATE_YELLOW_MULTIPLIER) return "text-warning";

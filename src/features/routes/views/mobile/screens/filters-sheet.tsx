@@ -13,13 +13,10 @@ import {
   codesToLabels,
   ALL_WORK_DAYS,
   DEFAULT_MAX_TRIP_DAYS,
-  DEFAULT_LEGS_ROUND_TRIP,
-  LEG_OPTIONS,
 } from "@mwbhtx/haulvisor-core";
 import { useSettings, useUpdateSettings } from "@/core/hooks/use-settings";
 
 export interface AdvancedFilters {
-  legs: number;
   departureDate: string;
   daysOut: number;
 }
@@ -112,7 +109,6 @@ export function FiltersSheet({ onBack, onApply, initialFilters }: FiltersSheetPr
     d.setDate(d.getDate() + 1);
     return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
   })();
-  const [legs, setLegs] = useState(initialFilters?.legs ?? DEFAULT_LEGS_ROUND_TRIP);
   const [departureDate, setDepartureDate] = useState(initialFilters?.departureDate ?? tomorrow);
   const [daysOut, setDaysOut] = useState(initialFilters?.daysOut ?? DEFAULT_MAX_TRIP_DAYS);
 
@@ -171,7 +167,7 @@ export function FiltersSheet({ onBack, onApply, initialFilters }: FiltersSheetPr
   const toggle = (row: string) => setExpandedRow((prev) => (prev === row ? null : row));
 
   const handleBack = () => {
-    onApply({ legs, departureDate, daysOut });
+    onApply({ departureDate, daysOut });
   };
 
   const returnLabel = (() => {
@@ -218,32 +214,6 @@ export function FiltersSheet({ onBack, onApply, initialFilters }: FiltersSheetPr
               }}
               defaultMonth={new Date(departureDate + "T00:00:00")}
             />
-          </div>
-        </FilterRow>
-
-        {/* Number of Legs */}
-        <FilterRow
-          label="Number of Legs"
-          value={String(legs)}
-          expanded={expandedRow === "legs"}
-          onToggle={() => toggle("legs")}
-        >
-          <div className="flex gap-2 mt-1">
-            {LEG_OPTIONS.map((n) => (
-              <button
-                key={n}
-                type="button"
-                onClick={() => setLegs(n)}
-                className={cn(
-                  "flex-1 rounded-lg py-2.5 text-sm font-medium border transition-colors",
-                  legs === n
-                    ? "border-primary bg-primary/15 text-primary"
-                    : "border-white/10 text-muted-foreground hover:text-foreground",
-                )}
-              >
-                {n}
-              </button>
-            ))}
           </div>
         </FilterRow>
 
@@ -334,9 +304,9 @@ export function FiltersSheet({ onBack, onApply, initialFilters }: FiltersSheetPr
           </div>
         </FilterRow>
 
-        {/* Max Deadhead */}
+        {/* Search Radius */}
         <FilterRow
-          label="Max Deadhead"
+          label="Search Radius"
           value={`${searchRadius} mi`}
           expanded={expandedRow === "searchRadius"}
           onToggle={() => toggle("searchRadius")}
