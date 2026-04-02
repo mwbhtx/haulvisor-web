@@ -1100,10 +1100,10 @@ function AllFiltersPopover({
             />
           </div>
 
-          {/* Search Radius */}
+          {/* Max Deadhead */}
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <p className="text-sm font-medium">Search Radius</p>
+              <p className="text-sm font-medium">Max Deadhead</p>
               <span className="text-sm text-muted-foreground">{searchRadius} mi</span>
             </div>
             <Slider

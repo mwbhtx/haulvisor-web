@@ -334,9 +334,9 @@ export function FiltersSheet({ onBack, onApply, initialFilters }: FiltersSheetPr
           </div>
         </FilterRow>
 
-        {/* Search Radius */}
+        {/* Max Deadhead */}
         <FilterRow
-          label="Search Radius"
+          label="Max Deadhead"
           value={`${searchRadius} mi`}
           expanded={expandedRow === "searchRadius"}
           onToggle={() => toggle("searchRadius")}
