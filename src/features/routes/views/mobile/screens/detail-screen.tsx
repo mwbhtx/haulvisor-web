@@ -18,13 +18,15 @@ interface DetailScreenProps {
   chain: RouteChain;
   originCity: string;
   onBack: () => void;
+  originCoords?: { lat: number; lng: number } | null;
+  destCoords?: { lat: number; lng: number } | null;
 }
 
 function shortCity(name: string): string {
   return name.split(",").slice(0, 2).map((s) => s.trim()).join(", ");
 }
 
-export function DetailScreen({ chain, originCity, onBack }: DetailScreenProps) {
+export function DetailScreen({ chain, originCity, onBack, originCoords: originCoordsProp, destCoords }: DetailScreenProps) {
   const origin = getOriginCity(chain);
   const dest = getDestCity(chain);
   const dailyProfit = getDailyProfit(chain) ?? 0;
@@ -36,9 +38,9 @@ export function DetailScreen({ chain, originCity, onBack }: DetailScreenProps) {
   const totalPay = chain.total_pay;
   const color = routeProfitColor(dailyProfit);
 
-  const originCoords = chain.legs[0]
+  const originCoords = originCoordsProp ?? (chain.legs[0]
     ? { lat: chain.legs[0].origin_lat, lng: chain.legs[0].origin_lng }
-    : null;
+    : null);
 
   return (
     <motion.div
@@ -133,6 +135,7 @@ export function DetailScreen({ chain, originCity, onBack }: DetailScreenProps) {
             <RouteMap
               selectedRoute={{ legs: chain.legs }}
               originCoords={originCoords}
+              destCoords={destCoords}
               fullScreen
             />
           </div>

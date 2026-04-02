@@ -241,6 +241,8 @@ export function MobileRoutesView() {
             chain={detailChain}
             originCity={origin?.name ?? ""}
             onBack={pop}
+            originCoords={origin ? { lat: origin.lat, lng: origin.lng } : null}
+            destCoords={destination ? { lat: destination.lat, lng: destination.lng } : null}
           />
         )}
       </AnimatePresence>
