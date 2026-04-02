@@ -158,7 +158,7 @@ export function RouteInspector({
   const days = timestamps ? groupByDay(timeline, timestamps) : [];
 
   return (
-    <div className="flex flex-col h-full bg-card">
+    <div className="dark flex flex-col h-full bg-card">
       {/* Day cards */}
       <div className="flex-1 overflow-y-auto">
         {days.length > 0 ? (
