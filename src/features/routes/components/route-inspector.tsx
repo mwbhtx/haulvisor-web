@@ -14,8 +14,8 @@ const PHASE_COLORS = {
   break:     { color: "#fbbf24" },  // amber-400
   fuel:      { color: "#ff612b" },
   waiting:   { color: "#38bdf8" },  // sky-400
-  deadhead:  { color: "#cdcdcd" },
-  driving:   { color: "#cdcdcd" },
+  deadhead:  { color: "#888888" },  // gray-500 — legible on both light and dark
+  driving:   { color: "#888888" },
 } as const;
 
 function phaseStyle(kind: keyof typeof PHASE_COLORS, dim = false): { color: string; opacity: number } {
@@ -163,9 +163,9 @@ export function RouteInspector({
       <div className="flex-1 overflow-y-auto">
         {days.length > 0 ? (
           days.map((day) => (
-            <div key={day.dayNumber} className="border-b border-white/10">
+            <div key={day.dayNumber} className="border-b border-border">
               {/* Day header */}
-              <div className="flex items-baseline justify-between px-4 py-2.5 bg-white/[0.03]">
+              <div className="flex items-baseline justify-between px-4 py-2.5 bg-muted/40">
                 <span className="text-sm font-semibold">
                   Day {day.dayNumber} <span className="text-muted-foreground font-normal">— {day.dateLabel}</span>
                 </span>
@@ -190,7 +190,7 @@ export function RouteInspector({
 
       {/* Return-by note */}
       {returnByTime && (
-        <div className="px-3 py-2 border-t border-white/10 text-xs text-muted-foreground">
+        <div className="px-3 py-2 border-t border-border text-xs text-muted-foreground">
           Return by: <span className="text-foreground font-medium">{formatTimestamp(returnByTime)}</span>
           {arrivalTime && arrivalTime <= returnByTime && (
             <span className="text-green-400 ml-2">On time</span>
@@ -202,7 +202,7 @@ export function RouteInspector({
       )}
 
       {/* Assumptions footer */}
-      <div className="px-3 py-2.5 border-t border-white/10 shrink-0">
+      <div className="px-3 py-2.5 border-t border-border shrink-0">
         <p className="text-sm text-muted-foreground/50 leading-relaxed">
           <span className="font-medium text-muted-foreground/70">Assumptions:</span>{" "}
           Loaded @ {TRIP_DEFAULTS.loaded_speed_mph.value} mph · DH @ {TRIP_DEFAULTS.deadhead_speed_mph.value} mph · HOS {TRIP_DEFAULTS.avg_driving_hours_per_day.value}h avg drive day / 10h rest · Loading {TRIP_DEFAULTS.loading_hours.value}h · Unloading {TRIP_DEFAULTS.unloading_hours.value}h
@@ -222,7 +222,7 @@ function PhaseRow({ phase, timestamp, showTimeOnly, originCity, returnCity }: { 
   switch (phase.kind) {
     case 'deadhead':
       return (
-        <div className="flex items-center gap-2.5 px-4 py-2 border-b border-white/[0.03]">
+        <div className="flex items-center gap-2.5 px-4 py-2 border-b border-border/40">
           {timeLabel}
           <TruckIcon className="h-5 w-5 shrink-0" style={phaseStyle("deadhead")} />
           <span className="flex-1 text-sm font-semibold" style={phaseStyle("deadhead")}>
@@ -239,7 +239,7 @@ function PhaseRow({ phase, timestamp, showTimeOnly, originCity, returnCity }: { 
 
     case 'driving':
       return (
-        <div className="flex items-center gap-2.5 px-4 py-2 border-b border-white/[0.03]">
+        <div className="flex items-center gap-2.5 px-4 py-2 border-b border-border/40">
           {timeLabel}
           <TruckIcon className="h-5 w-5 shrink-0" style={phaseStyle("driving")} />
           <span className="flex-1 text-sm font-semibold" style={phaseStyle("driving")}>
@@ -256,7 +256,7 @@ function PhaseRow({ phase, timestamp, showTimeOnly, originCity, returnCity }: { 
 
     case 'loading':
       return (
-        <div className="flex items-center gap-2.5 px-4 py-2 border-b border-white/[0.03]">
+        <div className="flex items-center gap-2.5 px-4 py-2 border-b border-border/40">
           {timeLabel}
           <Package className="h-5 w-5 shrink-0" style={phaseStyle("loading")} />
           <span className="flex-1 text-sm" style={phaseStyle("loading")}>
@@ -270,7 +270,7 @@ function PhaseRow({ phase, timestamp, showTimeOnly, originCity, returnCity }: { 
 
     case 'tarping':
       return (
-        <div className="flex items-center gap-2.5 px-4 py-2 border-b border-white/[0.03]">
+        <div className="flex items-center gap-2.5 px-4 py-2 border-b border-border/40">
           {timeLabel}
           <Layers className="h-5 w-5 shrink-0" style={phaseStyle("tarping")} />
           <span className="flex-1 text-sm" style={phaseStyle("tarping")}>
@@ -284,7 +284,7 @@ function PhaseRow({ phase, timestamp, showTimeOnly, originCity, returnCity }: { 
 
     case 'unloading':
       return (
-        <div className="flex items-center gap-2.5 px-4 py-2 border-b border-white/[0.03]">
+        <div className="flex items-center gap-2.5 px-4 py-2 border-b border-border/40">
           {timeLabel}
           <PackageOpen className="h-5 w-5 shrink-0" style={phaseStyle("unloading")} />
           <span className="flex-1 text-sm" style={phaseStyle("unloading")}>
@@ -298,7 +298,7 @@ function PhaseRow({ phase, timestamp, showTimeOnly, originCity, returnCity }: { 
 
     case 'rest':
       return (
-        <div className="flex items-center gap-2.5 px-4 py-2 border-b border-white/[0.03]">
+        <div className="flex items-center gap-2.5 px-4 py-2 border-b border-border/40">
           {timeLabel}
           <Bed className="h-5 w-5 shrink-0" style={phaseStyle("rest")} />
           <span className="flex-1 text-sm" style={phaseStyle("rest")}>
@@ -312,7 +312,7 @@ function PhaseRow({ phase, timestamp, showTimeOnly, originCity, returnCity }: { 
 
     case 'break':
       return (
-        <div className="flex items-center gap-2.5 px-4 py-2 border-b border-white/[0.03]">
+        <div className="flex items-center gap-2.5 px-4 py-2 border-b border-border/40">
           {timeLabel}
           <Coffee className="h-5 w-5 shrink-0" style={phaseStyle("break")} />
           <span className="flex-1 text-sm" style={phaseStyle("break")}>
@@ -326,7 +326,7 @@ function PhaseRow({ phase, timestamp, showTimeOnly, originCity, returnCity }: { 
 
     case 'fuel':
       return (
-        <div className="flex items-center gap-2.5 px-4 py-2 border-b border-white/[0.03]">
+        <div className="flex items-center gap-2.5 px-4 py-2 border-b border-border/40">
           {timeLabel}
           <Fuel className="h-5 w-5 shrink-0" style={phaseStyle("fuel")} />
           <span className="flex-1 text-sm" style={phaseStyle("fuel")}>
@@ -340,7 +340,7 @@ function PhaseRow({ phase, timestamp, showTimeOnly, originCity, returnCity }: { 
 
     case 'waiting':
       return (
-        <div className="flex items-center gap-2.5 px-4 py-2 border-b border-white/[0.03]">
+        <div className="flex items-center gap-2.5 px-4 py-2 border-b border-border/40">
           {timeLabel}
           <ClockIcon className="h-5 w-5 shrink-0" style={phaseStyle("waiting")} />
           <span className="flex-1 text-sm" style={phaseStyle("waiting")}>
