@@ -432,6 +432,7 @@ export function SearchFilters({
     destination?: PlaceResult | null;
     departureDate?: string;
     daysOut?: number;
+    numOrders?: number;
   } | null>(null);
   if (restored.current === null && typeof window !== "undefined") {
     try {
