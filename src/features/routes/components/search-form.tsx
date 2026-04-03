@@ -820,7 +820,7 @@ function AllFiltersPopover() {
     twic,
     team,
     noTarps,
-    searchRadius !== 250,
+    searchRadius < 250,
   ].filter(Boolean).length;
 
   return (
