@@ -782,8 +782,6 @@ function AllFiltersPopover() {
   const [twic, setTwic] = useState(false);
   const [team, setTeam] = useState(false);
   const [noTarps, setNoTarps] = useState(false);
-  const [searchRadius, setSearchRadius] = useState(250);
-  const [ignoreRadius, setIgnoreRadius] = useState(false);
   const initialized = useRef(false);
 
   useEffect(() => {
@@ -794,8 +792,6 @@ function AllFiltersPopover() {
     setTwic(settings.twic_card ?? false);
     setTeam(settings.team_driver ?? false);
     setNoTarps(settings.no_tarps ?? false);
-    setSearchRadius(settings.preferred_radius_miles ?? 250);
-    setIgnoreRadius(settings.ignore_radius ?? false);
     setTimeout(() => { initialized.current = true; }, 100);
   }, [settings]);
 
@@ -826,8 +822,6 @@ function AllFiltersPopover() {
     twic,
     team,
     noTarps,
-    ignoreRadius,
-    !ignoreRadius && searchRadius < 250,
   ].filter(Boolean).length;
 
   return (
@@ -902,54 +896,6 @@ function AllFiltersPopover() {
               }}
               placeholder="e.g. 45000"
             />
-          </div>
-
-          {/* Search Radius */}
-          <div className="space-y-2">
-            <div className="flex items-center justify-between">
-              <p className="text-sm font-medium">Search Radius</p>
-              <button
-                type="button"
-                onClick={() => {
-                  const next = !ignoreRadius;
-                  setIgnoreRadius(next);
-                  if (initialized.current) save({ ignore_radius: next || null });
-                }}
-                className={`flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-medium transition-colors ${
-                  ignoreRadius
-                    ? "bg-primary text-primary-foreground"
-                    : "border border-input text-muted-foreground hover:bg-accent"
-                }`}
-              >
-                Time-only
-              </button>
-            </div>
-            {ignoreRadius ? (
-              <p className="text-xs text-muted-foreground">Radius ignored — all orders reachable within your trip window are considered.</p>
-            ) : (
-              <>
-                <div className="flex items-center justify-between">
-                  <span className="text-xs text-muted-foreground">Deadhead limit</span>
-                  <span className="text-sm text-muted-foreground">{searchRadius} mi</span>
-                </div>
-                <Slider
-                  value={[searchRadius]}
-                  min={50}
-                  max={350}
-                  step={25}
-                  onValueChange={([v]) => {
-                    setSearchRadius(v);
-                  }}
-                  onValueCommit={([v]) => {
-                    if (initialized.current) save({ preferred_radius_miles: v });
-                  }}
-                />
-                <div className="flex justify-between text-xs text-muted-foreground">
-                  <span>50 mi</span>
-                  <span>350 mi</span>
-                </div>
-              </>
-            )}
           </div>
 
           {/* Load Preferences */}
