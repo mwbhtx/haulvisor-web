@@ -53,6 +53,7 @@ interface OrdersTableProps {
   onLoadMore: () => void;
   onClearFilters?: () => void;
   error: Error | null;
+  orderUrlTemplate?: string;
 }
 
 export function OrdersTable({
@@ -64,6 +65,7 @@ export function OrdersTable({
   onLoadMore,
   onClearFilters,
   error,
+  orderUrlTemplate,
 }: OrdersTableProps) {
   const [expandedOrderId, setExpandedOrderId] = useState<string | null>(null);
 
@@ -139,7 +141,21 @@ export function OrdersTable({
                       <ChevronRightIcon className="h-4 w-4 text-muted-foreground" />
                     )}
                   </TableCell>
-                  <TableCell className="font-medium">{order.order_id}</TableCell>
+                  <TableCell className="font-medium">
+                    {orderUrlTemplate ? (
+                      <a
+                        href={orderUrlTemplate.replace("{{ORDER_ID}}", order.order_id)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="hover:underline hover:text-primary transition-colors"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        {order.order_id}
+                      </a>
+                    ) : (
+                      order.order_id
+                    )}
+                  </TableCell>
                   <TableCell>
                     {order.origin_city}, {order.origin_state}
                   </TableCell>

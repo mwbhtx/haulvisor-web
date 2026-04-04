@@ -28,6 +28,7 @@ export interface Settings {
   onboarding_completed: boolean;
   disabled_settings?: string[];
   last_login: string;
+  order_url_template?: string;
 }
 
 export function useSettings() {

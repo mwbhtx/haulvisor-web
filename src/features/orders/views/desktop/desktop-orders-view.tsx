@@ -7,10 +7,12 @@ import { OrdersFilters } from "@/features/orders/components/orders-filters";
 import { OrdersTable } from "@/features/orders/components/orders-table";
 import { useOrders, useOrderSearch, useAllActiveOrders } from "@/core/hooks/use-orders";
 import { useAuth } from "@/core/services/auth-provider";
+import { useSettings } from "@/core/hooks/use-settings";
 import type { OrderFilters } from "@/core/types";
 
 export function DesktopOrdersView() {
   const { activeCompanyId } = useAuth();
+  const { data: settings } = useSettings();
   const [filters, setFilters] = useState<Omit<OrderFilters, "last_key" | "limit">>({});
   const [search, setSearch] = useState("");
 
@@ -75,6 +77,7 @@ export function DesktopOrdersView() {
           setFilters({});
         } : undefined}
         error={error}
+        orderUrlTemplate={settings?.order_url_template as string | undefined}
       />
       </div>
     </div>
