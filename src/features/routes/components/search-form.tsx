@@ -34,17 +34,18 @@ export interface PlaceResult {
   lng: number;
 }
 
-const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_TOKEN ?? "";
+const LOCATIONIQ_KEY = process.env.NEXT_PUBLIC_LOCATIONIQ_KEY ?? "";
 
 export async function searchPlaces(query: string): Promise<PlaceResult[]> {
   if (query.length < 2) return [];
-  const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(query)}.json?access_token=${MAPBOX_TOKEN}&country=US&types=place&limit=5`;
+  const url = `https://us1.locationiq.com/v1/autocomplete?key=${LOCATIONIQ_KEY}&q=${encodeURIComponent(query)}&countrycodes=us&limit=5&tag=place:city,place:town`;
   const res = await fetch(url);
   const data = await res.json();
-  return (data.features ?? []).map((f: any) => ({
-    name: f.place_name,
-    lat: f.center[1],
-    lng: f.center[0],
+  if (!Array.isArray(data)) return [];
+  return data.map((item: any) => ({
+    name: [item.address?.city || item.address?.town || item.display_name?.split(",")[0], item.address?.state].filter(Boolean).join(", "),
+    lat: parseFloat(item.lat),
+    lng: parseFloat(item.lon),
   }));
 }
 
@@ -618,11 +619,17 @@ export function SearchFilters({
     if (!navigator.geolocation) return;
     navigator.geolocation.getCurrentPosition(async (pos) => {
       const { latitude, longitude } = pos.coords;
-      const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${longitude},${latitude}.json?access_token=${MAPBOX_TOKEN}&types=place&limit=1`;
-      const res = await fetch(url);
-      const data = await res.json();
-      const name = data.features?.[0]?.place_name ?? `${latitude.toFixed(2)}, ${longitude.toFixed(2)}`;
-      setOrigin({ name, lat: latitude, lng: longitude });
+      const url = `https://us1.locationiq.com/v1/reverse?key=${LOCATIONIQ_KEY}&lat=${latitude}&lon=${longitude}&format=json`;
+      try {
+        const res = await fetch(url);
+        const data = await res.json();
+        const city = data.address?.city || data.address?.town || data.display_name?.split(",")[0];
+        const state = data.address?.state;
+        const name = [city, state].filter(Boolean).join(", ") || `${latitude.toFixed(2)}, ${longitude.toFixed(2)}`;
+        setOrigin({ name, lat: latitude, lng: longitude });
+      } catch {
+        setOrigin({ name: `${latitude.toFixed(2)}, ${longitude.toFixed(2)}`, lat: latitude, lng: longitude });
+      }
     });
   };
 
