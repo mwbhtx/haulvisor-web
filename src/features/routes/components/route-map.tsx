@@ -296,7 +296,7 @@ export function RouteMap({
       map.fitBounds(bounds, {
         padding: mobile
           ? { top: 60, bottom: mobileBotPad, left: 40, right: 40 }
-          : { top: 60, bottom: 50, left: 50, right: 50 },
+          : { top: 80, bottom: 80, left: 80, right: 80 },
         maxZoom: 10,
         duration: 500,
       });
