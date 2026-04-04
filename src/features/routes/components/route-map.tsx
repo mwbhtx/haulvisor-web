@@ -3,7 +3,8 @@
 import { useEffect, useRef, useCallback } from "react";
 import { useTheme } from "next-themes";
 import maplibregl from "maplibre-gl";
-import { layersWithCustomTheme, namedTheme } from "protomaps-themes-base";
+import { layersWithCustomTheme } from "protomaps-themes-base";
+import { MOONLIGHT_THEME, DARK_THEME } from "@/core/utils/map/themes";
 import { cleanupRouteLayers, type DrawableRouteLeg } from "@/core/utils/map/draw-route";
 import { LEG_COLORS, DEADHEAD_COLOR } from "@/core/utils/route-colors";
 
@@ -38,7 +39,7 @@ function protomapsStyle(theme: "light" | "dark"): maplibregl.StyleSpecification 
         attribution: '© <a href="https://openstreetmap.org">OpenStreetMap</a>',
       },
     },
-    layers: layersWithCustomTheme("protomaps", namedTheme(theme), "en"),
+    layers: layersWithCustomTheme("protomaps", theme === "light" ? MOONLIGHT_THEME : DARK_THEME, "en"),
   };
 }
 
