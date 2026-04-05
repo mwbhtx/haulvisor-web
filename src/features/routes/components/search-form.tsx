@@ -803,10 +803,9 @@ export function SearchFilters({
       {isSearching ? (
         <Button
           onClick={onCancel}
-          variant="outline"
           className="h-9 rounded-full px-5 text-sm font-medium"
         >
-          Cancel
+          Cancel Search
         </Button>
       ) : (!hasSearched || paramsChanged) ? (
         <Button
