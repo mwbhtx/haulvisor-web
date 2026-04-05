@@ -57,7 +57,6 @@ export function MobileRoutesView() {
 
   // Fire query
   const routeQuery = useRouteSearch(activeCompanyId ?? "", searchParams);
-  const { progress } = routeQuery;
 
   // Build chain list from results (sorting handled by ResultsScreen)
   const chains = useMemo(() => {
@@ -205,7 +204,6 @@ export function MobileRoutesView() {
           searchText={searchText}
           chains={chains}
           isLoading={routeQuery.isLoading}
-          progress={progress}
           onSearchBarTap={handleSearchBarTap}
           onFiltersTap={handleFiltersTap}
           onRouteSelect={handleRouteSelect}
