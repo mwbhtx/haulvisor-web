@@ -146,5 +146,13 @@ export function useRouteSearch(companyId: string, params: RouteSearchParams | nu
     return () => stopPolling();
   }, [companyId, paramsKey]);
 
-  return { data, isLoading, isFetched, error, progress };
+  const cancel = useCallback(() => {
+    stopPolling();
+    paramsKeyRef.current = "";
+    setIsLoading(false);
+    setIsFetched(false);
+    setProgress(null);
+  }, [stopPolling]);
+
+  return { data, isLoading, isFetched, error, progress, cancel };
 }

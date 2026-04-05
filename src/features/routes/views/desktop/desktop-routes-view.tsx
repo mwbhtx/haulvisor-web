@@ -54,7 +54,7 @@ export function DesktopRoutesView() {
     return selectedChain.legs.map((l) => l.order_id ?? "spec").join("|");
   }, [selectedChain]);
 
-  const { data, isLoading, isFetched, progress } = useRouteSearch(activeCompanyId ?? "", searchParams);
+  const { data, isLoading, isFetched, progress, cancel } = useRouteSearch(activeCompanyId ?? "", searchParams);
   const routes = useMemo(() => data?.routes ?? [], [data?.routes]);
 
   const orderUrlTemplate = data?.order_url_template;
@@ -272,6 +272,8 @@ export function DesktopRoutesView() {
           isOnboarding={isTourActive}
           hasHome={hasHomeBase}
           resetKey={filterResetKey}
+          isSearching={isLoading}
+          onCancel={cancel}
         />
       </div>
 

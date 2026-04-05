@@ -399,6 +399,10 @@ interface SearchFiltersProps {
   compactBar?: boolean;
   /** Extra elements to render in the compact bar's second row (e.g. sort/filter icons) */
   children?: React.ReactNode;
+  /** Whether a search is currently in progress */
+  isSearching?: boolean;
+  /** Cancel the current search */
+  onCancel?: () => void;
 }
 
 export function SearchFilters({
@@ -414,6 +418,8 @@ export function SearchFilters({
   mapOverlay,
   compactBar,
   children,
+  isSearching,
+  onCancel,
 }: SearchFiltersProps) {
   const { data: settings } = useSettings();
   const updateSettings = useUpdateSettings();
@@ -731,7 +737,15 @@ export function SearchFilters({
           {departureDatePill}
           <DaysOutPill value={daysOut} onChange={setDaysOut} departureDate={departureDate} />
           <NumOrdersPill value={numOrders} onChange={setNumOrders} />
-          {(!hasSearched || paramsChanged) && (
+          {isSearching ? (
+            <Button
+              onClick={onCancel}
+              variant="outline"
+              className="h-9 rounded-full px-5 text-sm font-medium"
+            >
+              Cancel
+            </Button>
+          ) : (!hasSearched || paramsChanged) ? (
             <Button
               onClick={fireSearch}
               disabled={!origin}
@@ -739,7 +753,7 @@ export function SearchFilters({
             >
               Search
             </Button>
-          )}
+          ) : null}
         </div>
       </div>
     );
@@ -786,7 +800,15 @@ export function SearchFilters({
         minRpm={minRpm} setMinRpm={setMinRpm}
         maxInterlegDh={maxInterlegDh} setMaxInterlegDh={setMaxInterlegDh}
       /></div>
-      {(!hasSearched || paramsChanged) && (
+      {isSearching ? (
+        <Button
+          onClick={onCancel}
+          variant="outline"
+          className="h-9 rounded-full px-5 text-sm font-medium"
+        >
+          Cancel
+        </Button>
+      ) : (!hasSearched || paramsChanged) ? (
         <Button
           onClick={fireSearch}
           disabled={!origin}
@@ -794,7 +816,7 @@ export function SearchFilters({
         >
           Search
         </Button>
-      )}
+      ) : null}
       {clearButton}
     </div>
   );
