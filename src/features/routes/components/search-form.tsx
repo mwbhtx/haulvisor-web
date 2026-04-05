@@ -287,6 +287,7 @@ function LocationPill({
   onUseMyLocation,
   pulse,
   onOpenChange: onOpenChangeProp,
+  footer,
 }: {
   label: string;
   title: string;
@@ -297,6 +298,7 @@ function LocationPill({
   onUseMyLocation?: () => void;
   pulse?: boolean;
   onOpenChange?: (open: boolean) => void;
+  footer?: React.ReactNode;
 }) {
   const [open, setOpen] = useState(false);
 
@@ -370,6 +372,7 @@ function LocationPill({
               Use Home ({homeCityLabel})
             </Button>
           )}
+          {footer}
         </div>
       </PopoverContent>
     </Popover>
@@ -678,6 +681,20 @@ export function SearchFilters({
         onUseMyLocation={handleUseMyLocation}
         pulse={false}
         onOpenChange={setOriginPopoverOpen}
+        footer={
+          <div className="flex items-center gap-2 pt-2 border-t">
+            <span className="text-xs text-muted-foreground whitespace-nowrap">Radius</span>
+            <Input
+              type="number"
+              min={1}
+              max={1000}
+              value={originRadius}
+              onChange={(e) => setOriginRadius(Math.max(1, Math.min(1000, Number(e.target.value) || 1)))}
+              className="w-20 h-7 text-sm"
+            />
+            <span className="text-xs text-muted-foreground">mi</span>
+          </div>
+        }
       />
     </div>
   );
@@ -691,6 +708,20 @@ export function SearchFilters({
         onSelect={setDestination}
         onUseHome={hasHomeLocation ? () => setDestination(homePlace) : undefined}
         homeCityLabel={hasHomeLocation ? settings!.home_base_city! : undefined}
+        footer={destination ? (
+          <div className="flex items-center gap-2 pt-2 border-t">
+            <span className="text-xs text-muted-foreground whitespace-nowrap">Radius</span>
+            <Input
+              type="number"
+              min={1}
+              max={1000}
+              value={destRadius}
+              onChange={(e) => setDestRadius(Math.max(1, Math.min(1000, Number(e.target.value) || 1)))}
+              className="w-20 h-7 text-sm"
+            />
+            <span className="text-xs text-muted-foreground">mi</span>
+          </div>
+        ) : undefined}
       />
     </div>
   );
@@ -776,7 +807,7 @@ export function SearchFilters({
       {departureDatePill}
       <div id="onborda-days-out"><DaysOutPill value={daysOut} onChange={setDaysOut} departureDate={departureDate} /></div>
       <NumOrdersPill value={numOrders} onChange={setNumOrders} />
-      <div id="onborda-all-filters"><AllFiltersPopover originRadius={originRadius} onOriginRadiusChange={setOriginRadius} destRadius={destRadius} onDestRadiusChange={setDestRadius} hasDestination={!!destination} /></div>
+      <div id="onborda-all-filters"><AllFiltersPopover /></div>
       {clearButton}
     </div>
   );
@@ -784,13 +815,7 @@ export function SearchFilters({
 
 /* ---- All Filters Popover ---- */
 
-function AllFiltersPopover({ originRadius, onOriginRadiusChange, destRadius, onDestRadiusChange, hasDestination }: {
-  originRadius: number;
-  onOriginRadiusChange: (v: number) => void;
-  destRadius: number;
-  onDestRadiusChange: (v: number) => void;
-  hasDestination: boolean;
-}) {
+function AllFiltersPopover() {
   const { data: settings } = useSettings();
   const updateSettings = useUpdateSettings();
 
@@ -834,8 +859,6 @@ function AllFiltersPopover({ originRadius, onOriginRadiusChange, destRadius, onD
   }
 
   const activeCount = [
-    originRadius !== DEFAULT_ORIGIN_RADIUS_MILES,
-    hasDestination && destRadius !== DEFAULT_DEST_RADIUS_MILES,
     trailerLabels.length > 0,
     maxWeight !== "",
     hazmat,
@@ -862,46 +885,6 @@ function AllFiltersPopover({ originRadius, onOriginRadiusChange, destRadius, onD
       </PopoverTrigger>
       <PopoverContent className="w-80" align="start">
         <div className="space-y-5">
-          {/* Origin Radius */}
-          <div className="space-y-1">
-            <p className="text-sm font-medium">Origin Radius</p>
-            <div className="flex items-center gap-2">
-              <Input
-                type="number"
-                min={1}
-                max={1000}
-                value={originRadius}
-                onChange={(e) => {
-                  const v = Math.max(1, Math.min(1000, Number(e.target.value) || 1));
-                  onOriginRadiusChange(v);
-                }}
-                className="w-24 h-8 text-sm"
-              />
-              <span className="text-xs text-muted-foreground">miles from origin</span>
-            </div>
-          </div>
-
-          {/* Destination Radius */}
-          {hasDestination && (
-            <div className="space-y-1">
-              <p className="text-sm font-medium">Destination Radius</p>
-              <div className="flex items-center gap-2">
-                <Input
-                  type="number"
-                  min={1}
-                  max={1000}
-                  value={destRadius}
-                  onChange={(e) => {
-                    const v = Math.max(1, Math.min(1000, Number(e.target.value) || 1));
-                    onDestRadiusChange(v);
-                  }}
-                  className="w-24 h-8 text-sm"
-                />
-                <span className="text-xs text-muted-foreground">miles from destination</span>
-              </div>
-            </div>
-          )}
-
           {/* Trailer Types */}
           <div className="space-y-2">
             <p className="text-sm font-medium">Trailer Types</p>
