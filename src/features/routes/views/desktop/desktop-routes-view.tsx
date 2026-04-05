@@ -273,7 +273,7 @@ export function DesktopRoutesView() {
           hasHome={hasHomeBase}
           resetKey={filterResetKey}
           isSearching={isLoading}
-          onCancel={cancel}
+          onCancel={() => { cancel(); handleSearchCleared(); }}
         />
       </div>
 
