@@ -54,7 +54,7 @@ export function DesktopRoutesView() {
     return selectedChain.legs.map((l) => l.order_id ?? "spec").join("|");
   }, [selectedChain]);
 
-  const { data, isLoading, isFetched } = useRouteSearch(activeCompanyId ?? "", searchParams);
+  const { data, isLoading, isFetched, progress } = useRouteSearch(activeCompanyId ?? "", searchParams);
   const routes = useMemo(() => data?.routes ?? [], [data?.routes]);
 
   const orderUrlTemplate = data?.order_url_template;
@@ -280,6 +280,12 @@ export function DesktopRoutesView() {
         {/* Column 1: Route list */}
         {hasActiveSearch && (
           <div className="w-[35%] min-w-[280px] max-w-[450px] shrink-0 min-h-0">
+            {isLoading && progress && progress.pairs_total > 0 && (
+              <div className="px-4 py-2 text-sm text-muted-foreground">
+                Checking {progress.pairs_checked.toLocaleString()} / {progress.pairs_total.toLocaleString()} pairs
+                {progress.routes_found > 0 && ` — ${progress.routes_found} routes found`}
+              </div>
+            )}
             <RouteList
               chains={displayLocation.routeChains}
               selectedIndex={selectedItemIndex}
