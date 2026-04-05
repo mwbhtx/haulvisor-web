@@ -108,7 +108,7 @@ export function FiltersSheet({ onBack, onApply, initialFilters }: FiltersSheetPr
         {/* Number of Orders */}
         <FilterRow
           label="Number of Orders"
-          value={numOrders === 0 ? "Any" : String(numOrders)}
+          value={String(numOrders)}
           expanded={expandedRow === "numOrders"}
           onToggle={() => toggle("numOrders")}
         >
@@ -125,7 +125,7 @@ export function FiltersSheet({ onBack, onApply, initialFilters }: FiltersSheetPr
                     : "border-white/10 text-muted-foreground hover:text-foreground",
                 )}
               >
-                {n === 0 ? "Any" : String(n)}
+                {String(n)}
               </button>
             ))}
           </div>

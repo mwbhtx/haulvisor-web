@@ -16,7 +16,7 @@ import { ChevronDown, LocateIcon, SlidersHorizontal, XIcon } from "lucide-react"
 import { BorderBeam } from "@/platform/web/components/ui/border-beam";
 import { Calendar } from "@/platform/web/components/ui/calendar";
 import { useSettings, useUpdateSettings } from "@/core/hooks/use-settings";
-import { TRAILER_CATEGORIES, expandTrailerCodes, codesToLabels, DEFAULT_MAX_TRIP_DAYS, DEFAULT_COST_PER_MILE, ORDER_COUNT_OPTIONS, DEFAULT_NUM_ORDERS, DEFAULT_ORIGIN_RADIUS_MILES, DEFAULT_DEST_RADIUS_MILES } from "@mwbhtx/haulvisor-core";
+import { TRAILER_CATEGORIES, expandTrailerCodes, codesToLabels, DEFAULT_MAX_TRIP_DAYS, DEFAULT_COST_PER_MILE, ORDER_COUNT_OPTIONS, DEFAULT_NUM_ORDERS, DEFAULT_ORIGIN_RADIUS_MILES, DEFAULT_DEST_RADIUS_MILES, MAX_DEADHEAD_PCT_OPTIONS, MIN_DAILY_PROFIT_OPTIONS, MIN_RPM_OPTIONS, MAX_INTERLEG_DEADHEAD_OPTIONS } from "@mwbhtx/haulvisor-core";
 
 import type { RouteSearchParams } from "@/core/hooks/use-routes";
 
@@ -204,7 +204,7 @@ function DaysOutPill({ value, onChange, departureDate }: { value: number; onChan
 
 function NumOrdersPill({ value, onChange }: { value: number; onChange: (v: number) => void }) {
   const [open, setOpen] = useState(false);
-  const label = value === 0 ? "Any" : `${value}`;
+  const label = `${value}`;
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -231,7 +231,7 @@ function NumOrdersPill({ value, onChange }: { value: number; onChange: (v: numbe
                 onClick={() => { onChange(n); setOpen(false); }}
                 className={`flex-1 rounded-md py-1.5 text-sm font-medium border transition-colors ${value === n ? "border-primary bg-primary/15 text-primary" : "border-border text-muted-foreground hover:text-foreground hover:bg-accent"}`}
               >
-                {n === 0 ? "Any" : String(n)}
+                {String(n)}
               </button>
             ))}
           </div>
@@ -460,6 +460,10 @@ export function SearchFilters({
   const [numOrders, setNumOrders] = useState<number>(r.numOrders ?? DEFAULT_NUM_ORDERS);
   const [originRadius, setOriginRadius] = useState<number>(DEFAULT_ORIGIN_RADIUS_MILES);
   const [destRadius, setDestRadius] = useState<number>(DEFAULT_DEST_RADIUS_MILES);
+  const [maxDeadheadPct, setMaxDeadheadPct] = useState<number | undefined>(undefined);
+  const [minDailyProfit, setMinDailyProfit] = useState<number | undefined>(undefined);
+  const [minRpm, setMinRpm] = useState<number | undefined>(undefined);
+  const [maxInterlegDh, setMaxInterlegDh] = useState<number | undefined>(undefined);
   const [defaultsLoaded, setDefaultsLoaded] = useState(!!r.origin);
 
   const hasHomeLocation =
@@ -517,9 +521,13 @@ export function SearchFilters({
                 departure_date: departureDate,
                 ...(destination ? { destination_lat: destination.lat, destination_lng: destination.lng, destination_city: destination.name.split(",")[0] } : {}),
                 max_trip_days: daysOut,
-                ...(numOrders > 0 ? { num_orders: numOrders } : {}),
+                num_orders: numOrders,
                 origin_radius_miles: originRadius,
                 ...(destination ? { dest_radius_miles: destRadius } : {}),
+                ...(maxDeadheadPct != null ? { max_deadhead_pct: maxDeadheadPct } : {}),
+                ...(minDailyProfit != null ? { min_daily_profit: minDailyProfit } : {}),
+                ...(minRpm != null ? { min_rpm: minRpm } : {}),
+                ...(maxInterlegDh != null ? { max_interleg_deadhead_miles: maxInterlegDh } : {}),
                 ...driverProfile,
               });
             }
@@ -542,8 +550,12 @@ export function SearchFilters({
             origin_lng: homePlace.lng,
             departure_date: departureDate,
             max_trip_days: daysOut,
-            ...(numOrders > 0 ? { num_orders: numOrders } : {}),
+            num_orders: numOrders,
             origin_radius_miles: originRadius,
+            ...(maxDeadheadPct != null ? { max_deadhead_pct: maxDeadheadPct } : {}),
+            ...(minDailyProfit != null ? { min_daily_profit: minDailyProfit } : {}),
+            ...(minRpm != null ? { min_rpm: minRpm } : {}),
+            ...(maxInterlegDh != null ? { max_interleg_deadhead_miles: maxInterlegDh } : {}),
             ...driverProfile,
           });
         }
@@ -568,18 +580,22 @@ export function SearchFilters({
       departure_date: departureDate,
       ...(destination ? { destination_lat: destination.lat, destination_lng: destination.lng, destination_city: destination.name.split(",")[0] } : {}),
       max_trip_days: daysOut,
-      ...(numOrders > 0 ? { num_orders: numOrders } : {}),
+      num_orders: numOrders,
       origin_radius_miles: originRadius,
       ...(destination ? { dest_radius_miles: destRadius } : {}),
+      ...(maxDeadheadPct != null ? { max_deadhead_pct: maxDeadheadPct } : {}),
+      ...(minDailyProfit != null ? { min_daily_profit: minDailyProfit } : {}),
+      ...(minRpm != null ? { min_rpm: minRpm } : {}),
+      ...(maxInterlegDh != null ? { max_interleg_deadhead_miles: maxInterlegDh } : {}),
       ...driverProfile,
     });
-  }, [origin, destination, departureDate, daysOut, numOrders, originRadius, destRadius, profileKey, onClearSearch]);
+  }, [origin, destination, departureDate, daysOut, numOrders, originRadius, destRadius, maxDeadheadPct, minDailyProfit, minRpm, maxInterlegDh, profileKey, onClearSearch]);
 
   // Auto-search on filter changes (only after initial load settles)
   useEffect(() => {
     if (!searchEnabled.current) return;
     fireSearch();
-  }, [departureDate, daysOut, numOrders, originRadius, destRadius]);
+  }, [departureDate, daysOut, numOrders, originRadius, destRadius, maxDeadheadPct, minDailyProfit, minRpm, maxInterlegDh]);
 
   // Auto-search on driver profile changes (debounced)
   // Signal loading immediately so the UI feels responsive, then fire the actual query after 400ms
@@ -807,7 +823,12 @@ export function SearchFilters({
       {departureDatePill}
       <div id="onborda-days-out"><DaysOutPill value={daysOut} onChange={setDaysOut} departureDate={departureDate} /></div>
       <NumOrdersPill value={numOrders} onChange={setNumOrders} />
-      <div id="onborda-all-filters"><AllFiltersPopover /></div>
+      <div id="onborda-all-filters"><AllFiltersPopover
+        maxDeadheadPct={maxDeadheadPct} setMaxDeadheadPct={setMaxDeadheadPct}
+        minDailyProfit={minDailyProfit} setMinDailyProfit={setMinDailyProfit}
+        minRpm={minRpm} setMinRpm={setMinRpm}
+        maxInterlegDh={maxInterlegDh} setMaxInterlegDh={setMaxInterlegDh}
+      /></div>
       {clearButton}
     </div>
   );
@@ -815,7 +836,21 @@ export function SearchFilters({
 
 /* ---- All Filters Popover ---- */
 
-function AllFiltersPopover() {
+function AllFiltersPopover({
+  maxDeadheadPct, setMaxDeadheadPct,
+  minDailyProfit, setMinDailyProfit,
+  minRpm, setMinRpm,
+  maxInterlegDh, setMaxInterlegDh,
+}: {
+  maxDeadheadPct: number | undefined;
+  setMaxDeadheadPct: (v: number | undefined) => void;
+  minDailyProfit: number | undefined;
+  setMinDailyProfit: (v: number | undefined) => void;
+  minRpm: number | undefined;
+  setMinRpm: (v: number | undefined) => void;
+  maxInterlegDh: number | undefined;
+  setMaxInterlegDh: (v: number | undefined) => void;
+}) {
   const { data: settings } = useSettings();
   const updateSettings = useUpdateSettings();
 
@@ -865,6 +900,10 @@ function AllFiltersPopover() {
     twic,
     team,
     noTarps,
+    maxDeadheadPct != null,
+    minDailyProfit != null,
+    minRpm != null,
+    maxInterlegDh != null,
   ].filter(Boolean).length;
 
   return (
@@ -992,6 +1031,65 @@ function AllFiltersPopover() {
                   </div>
                 </button>
               ))}
+            </div>
+          </div>
+
+          {/* Route Quality */}
+          <div className="space-y-2">
+            <p className="text-sm font-medium">Route Quality</p>
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-muted-foreground">Max DH %</span>
+                <select
+                  value={maxDeadheadPct ?? ''}
+                  onChange={(e) => setMaxDeadheadPct(e.target.value ? Number(e.target.value) : undefined)}
+                  className="h-8 rounded-md border bg-background px-2 text-sm"
+                >
+                  <option value="">Any</option>
+                  {MAX_DEADHEAD_PCT_OPTIONS.map((o) => (
+                    <option key={o.value} value={o.value}>{o.label}</option>
+                  ))}
+                </select>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-muted-foreground">Min $/Day</span>
+                <select
+                  value={minDailyProfit ?? ''}
+                  onChange={(e) => setMinDailyProfit(e.target.value ? Number(e.target.value) : undefined)}
+                  className="h-8 rounded-md border bg-background px-2 text-sm"
+                >
+                  <option value="">Any</option>
+                  {MIN_DAILY_PROFIT_OPTIONS.map((o) => (
+                    <option key={o.value} value={o.value}>{o.label}</option>
+                  ))}
+                </select>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-muted-foreground">Min $/Mi</span>
+                <select
+                  value={minRpm ?? ''}
+                  onChange={(e) => setMinRpm(e.target.value ? Number(e.target.value) : undefined)}
+                  className="h-8 rounded-md border bg-background px-2 text-sm"
+                >
+                  <option value="">Any</option>
+                  {MIN_RPM_OPTIONS.map((o) => (
+                    <option key={o.value} value={o.value}>{o.label}</option>
+                  ))}
+                </select>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-muted-foreground">Max DH Between</span>
+                <select
+                  value={maxInterlegDh ?? ''}
+                  onChange={(e) => setMaxInterlegDh(e.target.value ? Number(e.target.value) : undefined)}
+                  className="h-8 rounded-md border bg-background px-2 text-sm"
+                >
+                  <option value="">Any</option>
+                  {MAX_INTERLEG_DEADHEAD_OPTIONS.map((o) => (
+                    <option key={o.value} value={o.value}>{o.label}</option>
+                  ))}
+                </select>
+              </div>
             </div>
           </div>
 
