@@ -532,6 +532,12 @@ export function SearchFilters({
   // Stable key for driver profile so it can be a useEffect dependency
   const profileKey = JSON.stringify(driverProfile);
 
+  // Track current vs last-searched params to show/hide Search button
+  const currentParamsKey = JSON.stringify([origin?.lat, origin?.lng, destination?.lat, destination?.lng, departureDate, daysOut, numOrders, originRadius, destRadius, maxDeadheadPct, minDailyProfit, minRpm, maxInterlegDh, profileKey]);
+  const lastSearchedParamsKey = useRef<string>("");
+  const hasSearched = lastSearchedParamsKey.current !== "";
+  const paramsChanged = currentParamsKey !== lastSearchedParamsKey.current;
+
   // Fire search (shared helper)
   const fireSearch = useCallback(() => {
     if (!origin) {
@@ -540,6 +546,7 @@ export function SearchFilters({
     }
     onOriginChange?.({ lat: origin.lat, lng: origin.lng, city: origin.name.split(",")[0] });
     onDestinationChange?.(destination ? { lat: destination.lat, lng: destination.lng, city: destination.name.split(",")[0] } : null);
+    lastSearchedParamsKey.current = currentParamsKey;
     onSearch({
       origin_lat: origin.lat,
       origin_lng: origin.lng,
@@ -554,8 +561,9 @@ export function SearchFilters({
       ...(minRpm != null ? { min_rpm: minRpm } : {}),
       ...(maxInterlegDh != null ? { max_interleg_deadhead_miles: maxInterlegDh } : {}),
       ...driverProfile,
+      _t: Date.now(),
     });
-  }, [origin, destination, departureDate, daysOut, numOrders, originRadius, destRadius, maxDeadheadPct, minDailyProfit, minRpm, maxInterlegDh, profileKey, onClearSearch]);
+  }, [origin, destination, departureDate, daysOut, numOrders, originRadius, destRadius, maxDeadheadPct, minDailyProfit, minRpm, maxInterlegDh, profileKey, onClearSearch, currentParamsKey]);
 
   // Update map markers when origin/destination change (no auto-search)
   useEffect(() => {
@@ -723,13 +731,15 @@ export function SearchFilters({
           {departureDatePill}
           <DaysOutPill value={daysOut} onChange={setDaysOut} departureDate={departureDate} />
           <NumOrdersPill value={numOrders} onChange={setNumOrders} />
-          <Button
-            onClick={fireSearch}
-            disabled={!origin}
-            className="h-9 rounded-full px-5 text-sm font-medium"
-          >
-            Search
-          </Button>
+          {(!hasSearched || paramsChanged) && (
+            <Button
+              onClick={fireSearch}
+              disabled={!origin}
+              className="h-9 rounded-full px-5 text-sm font-medium"
+            >
+              Search
+            </Button>
+          )}
         </div>
       </div>
     );
@@ -776,13 +786,15 @@ export function SearchFilters({
         minRpm={minRpm} setMinRpm={setMinRpm}
         maxInterlegDh={maxInterlegDh} setMaxInterlegDh={setMaxInterlegDh}
       /></div>
-      <Button
-        onClick={fireSearch}
-        disabled={!origin}
-        className="h-9 rounded-full px-5 text-sm font-medium"
-      >
-        Search
-      </Button>
+      {(!hasSearched || paramsChanged) && (
+        <Button
+          onClick={fireSearch}
+          disabled={!origin}
+          className="h-9 rounded-full px-5 text-sm font-medium"
+        >
+          Search
+        </Button>
+      )}
       {clearButton}
     </div>
   );

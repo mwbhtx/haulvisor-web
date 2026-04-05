@@ -32,6 +32,8 @@ export interface RouteSearchParams {
   min_daily_profit?: number;
   min_rpm?: number;
   max_interleg_deadhead_miles?: number;
+  /** Cache-bust token — forces a new search even with identical params */
+  _t?: number;
 }
 
 export interface SearchProgress {
