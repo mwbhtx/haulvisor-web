@@ -107,6 +107,8 @@ totalPay = A.pay + B.pay
 
 The pre-sim estimates are intentionally conservative (haversine underestimates road miles, rough day estimate is optimistic). A pair that fails these loose checks will definitely fail the exact post-sim check. A pair that barely passes may still be filtered post-sim — that's fine, the goal is to eliminate the obvious losers cheaply.
 
+**Note:** The distance matrix (`distanceMap`) is built before the pair loop and already contains real driving distances for origin→pickup pairs. We use `haversine × ROAD_CORRECTION_FACTOR` in the pre-sim filter instead because: (a) it's consistent with how inter-leg deadhead is already computed in the pair loop, (b) haversine underestimates road miles, which is the correct direction for a loose pre-filter (false positives are fine, false negatives are not), and (c) a distance map lookup per pair adds no value when the post-sim filter catches exact values anyway.
+
 #### Stage 2 — Post-Simulation (exact values from simulator)
 
 After `evaluateChain()` returns a scored `EvaluatedChain`, apply exact thresholds:
@@ -202,9 +204,10 @@ Export these from `src/index.ts`.
 ### haulvisor (frontend)
 
 **`src/features/routes/components/search-form.tsx`:**
-- Remove "Any" (0) and "3" from the num orders selector
+- Remove "Any" (0) and "3" from the num orders selector — changing `ORDER_COUNT_OPTIONS` in core handles the rendering automatically
 - Only show options for 1 and 2
 - Default remains 2
+- Clean up 3 occurrences of `...(numOrders > 0 ? { num_orders: numOrders } : {})` — with 0 removed from options, `numOrders` is always 1 or 2, so simplify to always send `num_orders: numOrders`
 
 ---
 
@@ -222,7 +225,7 @@ Export these from `src/index.ts`.
 | File | Change |
 |------|--------|
 | `api/src/routes/dto/route-search.dto.ts` | Add 4 new optional params (`max_deadhead_pct`, `min_daily_profit`, `min_rpm`, `max_interleg_deadhead_miles`), change `num_orders` max to 2 |
-| `api/src/routes/route-search.service.ts` | Pre-sim pruning in 2-order pair loop using new thresholds, post-sim filtering on scored chains, remove OR-Tools branch, clamp num_orders to 2 |
+| `api/src/routes/route-search.service.ts` | Pre-sim pruning in 2-order pair loop using new thresholds, post-sim filtering on scored chains, remove OR-Tools branch, clamp num_orders to 2, add `quickNetProfit` import from `@mwbhtx/haulvisor-core` |
 | `api/src/routes/route-search.engine.ts` | Add filter fields to `SearchConfig`, update `resolveSearchConfig` to accept new params, change `num_orders` type to `1 \| 2`, remove null/Any handling from `computeTierLimits` |
 
 ### haulvisor (frontend)
