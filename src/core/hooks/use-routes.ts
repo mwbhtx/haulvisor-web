@@ -1,6 +1,6 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { fetchApi } from "@/core/services/api";
 import type { RouteSearchResult } from "@mwbhtx/haulvisor-core";
 
@@ -44,19 +44,86 @@ export interface SearchProgress {
   elapsed_ms: number;
 }
 
+interface SearchPollResponse {
+  status: "running" | "complete" | "failed";
+  progress: SearchProgress;
+  result?: RouteSearchResult;
+  error?: string;
+}
+
 export function useRouteSearch(companyId: string, params: RouteSearchParams | null) {
-  return useQuery<RouteSearchResult>({
-    queryKey: ["routes", companyId, params],
-    queryFn: () => {
-      const qs = new URLSearchParams();
-      if (!params) throw new Error("params required");
-      for (const [key, value] of Object.entries(params)) {
-        if (value != null) qs.set(key, String(value));
-      }
-      return fetchApi<RouteSearchResult>(`routes/${companyId}/search?${qs.toString()}`);
-    },
-    enabled: !!companyId && !!params,
-    staleTime: 5 * 60 * 1000,
-    gcTime: 10 * 60 * 1000,
-  });
+  const [data, setData] = useState<RouteSearchResult | undefined>(undefined);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isFetched, setIsFetched] = useState(false);
+  const [error, setError] = useState<Error | null>(null);
+  const [progress, setProgress] = useState<SearchProgress | null>(null);
+
+  const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const paramsKeyRef = useRef<string>("");
+
+  const stopPolling = useCallback(() => {
+    if (pollRef.current) {
+      clearInterval(pollRef.current);
+      pollRef.current = null;
+    }
+  }, []);
+
+  const paramsKey = params ? JSON.stringify(params) : "";
+
+  useEffect(() => {
+    if (!companyId || !params || paramsKey === paramsKeyRef.current) return;
+    paramsKeyRef.current = paramsKey;
+
+    stopPolling();
+    setIsLoading(true);
+    setIsFetched(false);
+    setError(null);
+    setProgress(null);
+
+    const qs = new URLSearchParams();
+    for (const [key, value] of Object.entries(params)) {
+      if (value != null) qs.set(key, String(value));
+    }
+
+    fetchApi<{ search_id: string }>(`routes/${companyId}/search?${qs.toString()}`, {
+      method: "POST",
+    })
+      .then(({ search_id }) => {
+        pollRef.current = setInterval(async () => {
+          try {
+            const resp = await fetchApi<SearchPollResponse>(
+              `routes/${companyId}/search/${search_id}`,
+            );
+
+            setProgress(resp.progress);
+
+            if (resp.status === "complete" && resp.result) {
+              stopPolling();
+              setData(resp.result);
+              setIsLoading(false);
+              setIsFetched(true);
+            } else if (resp.status === "failed") {
+              stopPolling();
+              setError(new Error(resp.error || "Search failed"));
+              setIsLoading(false);
+              setIsFetched(true);
+            }
+          } catch (err) {
+            stopPolling();
+            setError(err instanceof Error ? err : new Error(String(err)));
+            setIsLoading(false);
+            setIsFetched(true);
+          }
+        }, 1500);
+      })
+      .catch((err) => {
+        setError(err instanceof Error ? err : new Error(String(err)));
+        setIsLoading(false);
+        setIsFetched(true);
+      });
+
+    return () => stopPolling();
+  }, [companyId, paramsKey]);
+
+  return { data, isLoading, isFetched, error, progress };
 }
