@@ -50,7 +50,7 @@ export function RouteDetailPanel({
       {!isExpanded && (
         <div className="flex h-full items-center justify-center">
           <p
-            className="text-sm text-text-secondary whitespace-nowrap select-none"
+            className="text-sm text-muted-foreground whitespace-nowrap select-none"
             style={{ transform: "rotate(-90deg)" }}
           >
             Select a route
@@ -374,7 +374,7 @@ function RouteDetailContent({
         <div className="">
           <button
             type="button"
-            className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-widest transition-colors w-full px-4 py-2.5 text-text-subtle"
+            className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-widest transition-colors w-full px-4 py-2.5 text-muted-foreground"
             onClick={onToggleInspector}
           >
             <span>Route Planner</span>

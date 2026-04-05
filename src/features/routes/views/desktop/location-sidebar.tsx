@@ -313,33 +313,33 @@ function RouteChainCard({
         {/* Key metrics + bookmark — click here to toggle selection */}
         <div onClick={onClick} className="flex justify-around text-center items-start px-4 py-3 border-b border-white/[0.05] cursor-pointer">
           <div>
-            <p className="text-sm uppercase tracking-wide text-text-secondary">$/Day</p>
+            <p className="text-sm uppercase tracking-wide text-muted-foreground">$/Day</p>
             <p className={`text-xl font-bold tabular-nums ${routeProfitColor(chain.daily_net_profit)}`}>
               {formatCurrency(chain.daily_net_profit)}
             </p>
-            <p className="text-xs tabular-nums mt-0.5 text-text-tertiary">{chain.estimated_days.toFixed(1)} days est.</p>
+            <p className="text-xs tabular-nums mt-0.5 text-muted-foreground">{chain.estimated_days.toFixed(1)} days est.</p>
           </div>
           <div>
-            <p className="text-sm uppercase tracking-wide text-text-secondary">Profit</p>
+            <p className="text-sm uppercase tracking-wide text-muted-foreground">Profit</p>
             <p className={`text-xl font-bold tabular-nums ${routeProfitColor(chain.daily_net_profit)}`}>
               {formatCurrency(profit)}
             </p>
-            <p className="text-xs tabular-nums mt-0.5 text-text-tertiary">{formatCurrency(chain.total_pay)} gross</p>
-            <p className="text-xs tabular-nums text-text-tertiary">{formatCurrency(chain.cost_breakdown.total)} costs</p>
+            <p className="text-xs tabular-nums mt-0.5 text-muted-foreground">{formatCurrency(chain.total_pay)} gross</p>
+            <p className="text-xs tabular-nums text-muted-foreground">{formatCurrency(chain.cost_breakdown.total)} costs</p>
           </div>
           <div>
-            <p className="text-sm uppercase tracking-wide text-text-secondary">Net/mi</p>
+            <p className="text-sm uppercase tracking-wide text-muted-foreground">Net/mi</p>
             <p className={`text-xl font-bold tabular-nums ${routeProfitColor(chain.daily_net_profit)}`}>
               {formatRpm(chain.effective_rpm)}
             </p>
             {avgLoadedRpm !== null && (
-              <p className="text-xs tabular-nums mt-0.5 text-text-tertiary">${avgLoadedRpm.toFixed(2)}/mi loaded</p>
+              <p className="text-xs tabular-nums mt-0.5 text-muted-foreground">${avgLoadedRpm.toFixed(2)}/mi loaded</p>
             )}
           </div>
           <div>
-            <p className="text-sm uppercase tracking-wide text-text-secondary">Miles</p>
+            <p className="text-sm uppercase tracking-wide text-muted-foreground">Miles</p>
             <p className="text-xl font-bold tabular-nums">{chain.total_miles.toLocaleString()}</p>
-            <p className="text-xs tabular-nums mt-0.5 text-text-tertiary">{chain.deadhead_pct.toFixed(0)}% DH</p>
+            <p className="text-xs tabular-nums mt-0.5 text-muted-foreground">{chain.deadhead_pct.toFixed(0)}% DH</p>
           </div>
           {onToggleWatchlist && (
             <button
@@ -375,7 +375,7 @@ function RouteChainCard({
             <div className="border-t border-white/[0.05] bg-surface-overlay">
               {/* Routes header */}
               <div className="px-4 pt-3 pb-1.5 border-b border-white/[0.05]">
-                <p className="text-xs font-semibold uppercase tracking-widest text-text-subtle">Route</p>
+                <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Route</p>
               </div>
 
               {/* Start deadhead */}

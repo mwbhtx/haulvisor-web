@@ -49,7 +49,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                   "flex items-center gap-2 rounded-md px-3 py-1.5 text-sm font-medium transition-colors",
                   isActive
                     ? "bg-primary text-primary-foreground"
-                    : "text-sidebar-foreground/50 hover:bg-sidebar-accent hover:text-sidebar-foreground",
+                    : "text-muted-foreground hover:bg-sidebar-accent hover:text-sidebar-foreground",
                 )}
               >
                 <item.icon className="h-4 w-4" />
@@ -71,7 +71,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             type="button"
             onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
             title="Toggle theme"
-            className="flex items-center justify-center rounded-md p-1.5 text-sidebar-foreground/50 hover:bg-sidebar-accent hover:text-sidebar-foreground transition-colors"
+            className="flex items-center justify-center rounded-md p-1.5 text-muted-foreground hover:bg-sidebar-accent hover:text-sidebar-foreground transition-colors"
           >
             {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
           </button>
@@ -79,7 +79,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             type="button"
             onClick={logout}
             title="Log out"
-            className="flex items-center gap-2 rounded-md px-3 py-1.5 text-sm font-medium text-sidebar-foreground/50 hover:bg-sidebar-accent hover:text-sidebar-foreground transition-colors"
+            className="flex items-center gap-2 rounded-md px-3 py-1.5 text-sm font-medium text-muted-foreground hover:bg-sidebar-accent hover:text-sidebar-foreground transition-colors"
           >
             <LogOut className="h-4 w-4" />
             Sign Out
