@@ -6,7 +6,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/plat
 import { RouteInspector } from "@/features/routes/components/route-inspector";
 import { calcAvgLoadedRpm } from "@mwbhtx/haulvisor-core";
 import { LEG_COLORS } from "@/core/utils/route-colors";
-import { rateColor, routeProfitColor } from "@/core/utils/rate-color";
+
 import { formatCurrency, formatDateRange, formatRpm } from "@/core/utils/route-helpers";
 import type { RouteChain, RouteLeg } from "@/core/types";
 
@@ -143,7 +143,7 @@ function RouteDetailContent({
         {/* Route summary + bookmark */}
         <div className="px-4 py-3">
           <div className="flex items-start justify-between mb-2">
-            <p className="text-xs font-semibold uppercase tracking-widest text-text-subtle">Route Summary</p>
+            <p className="text-xs font-semibold uppercase tracking-widest text-foreground">Route Summary</p>
             {onToggleWatchlist && (
               <button
                 type="button"
@@ -156,31 +156,29 @@ function RouteDetailContent({
           </div>
           <div className="text-sm grid grid-cols-4 gap-x-3">
             {[
-              { label1: "$/Day", value1: formatCurrency(chain.daily_net_profit), color1: routeProfitColor(chain.daily_net_profit), label2: "Profit", value2: formatCurrency(profit), color2: "" },
-              { label1: "Net/mi", value1: formatRpm(chain.effective_rpm), color1: routeProfitColor(chain.daily_net_profit), label2: "Expenses", value2: formatCurrency(chain.cost_breakdown.total), color2: "", tooltip2: `${chain.total_miles.toLocaleString()} mi × $${costPerMile.toFixed(2)}/mi` },
-              { label1: "Miles", value1: chain.total_miles.toLocaleString(), color1: "", label2: "Gross", value2: formatCurrency(chain.total_pay), color2: "" },
-              { label1: "Days", value1: chain.estimated_days.toFixed(1), color1: "", label2: "DH %", value2: `${chain.deadhead_pct.toFixed(0)}%`, color2: "" },
-              { label1: "Tarp", value1: needsTarp ? "Yes" : "No", color1: needsTarp ? "text-negative" : "", label2: "DH mi.", value2: chain.total_deadhead_miles.toLocaleString(), color2: "" },
-              { label1: "Loads", value1: String(chain.legs.length), color1: "", label2: "$/mi loaded", value2: avgLoadedRpm !== null ? `$${avgLoadedRpm.toFixed(2)}` : "—", color2: "" },
+              { label1: "$/Day", value1: formatCurrency(chain.daily_net_profit), label2: "Profit", value2: formatCurrency(profit) },
+              { label1: "Net/mi", value1: formatRpm(chain.effective_rpm), label2: "Expenses", value2: formatCurrency(chain.cost_breakdown.total), tooltip2: `${chain.total_miles.toLocaleString()} mi × $${costPerMile.toFixed(2)}/mi` },
+              { label1: "Miles", value1: chain.total_miles.toLocaleString(), label2: "Gross", value2: formatCurrency(chain.total_pay) },
+              { label1: "Days", value1: chain.estimated_days.toFixed(1), label2: "DH %", value2: `${chain.deadhead_pct.toFixed(0)}%` },
+              { label1: "Tarp", value1: needsTarp ? "Yes" : "No", label2: "DH mi.", value2: chain.total_deadhead_miles.toLocaleString() },
+              { label1: "Loads", value1: String(chain.legs.length), label2: "$/mi loaded", value2: avgLoadedRpm !== null ? `$${avgLoadedRpm.toFixed(2)}` : "—" },
             ].map((row, i) => (
-              <div key={i} className={`grid grid-cols-subgrid col-span-4 px-3 py-1.5 ${i % 2 === 0 ? "bg-[#ebeced] dark:bg-[#232323]" : ""}`}>
-                <span className="text-text-body text-left">{row.label1}</span>
-                <span className="text-right">{row.color1 ? <span className={`tabular-nums font-medium ${row.color1} bg-black px-1.5 py-0.5`}>{row.value1}</span> : <span className="tabular-nums font-medium text-text-body">{row.value1}</span>}</span>
-                <span className="text-text-body text-left">{row.label2}</span>
+              <div key={i} className={`grid grid-cols-subgrid col-span-4 px-3 py-1.5 ${i % 2 === 0 ? "bg-muted/50" : ""}`}>
+                <span className="text-foreground text-left">{row.label1}</span>
+                <span className="text-right tabular-nums font-medium text-foreground">{row.value1}</span>
+                <span className="text-foreground text-left">{row.label2}</span>
                 <span className="text-right">
                   {'tooltip2' in row && row.tooltip2 ? (
                     <TooltipProvider>
                       <Tooltip>
                         <TooltipTrigger asChild>
-                          <span className="tabular-nums font-medium text-text-body underline decoration-dashed underline-offset-2 cursor-default">{row.value2}</span>
+                          <span className="tabular-nums font-medium text-foreground underline decoration-dashed underline-offset-2 cursor-default">{row.value2}</span>
                         </TooltipTrigger>
                         <TooltipContent side="left">{row.tooltip2}</TooltipContent>
                       </Tooltip>
                     </TooltipProvider>
-                  ) : row.color2 ? (
-                    <span className={`tabular-nums font-medium ${row.color2} bg-black px-1.5 py-0.5`}>{row.value2}</span>
                   ) : (
-                    <span className="tabular-nums font-medium text-text-body">{row.value2}</span>
+                    <span className="tabular-nums font-medium text-foreground">{row.value2}</span>
                   )}
                 </span>
               </div>
@@ -189,9 +187,9 @@ function RouteDetailContent({
         </div>
 
         {/* Routes section */}
-        <div className="bg-[#ebeced] dark:bg-transparent">
+        <div>
         <div className="px-4 pt-3 pb-1.5 ">
-          <p className="text-xs font-semibold uppercase tracking-widest text-text-subtle">Route</p>
+          <p className="text-xs font-semibold uppercase tracking-widest text-foreground">Route</p>
         </div>
 
         {/* Start deadhead */}
@@ -203,7 +201,7 @@ function RouteDetailContent({
               <div className="w-px flex-1 bg-text-body" />
             </div>
             <div className="flex items-center flex-1 gap-3 py-3">
-              <span className="flex-1 text-base font-bold text-text-body">
+              <span className="flex-1 text-base font-bold text-foreground">
                 {origin} → {firstLeg.origin_city} · {startDh.toLocaleString()} mi
               </span>
             </div>
@@ -225,7 +223,7 @@ function RouteDetailContent({
                     <div className="w-px flex-1 bg-text-body" />
                   </div>
                   <div className="flex items-center flex-1 gap-3 py-3">
-                    <span className="flex-1 text-base font-bold text-text-body">
+                    <span className="flex-1 text-base font-bold text-foreground">
                       {chain.legs[legIdx - 1].destination_city} → {leg.origin_city} · {leg.deadhead_miles.toLocaleString()} mi
                     </span>
                         </div>
@@ -249,7 +247,7 @@ function RouteDetailContent({
                 <div className="flex-1 py-3">
                   <div className="flex items-center gap-3">
                     <p
-                      className="flex-1 text-base font-bold flex items-center gap-1.5 min-w-0 text-text-body"
+                      className="flex-1 text-base font-bold flex items-center gap-1.5 min-w-0 text-foreground"
                     >
                       {leg.order_id && orderUrlTemplate ? (
                         <a
@@ -276,7 +274,7 @@ function RouteDetailContent({
                             e.stopPropagation();
                             onShowComments(leg.order_id!);
                           }}
-                          className="text-text-body hover:text-primary transition-colors shrink-0"
+                          className="text-foreground hover:text-primary transition-colors shrink-0"
                           title="View comments"
                         >
                           <ClipboardListIcon className="h-4 w-4" />
@@ -284,7 +282,7 @@ function RouteDetailContent({
                       )}
                     </p>
                   </div>
-                  <div className="text-sm mt-1 space-y-0.5 text-text-body">
+                  <div className="text-sm mt-1 space-y-0.5 text-foreground">
                       <p>
                         {[
                           leg.weight != null ? `${leg.weight.toLocaleString()} lbs` : null,
@@ -295,23 +293,19 @@ function RouteDetailContent({
                         {leg.miles > 0 && (
                           <>
                             {" · "}
-                            <span className={`${rateColor(leg.pay / leg.miles, costPerMile)} bg-black px-1.5 py-0.5`}>
-                              ${(leg.pay / leg.miles).toFixed(2)}/mi
-                            </span>
+                            <span>${(leg.pay / leg.miles).toFixed(2)}/mi</span>
                           </>
                         )}
                         {leg.tarp_height != null && parseInt(leg.tarp_height, 10) > 0 && (
                           <>
-                            {" "}
-                            <span className="text-negative bg-black px-1.5 py-0.5 text-xs font-semibold uppercase tracking-wide">
-                              TARP
-                            </span>
+                            {" · "}
+                            <span className="text-xs font-semibold uppercase tracking-wide">TARP</span>
                           </>
                         )}
                         {(leg.weight != null || leg.miles > 0) && " · "}{formatCurrency(leg.pay)}
                       </p>
                       {leg.stopoffs && leg.stopoffs.length > 0 && (
-                        <div className="mt-2 space-y-2 text-sm text-text-body">
+                        <div className="mt-2 space-y-2 text-sm text-foreground">
                           {leg.stopoffs.map((stop, i) => (
                             <div key={i}>
                               <span className="capitalize font-medium">{stop.type}</span>
@@ -328,7 +322,7 @@ function RouteDetailContent({
                         </div>
                       )}
                       {!leg.stopoffs && (leg.pickup_date_early_local || leg.delivery_date_early_local) && (
-                        <div className="mt-2 space-y-1.5 text-sm text-text-body">
+                        <div className="mt-2 space-y-1.5 text-sm text-foreground">
                           {leg.pickup_date_early_local && (
                             <p>Pickup: {formatDateRange(leg.pickup_date_early_local, leg.pickup_date_late_local)}</p>
                           )}
@@ -353,7 +347,7 @@ function RouteDetailContent({
               <div className="w-px flex-1 bg-text-body" />
             </div>
             <div className="flex items-center flex-1 gap-3 py-3">
-              <span className="flex-1 text-base font-bold text-text-body">
+              <span className="flex-1 text-base font-bold text-foreground">
                 {lastLeg.destination_city} → {returnCity} · {returnDh.toLocaleString()} mi
               </span>
             </div>
