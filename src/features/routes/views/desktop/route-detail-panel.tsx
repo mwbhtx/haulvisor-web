@@ -203,7 +203,7 @@ function RouteDetailContent({
               <div className="w-px flex-1 bg-black/10 dark:bg-white/[0.07]" />
             </div>
             <div className="flex items-center flex-1 gap-3 py-3">
-              <span className="flex-1 text-base font-semibold text-text-body">
+              <span className="flex-1 text-base font-bold text-text-body">
                 {origin} → {firstLeg.origin_city} · {startDh.toLocaleString()} mi
               </span>
             </div>
@@ -225,7 +225,7 @@ function RouteDetailContent({
                     <div className="w-px flex-1 bg-black/10 dark:bg-white/[0.07]" />
                   </div>
                   <div className="flex items-center flex-1 gap-3 py-3">
-                    <span className="flex-1 text-base font-semibold text-text-body">
+                    <span className="flex-1 text-base font-bold text-text-body">
                       {chain.legs[legIdx - 1].destination_city} → {leg.origin_city} · {leg.deadhead_miles.toLocaleString()} mi
                     </span>
                         </div>
@@ -311,10 +311,10 @@ function RouteDetailContent({
                         {(leg.weight != null || leg.miles > 0) && " · "}{formatCurrency(leg.pay)}
                       </p>
                       {leg.stopoffs && leg.stopoffs.length > 0 && (
-                        <div className="mt-2 space-y-2 text-sm text-muted-foreground">
+                        <div className="mt-2 space-y-2 text-sm text-text-body">
                           {leg.stopoffs.map((stop, i) => (
                             <div key={i}>
-                              <span className="capitalize font-medium text-foreground">{stop.type}</span>
+                              <span className="capitalize font-medium">{stop.type}</span>
                               {' — '}
                               {stop.company_name && <span>{stop.company_name}, </span>}
                               {stop.city}, {stop.state}
@@ -328,7 +328,7 @@ function RouteDetailContent({
                         </div>
                       )}
                       {!leg.stopoffs && (leg.pickup_date_early_local || leg.delivery_date_early_local) && (
-                        <div className="mt-2 space-y-1.5 text-sm text-muted-foreground">
+                        <div className="mt-2 space-y-1.5 text-sm text-text-body">
                           {leg.pickup_date_early_local && (
                             <p>Pickup: {formatDateRange(leg.pickup_date_early_local, leg.pickup_date_late_local)}</p>
                           )}
@@ -353,7 +353,7 @@ function RouteDetailContent({
               <div className="w-px flex-1 bg-black/10 dark:bg-white/[0.07]" />
             </div>
             <div className="flex items-center flex-1 gap-3 py-3">
-              <span className="flex-1 text-base font-semibold text-text-body">
+              <span className="flex-1 text-base font-bold text-text-body">
                 {lastLeg.destination_city} → {returnCity} · {returnDh.toLocaleString()} mi
               </span>
             </div>
