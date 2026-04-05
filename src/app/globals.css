@@ -161,42 +161,43 @@ html {
   padding-right: 0.75rem;
 }
 
-/* Driver.js tour popover — always dark regardless of page theme */
+/* Driver.js tour popover — !important required because driver.js
+   sets background:#fff, color:#2d2d2d, and text-shadow inline */
 .hv-tour-popover {
-  background-color: var(--card);
-  color: var(--foreground);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  max-width: 320px;
+  background-color: var(--card) !important;
+  color: var(--foreground) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 12px !important;
+  max-width: 320px !important;
 }
 .hv-tour-popover .driver-popover-title {
-  color: var(--foreground);
+  color: var(--foreground) !important;
 }
 .hv-tour-popover .driver-popover-description {
-  color: var(--foreground);
+  color: var(--foreground) !important;
 }
 .hv-tour-popover .driver-popover-description strong {
-  color: var(--primary);
+  color: var(--primary) !important;
 }
 .hv-tour-popover .driver-popover-footer button {
-  color: var(--foreground);
-  border-color: var(--border);
-  background: transparent;
-  text-shadow: none;
+  color: var(--foreground) !important;
+  border-color: var(--border) !important;
+  background: transparent !important;
+  text-shadow: none !important;
 }
 .hv-tour-popover .driver-popover-footer button.driver-popover-next-btn {
-  background-color: var(--primary);
-  color: var(--primary-foreground);
-  border: none;
+  background-color: var(--primary) !important;
+  color: var(--primary-foreground) !important;
+  border: none !important;
 }
 .hv-tour-popover .driver-popover-close-btn {
-  color: var(--muted-foreground);
+  color: var(--muted-foreground) !important;
 }
 .hv-tour-popover .driver-popover-arrow-side-bottom .driver-popover-arrow,
 .hv-tour-popover .driver-popover-arrow-side-top .driver-popover-arrow,
 .hv-tour-popover .driver-popover-arrow-side-left .driver-popover-arrow,
 .hv-tour-popover .driver-popover-arrow-side-right .driver-popover-arrow {
-  border-color: var(--card);
+  border-color: var(--card) !important;
 }
 
 /* react-day-picker v9: selected day highlight */
