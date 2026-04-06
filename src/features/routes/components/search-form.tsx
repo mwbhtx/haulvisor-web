@@ -807,7 +807,7 @@ export function SearchFilters({
         {clearButton}
       </div>
       {hintText && (
-        <div className={`bg-card -mx-3 px-3 py-2 mt-2 text-xs font-medium text-muted-foreground ${showOriginHint ? 'text-left' : 'text-right'}`}>
+        <div className="bg-card -mx-3 px-3 py-2.5 mt-2 text-sm font-medium text-muted-foreground">
           {hintText}
         </div>
       )}
