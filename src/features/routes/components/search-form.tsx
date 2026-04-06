@@ -794,7 +794,7 @@ export function SearchFilters({
 
   // Nudge 2: Origin set, no results, not searching — point to Search button
   useEffect(() => {
-    const shouldShow = origin && !hasResults && !isSearching && !hasSearched && defaultsLoaded && searchEnabled.current && !isOnboarding;
+    const shouldShow = !!origin && !hasResults && !isSearching && !hasSearched && defaultsLoaded && !isOnboarding;
     if (shouldShow) {
       const timer = setTimeout(() => {
         searchNudgeRef.current = driver({ overlayOpacity: 0, allowClose: true, popoverClass: "hv-tour-popover" });
