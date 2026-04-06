@@ -774,28 +774,27 @@ export function SearchFilters({
   const showOriginHint = !origin && defaultsLoaded && !isOnboarding;
   const showSearchHint = !!origin && !isSearching && defaultsLoaded && !isOnboarding;
 
+  const hintText = showOriginHint
+    ? <>Enter an <strong className="bg-primary text-primary-foreground px-1 py-0.5 rounded">origin city</strong> and click <strong className="bg-primary text-primary-foreground px-1 py-0.5 rounded">Search</strong> to get route suggestions.</>
+    : showSearchHint
+      ? <>Click <strong className="bg-primary text-primary-foreground px-1 py-0.5 rounded">Search</strong> to analyze routes from your origin city.</>
+      : null;
+
   return (
-    <div className="flex flex-wrap items-center gap-2">
-      <div className="relative">
+    <div>
+      <div className="flex flex-wrap items-center gap-2">
         {originPill}
-        {showOriginHint && (
-          <div className="absolute top-full left-0 mt-2 whitespace-nowrap text-xs font-medium text-muted-foreground z-10 bg-sidebar rounded-lg px-3 py-2">
-            Enter an <strong className="bg-primary text-primary-foreground px-1 py-0.5 rounded">origin city</strong> and click <strong className="bg-primary text-primary-foreground px-1 py-0.5 rounded">Search</strong>
-          </div>
-        )}
-      </div>
-      {destPill}
-      {departureDatePill}
-      <div id="onborda-days-out"><DaysOutPill value={daysOut} onChange={setDaysOut} departureDate={departureDate} /></div>
-      <NumOrdersPill value={numOrders} onChange={setNumOrders} />
-      <div id="onborda-all-filters"><AllFiltersPopover
-        maxDeadheadPct={maxDeadheadPct} setMaxDeadheadPct={setMaxDeadheadPct}
-        minDailyProfit={minDailyProfit} setMinDailyProfit={setMinDailyProfit}
-        minRpm={minRpm} setMinRpm={setMinRpm}
-        maxInterlegDh={maxInterlegDh} setMaxInterlegDh={setMaxInterlegDh}
-      /></div>
-      {!isSearching && (
-        <div className="relative">
+        {destPill}
+        {departureDatePill}
+        <div id="onborda-days-out"><DaysOutPill value={daysOut} onChange={setDaysOut} departureDate={departureDate} /></div>
+        <NumOrdersPill value={numOrders} onChange={setNumOrders} />
+        <div id="onborda-all-filters"><AllFiltersPopover
+          maxDeadheadPct={maxDeadheadPct} setMaxDeadheadPct={setMaxDeadheadPct}
+          minDailyProfit={minDailyProfit} setMinDailyProfit={setMinDailyProfit}
+          minRpm={minRpm} setMinRpm={setMinRpm}
+          maxInterlegDh={maxInterlegDh} setMaxInterlegDh={setMaxInterlegDh}
+        /></div>
+        {!isSearching && (
           <Button
             onClick={fireSearch}
             disabled={!origin}
@@ -804,14 +803,14 @@ export function SearchFilters({
             <SearchIcon className="h-4 w-4" />
             Search
           </Button>
-          {!showOriginHint && showSearchHint && (
-            <div className="absolute top-full right-0 mt-2 whitespace-nowrap text-xs font-medium text-muted-foreground z-10 bg-sidebar rounded-lg px-3 py-2">
-              Click <strong className="bg-primary text-primary-foreground px-1 py-0.5 rounded">Search</strong> to analyze routes
-            </div>
-          )}
+        )}
+        {clearButton}
+      </div>
+      {hintText && (
+        <div className={`bg-card -mx-3 px-3 py-2 mt-2 text-xs font-medium text-muted-foreground ${showOriginHint ? 'text-left' : 'text-right'}`}>
+          {hintText}
         </div>
       )}
-      {clearButton}
     </div>
   );
 }
