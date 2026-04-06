@@ -765,11 +765,13 @@ export function SearchFilters({
   const searchNudgeRef = useRef<ReturnType<typeof driver> | null>(null);
 
   // Nudge 1: No origin set — point to origin input
+  const nudge1Active = !origin && defaultsLoaded && !originPopoverOpen && !isOnboarding;
   useEffect(() => {
-    const shouldShow = !origin && defaultsLoaded && !originPopoverOpen && !isOnboarding;
-    if (shouldShow) {
-      const timer = setTimeout(() => {
-        nudgeRef.current = driver({ overlayOpacity: 0, allowClose: true, popoverClass: "hv-tour-popover" });
+    if (nudge1Active) {
+      // Re-show nudge if it was dismissed or not yet created
+      const show = () => {
+        if (nudgeRef.current) return; // already showing
+        nudgeRef.current = driver({ overlayOpacity: 0, allowClose: false, popoverClass: "hv-tour-popover" });
         nudgeRef.current.highlight({
           element: "#onborda-origin",
           popover: {
@@ -779,24 +781,22 @@ export function SearchFilters({
             align: "start",
           },
         });
-      }, 500);
-      return () => {
-        clearTimeout(timer);
-        nudgeRef.current?.destroy();
-        nudgeRef.current = null;
       };
+      const timer = setTimeout(show, 500);
+      return () => clearTimeout(timer);
     } else {
       nudgeRef.current?.destroy();
       nudgeRef.current = null;
     }
-  }, [origin, defaultsLoaded, originPopoverOpen, isOnboarding]);
+  }, [nudge1Active]);
 
   // Nudge 2: Origin set, no results, not searching — point to Search button
+  const nudge2Active = !!origin && !hasResults && !isSearching && !hasSearched && defaultsLoaded && !isOnboarding;
   useEffect(() => {
-    const shouldShow = !!origin && !hasResults && !isSearching && !hasSearched && defaultsLoaded && !isOnboarding;
-    if (shouldShow) {
-      const timer = setTimeout(() => {
-        searchNudgeRef.current = driver({ overlayOpacity: 0, allowClose: true, popoverClass: "hv-tour-popover" });
+    if (nudge2Active) {
+      const show = () => {
+        if (searchNudgeRef.current) return;
+        searchNudgeRef.current = driver({ overlayOpacity: 0, allowClose: false, popoverClass: "hv-tour-popover" });
         searchNudgeRef.current.highlight({
           element: "#onborda-search-btn",
           popover: {
@@ -806,17 +806,14 @@ export function SearchFilters({
             align: "end",
           },
         });
-      }, 500);
-      return () => {
-        clearTimeout(timer);
-        searchNudgeRef.current?.destroy();
-        searchNudgeRef.current = null;
       };
+      const timer = setTimeout(show, 500);
+      return () => clearTimeout(timer);
     } else {
       searchNudgeRef.current?.destroy();
       searchNudgeRef.current = null;
     }
-  }, [origin, hasResults, isSearching, hasSearched, defaultsLoaded, isOnboarding]);
+  }, [nudge2Active]);
 
   return (
     <div className="flex flex-wrap items-center gap-2">
