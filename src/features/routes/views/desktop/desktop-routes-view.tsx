@@ -274,7 +274,7 @@ export function DesktopRoutesView() {
           hasHome={hasHomeBase}
           resetKey={filterResetKey}
           isSearching={isLoading}
-          onCancel={() => { cancel(); handleSearchCleared(); }}
+          onCancel={() => { cancel(); handleClearSearch(); }}
           hasResults={routes.length > 0}
         />
       </div>

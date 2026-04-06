@@ -504,6 +504,7 @@ export function SearchFilters({
     if (resetKey === undefined || resetKey === 0) return;
     setOrigin(null);
     setDestination(null);
+    lastSearchedParamsKey.current = "";
   }, [resetKey]);
 
   // Pre-fill origin from settings or sessionStorage (no auto-search)
