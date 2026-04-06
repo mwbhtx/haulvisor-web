@@ -6,8 +6,17 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/plat
 import { RouteInspector } from "@/features/routes/components/route-inspector";
 import { useTimeline } from "@/core/hooks/use-timeline";
 import { useAuth } from "@/core/services/auth-provider";
-import { calcAvgLoadedRpm } from "@mwbhtx/haulvisor-core";
+import { calcAvgLoadedRpm, DEFAULT_LOADED_SPEED_MPH, DEFAULT_AVG_SPEED_MPH } from "@mwbhtx/haulvisor-core";
 import { LEG_COLORS } from "@/core/utils/route-colors";
+
+function estDriveTime(miles: number, speed: number): string {
+  const hours = miles / speed;
+  const h = Math.floor(hours);
+  const m = Math.round((hours - h) * 60);
+  if (h === 0) return `${m}m`;
+  if (m === 0) return `${h}h`;
+  return `${h}h ${m}m`;
+}
 
 import { formatCurrency, formatDateRange, formatRpm } from "@/core/utils/route-helpers";
 import type { RouteChain, RouteLeg } from "@/core/types";
@@ -238,7 +247,7 @@ function RouteDetailContent({
             </div>
             <div className="flex items-center flex-1 gap-3 py-3">
               <span className="flex-1 text-base font-bold text-foreground">
-                {origin} → {firstLeg.origin_city} · {startDh.toLocaleString()} mi
+                {origin} → {firstLeg.origin_city} · {startDh.toLocaleString()} mi · {estDriveTime(startDh, DEFAULT_AVG_SPEED_MPH)}
               </span>
             </div>
           </div>
@@ -260,7 +269,7 @@ function RouteDetailContent({
                   </div>
                   <div className="flex items-center flex-1 gap-3 py-3">
                     <span className="flex-1 text-base font-bold text-foreground">
-                      {chain.legs[legIdx - 1].destination_city} → {leg.origin_city} · {leg.deadhead_miles.toLocaleString()} mi
+                      {chain.legs[legIdx - 1].destination_city} → {leg.origin_city} · {leg.deadhead_miles.toLocaleString()} mi · {estDriveTime(leg.deadhead_miles, DEFAULT_AVG_SPEED_MPH)}
                     </span>
                         </div>
                 </div>
@@ -323,6 +332,7 @@ function RouteDetailContent({
                         {[
                           leg.weight != null ? `${leg.weight.toLocaleString()} lbs` : null,
                           leg.miles != null ? `${leg.miles.toLocaleString()} mi` : null,
+                          leg.miles > 0 ? estDriveTime(leg.miles, DEFAULT_LOADED_SPEED_MPH) : null,
                         ]
                           .filter(Boolean)
                           .join(" · ")}
@@ -384,7 +394,7 @@ function RouteDetailContent({
             </div>
             <div className="flex items-center flex-1 gap-3 py-3">
               <span className="flex-1 text-base font-bold text-foreground">
-                {lastLeg.destination_city} → {returnCity} · {returnDh.toLocaleString()} mi
+                {lastLeg.destination_city} → {returnCity} · {returnDh.toLocaleString()} mi · {estDriveTime(returnDh, DEFAULT_AVG_SPEED_MPH)}
               </span>
             </div>
           </div>
