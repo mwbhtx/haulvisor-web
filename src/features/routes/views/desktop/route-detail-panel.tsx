@@ -202,11 +202,11 @@ function RouteDetailContent({
           <div className="text-sm grid grid-cols-4 gap-x-3">
             {[
               { label1: "$/Day", value1: formatCurrency(chain.daily_net_profit), label2: "Profit", value2: formatCurrency(profit) },
-              { label1: "Net/mi", value1: formatRpm(chain.effective_rpm), label2: "Expenses", value2: formatCurrency(chain.cost_breakdown.total), tooltip2: `${chain.total_miles.toLocaleString()} mi × $${costPerMile.toFixed(2)}/mi` },
-              { label1: "Miles", value1: chain.total_miles.toLocaleString(), label2: "Gross", value2: formatCurrency(chain.total_pay) },
+              { label1: "Net/mi", value1: formatRpm(chain.effective_rpm), label2: "Expenses", value2: formatCurrency(chain.cost_breakdown.total), tooltip2: `${(chain.total_miles + chain.total_deadhead_miles).toLocaleString()} mi × $${costPerMile.toFixed(2)}/mi` },
+              { label1: "Total mi.", value1: (chain.total_miles + chain.total_deadhead_miles).toLocaleString(), label2: "Loaded mi.", value2: chain.total_miles.toLocaleString() },
               { label1: "Days", value1: chain.estimated_days.toFixed(1), label2: "DH %", value2: `${chain.deadhead_pct.toFixed(0)}%` },
-              { label1: "Tarp", value1: needsTarp ? "Yes" : "No", label2: "DH mi.", value2: chain.total_deadhead_miles.toLocaleString() },
-              { label1: "Loads", value1: String(chain.legs.length), label2: "$/mi loaded", value2: avgLoadedRpm !== null ? `$${avgLoadedRpm.toFixed(2)}` : "—" },
+              { label1: "Gross", value1: formatCurrency(chain.total_pay), label2: "DH mi.", value2: chain.total_deadhead_miles.toLocaleString() },
+              { label1: "Tarp", value1: needsTarp ? "Yes" : "No", label2: "$/mi loaded", value2: avgLoadedRpm !== null ? `$${avgLoadedRpm.toFixed(2)}` : "—" },
             ].map((row, i) => (
               <div key={i} className={`grid grid-cols-subgrid col-span-4 px-3 py-1.5 ${i % 2 === 0 ? "bg-muted/50" : ""}`}>
                 <span className="text-foreground text-left">{row.label1}</span>
