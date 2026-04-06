@@ -801,6 +801,7 @@ export function SearchFilters({
         {clearButton}
       </div>
       {/* Inline hints — no overlay, no click blocking */}
+      {(showOriginHint || (!showOriginHint && showSearchHint)) && <div className="pt-1" />}
       {showOriginHint && (
         <div className="bg-card rounded-lg px-4 py-2.5 text-sm text-foreground">
           Enter an <strong className="bg-primary text-primary-foreground px-1 py-0.5 rounded">origin city</strong> and click <strong className="bg-primary text-primary-foreground px-1 py-0.5 rounded">Search</strong> to get route suggestions.
