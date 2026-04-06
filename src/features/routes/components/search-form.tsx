@@ -767,7 +767,7 @@ export function SearchFilters({
 
   // Nudge 1: No origin set — point to origin input
   useEffect(() => {
-    const shouldShow = !origin && defaultsLoaded && searchEnabled.current && !originPopoverOpen && !isOnboarding;
+    const shouldShow = !origin && defaultsLoaded && !originPopoverOpen && !isOnboarding;
     if (shouldShow) {
       const timer = setTimeout(() => {
         nudgeRef.current = driver({ overlayOpacity: 0, allowClose: true, popoverClass: "hv-tour-popover" });
