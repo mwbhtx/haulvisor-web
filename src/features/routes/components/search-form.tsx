@@ -779,7 +779,7 @@ export function SearchFilters({
       <div className="relative">
         {originPill}
         {showOriginHint && (
-          <div className="absolute top-full left-0 mt-2 whitespace-nowrap text-xs font-medium text-muted-foreground z-10">
+          <div className="absolute top-full left-0 mt-2 whitespace-nowrap text-xs font-medium text-muted-foreground z-10 bg-sidebar rounded-lg px-3 py-2">
             Enter an <strong className="bg-primary text-primary-foreground px-1 py-0.5 rounded">origin city</strong> and click <strong className="bg-primary text-primary-foreground px-1 py-0.5 rounded">Search</strong>
           </div>
         )}
@@ -805,7 +805,7 @@ export function SearchFilters({
             Search
           </Button>
           {!showOriginHint && showSearchHint && (
-            <div className="absolute top-full right-0 mt-2 whitespace-nowrap text-xs font-medium text-muted-foreground z-10">
+            <div className="absolute top-full right-0 mt-2 whitespace-nowrap text-xs font-medium text-muted-foreground z-10 bg-sidebar rounded-lg px-3 py-2">
               Click <strong className="bg-primary text-primary-foreground px-1 py-0.5 rounded">Search</strong> to analyze routes
             </div>
           )}
