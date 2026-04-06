@@ -210,20 +210,20 @@ function RouteDetailContent({
             ].map((row, i) => (
               <div key={i} className={`grid grid-cols-subgrid col-span-4 px-3 py-1.5 ${i % 2 === 0 ? "bg-muted/50" : ""}`}>
                 <span className="text-foreground/60 text-left">{row.label1}</span>
-                <span className="text-right tabular-nums font-medium text-foreground">{row.value1}</span>
+                <span className="text-right tabular-nums font-bold text-foreground">{row.value1}</span>
                 <span className="text-foreground/60 text-left">{row.label2}</span>
                 <span className="text-right">
                   {'tooltip2' in row && row.tooltip2 ? (
                     <TooltipProvider>
                       <Tooltip>
                         <TooltipTrigger asChild>
-                          <span className="tabular-nums font-medium text-foreground underline decoration-dashed underline-offset-2 cursor-default">{row.value2}</span>
+                          <span className="tabular-nums font-bold text-foreground underline decoration-dashed underline-offset-2 cursor-default">{row.value2}</span>
                         </TooltipTrigger>
                         <TooltipContent side="left">{row.tooltip2}</TooltipContent>
                       </Tooltip>
                     </TooltipProvider>
                   ) : (
-                    <span className="tabular-nums font-medium text-foreground">{row.value2}</span>
+                    <span className="tabular-nums font-bold text-foreground">{row.value2}</span>
                   )}
                 </span>
               </div>
