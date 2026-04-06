@@ -573,11 +573,10 @@ export function SearchFilters({
     });
   }, [origin, destination, departureDate, daysOut, numOrders, originRadius, destRadius, maxDeadheadPct, minDailyProfit, minRpm, maxInterlegDh, profileKey, onClearSearch, currentParamsKey]);
 
-  // Update map markers when origin/destination change (no auto-search)
+  // Update map markers when origin/destination change (no auto-search, no clearing results)
   useEffect(() => {
     if (!searchEnabled.current) return;
     onOriginChange?.(origin ? { lat: origin.lat, lng: origin.lng, city: origin.name.split(",")[0] } : null);
-    if (!origin) onClearSearch?.();
   }, [origin]);
 
   useEffect(() => {
