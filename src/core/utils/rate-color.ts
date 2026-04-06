@@ -32,7 +32,6 @@ export function netRateColor(netPerMile: number): string {
  * based on daily net profit. Thresholds from design tokens.
  */
 export function routeProfitColor(dailyNetProfit: number): string {
-  if (dailyNetProfit >= profitThresholds.good) return "text-positive";
-  if (dailyNetProfit >= profitThresholds.okay) return "text-warning";
-  return "text-negative";
+  if (dailyNetProfit >= profitThresholds.good) return "text-primary";
+  return "text-warning";
 }
