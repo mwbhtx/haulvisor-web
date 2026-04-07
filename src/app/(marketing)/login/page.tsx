@@ -177,12 +177,18 @@ export default function LoginPage() {
         </div>
       </div>
 
-      {/* Right column — product screenshot */}
+      {/* Right column — product screenshots */}
       <div className="relative z-10 hidden lg:flex flex-[1.2] items-center justify-center overflow-hidden">
         <img
           src="/668shots_so.png"
           alt="Haulvisor route search"
           className="w-full h-full object-cover object-left"
+        />
+        {/* Mobile mockup overlay — straddles left edge of webapp image */}
+        <img
+          src="/516shots_so.png"
+          alt="Haulvisor mobile app"
+          className="absolute bottom-0 left-[-28%] h-[80%] w-auto z-10 drop-shadow-[0_20px_80px_rgba(0,0,0,0.9)]"
         />
       </div>
     </div>
