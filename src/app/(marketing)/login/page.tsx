@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { Input } from "@/platform/web/components/ui/input";
 import { useAuth } from "@/core/services/auth-provider";
 import { MarketingNav } from "@/platform/web/components/marketing-nav";
-import { BackgroundBeams } from "@/platform/web/components/ui/beams";
+import Waves from "@/components/Waves";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -78,18 +78,15 @@ export default function LoginPage() {
 
   const isDev = process.env.NODE_ENV === "development";
 
-  // Hide the shader gradient canvas on the login page
-  const hideShader = <style>{`canvas { display: none !important; }`}</style>;
 
   if (showNoCompany) {
     return (
       <>
-        {hideShader}
-        <div className="fixed inset-0 z-[1]" />
-        <div className="fixed inset-0 z-[2] opacity-0 animate-[fade-in_1s_ease-in_forwards] pointer-events-none">
-          <BackgroundBeams />
-        </div>
-        <div className="relative z-[3]">
+        <div
+          className="fixed inset-0 z-[1] bg-cover bg-center bg-no-repeat"
+          style={{ backgroundImage: "url('/image.png')" }}
+        />
+          <div className="relative z-[3]">
           <MarketingNav variant="light" hideAuth />
         </div>
         <div className="relative z-[3] flex flex-col items-center justify-center px-6 pt-20 sm:pt-28 pb-20">
@@ -125,49 +122,69 @@ export default function LoginPage() {
   }
 
   return (
-    <>
-      {hideShader}
-      {/* Glass overlay */}
-      <div className="fixed inset-0 z-[1]" />
-
-      {/* Beams */}
-      <div className="fixed inset-0 z-[2] opacity-0 animate-[fade-in_1s_ease-in_forwards] pointer-events-none">
-        <BackgroundBeams />
+    <div className="min-h-screen flex flex-col lg:flex-row relative">
+      {/* Waves background */}
+      <div className="absolute inset-0 z-0">
+        <Waves
+          lineColor="#96ff00"
+          backgroundColor="transparent"
+          waveSpeedX={0.02}
+          waveSpeedY={0.01}
+          waveAmpX={40}
+          waveAmpY={20}
+          friction={0.9}
+          tension={0.01}
+          maxCursorMove={120}
+          xGap={12}
+          yGap={36}
+        />
       </div>
 
-      {/* Content */}
-      <div className="relative z-[3]">
+      {/* Left column — form */}
+      <div className="relative z-10 flex-1 flex flex-col bg-black/80">
         <MarketingNav variant="light" hideAuth />
-      </div>
 
-      <div className="relative z-[3] flex flex-col items-center justify-center px-6 pt-20 sm:pt-28 pb-20">
-        <div className="w-full max-w-sm rounded-2xl bg-black/30 border border-white/[0.08] backdrop-blur-md p-8">
-          <h2 className="font-display text-3xl font-normal tracking-wide mb-8 text-white">
-            {needsNewPassword ? "Set new password" : "Log in to Haulvisor"}
-          </h2>
+        <div className="flex-1 flex flex-col items-center justify-center px-6 pb-20">
+          <div className="w-full max-w-sm">
+            <h2 className="font-display text-3xl font-normal tracking-wide mb-2 text-white">
+              {needsNewPassword ? "Set new password" : "Welcome back"}
+            </h2>
+            <p className="text-sm text-white/40 mb-8">
+              {needsNewPassword ? "Choose a secure password" : "Log in to Haulvisor"}
+            </p>
 
-          {needsNewPassword ? (
-            <form onSubmit={handleNewPassword} className="flex flex-col gap-3">
-              <Input type="password" placeholder="New password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} className="h-11 bg-white/[0.06] border-white/[0.1] text-sm px-4 text-white placeholder:text-white/30 focus-visible:!border-primary focus-visible:!ring-primary/50" required autoFocus />
-              <Input type="password" placeholder="Confirm password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} className="h-11 bg-white/[0.06] border-white/[0.1] text-sm px-4 text-white placeholder:text-white/30 focus-visible:!border-primary focus-visible:!ring-primary/50" required />
-              {error && <p className="text-xs text-destructive">{error}</p>}
-              <button type="submit" className="w-full h-11 mt-1 rounded-lg bg-surface-deep text-white text-sm font-semibold hover:bg-surface-deep/80 transition-colors">Set password</button>
-            </form>
-          ) : (
-            <form onSubmit={handleLogin} className="flex flex-col gap-3">
-              <Input type={isDev ? "text" : "email"} placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} className="h-11 bg-white/[0.06] border-white/[0.1] text-sm px-4 text-white placeholder:text-white/30 focus-visible:!border-primary focus-visible:!ring-primary/50" autoFocus {...(!isDev ? { required: true } : {})} />
-              <Input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} className="h-11 bg-white/[0.06] border-white/[0.1] text-sm px-4 text-white placeholder:text-white/30 focus-visible:!border-primary focus-visible:!ring-primary/50" {...(!isDev ? { required: true } : {})} />
-              {error && <p className="text-xs text-destructive">{error}</p>}
-              <button type="submit" className="w-full h-11 mt-1 rounded-lg bg-white/[0.1] border border-white/[0.12] text-white text-sm font-semibold hover:bg-white/[0.15] transition-colors">Log in</button>
-            </form>
-          )}
+            {needsNewPassword ? (
+              <form onSubmit={handleNewPassword} className="flex flex-col gap-3">
+                <Input type="password" placeholder="New password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} className="h-11 bg-white/[0.06] border-white/[0.1] text-sm px-4 text-white placeholder:text-white/30 focus-visible:!border-primary focus-visible:!ring-primary/50" required autoFocus />
+                <Input type="password" placeholder="Confirm password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} className="h-11 bg-white/[0.06] border-white/[0.1] text-sm px-4 text-white placeholder:text-white/30 focus-visible:!border-primary focus-visible:!ring-primary/50" required />
+                {error && <p className="text-xs text-destructive">{error}</p>}
+                <button type="submit" className="w-full h-11 mt-1 rounded-lg bg-primary text-primary-foreground text-sm font-semibold hover:brightness-110 transition-all">Set password</button>
+              </form>
+            ) : (
+              <form onSubmit={handleLogin} className="flex flex-col gap-3">
+                <Input type={isDev ? "text" : "email"} placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} className="h-11 bg-white/[0.06] border-white/[0.1] text-sm px-4 text-white placeholder:text-white/30 focus-visible:!border-primary focus-visible:!ring-primary/50" autoFocus {...(!isDev ? { required: true } : {})} />
+                <Input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} className="h-11 bg-white/[0.06] border-white/[0.1] text-sm px-4 text-white placeholder:text-white/30 focus-visible:!border-primary focus-visible:!ring-primary/50" {...(!isDev ? { required: true } : {})} />
+                {error && <p className="text-xs text-destructive">{error}</p>}
+                <button type="submit" className="w-full h-11 mt-1 rounded-lg bg-primary text-primary-foreground text-sm font-semibold hover:brightness-110 transition-all">Log in</button>
+              </form>
+            )}
 
-          <p className="mt-6 text-sm text-white/40 text-center">
-            Don&apos;t have an account?{" "}
-            <button type="button" className="text-white font-medium hover:underline">Sign up</button>
-          </p>
+            <p className="mt-6 text-sm text-white/40 text-center">
+              Don&apos;t have an account?{" "}
+              <button type="button" className="text-white font-medium hover:underline">Sign up</button>
+            </p>
+          </div>
         </div>
       </div>
-    </>
+
+      {/* Right column — product screenshot */}
+      <div className="relative z-10 hidden lg:flex flex-[1.2] items-center justify-center overflow-hidden">
+        <img
+          src="/668shots_so.png"
+          alt="Haulvisor route search"
+          className="w-full h-full object-cover object-left"
+        />
+      </div>
+    </div>
   );
 }

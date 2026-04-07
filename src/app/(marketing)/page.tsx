@@ -60,7 +60,7 @@ export default function HomePage() {
         {/* Hero background image */}
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{ backgroundImage: "url('/digital_black.jpg')" }}
+          style={{ backgroundImage: "url('/u3883561265_Semi_truck_pulling_cargo_with_the_word_Haulvisor__f724a03a-3629-4734-9178-e7990a837766_3.png')" }}
         />
         <div className="absolute inset-0 bg-black/50" />
 
@@ -114,8 +114,12 @@ export default function HomePage() {
       </div>
 
       {/* ── Bottom CTA ── */}
-      <section className="relative z-10">
-        <div className="max-w-6xl mx-auto px-6 py-24 sm:py-32 text-center">
+      <section className="relative z-10 overflow-hidden">
+        <div
+          className="absolute inset-0 bg-cover bg-no-repeat"
+          style={{ backgroundImage: "url('/huh.png')", backgroundPosition: "center 58%" }}
+        />
+        <div className="relative max-w-6xl mx-auto px-6 py-24 sm:py-32 text-center">
           <h2 className="font-display text-4xl sm:text-5xl md:text-6xl font-normal tracking-wide leading-[0.9]">
             Built for truckers.<br />Available today.
           </h2>
