@@ -66,6 +66,9 @@ export const viewport = {
 export const metadata: Metadata = {
   title: "Haulvisor",
   description: brand.tagline,
+  icons: {
+    icon: "/favicon.png",
+  },
 };
 
 export default function RootLayout({
