@@ -185,8 +185,8 @@ export function RouteMap({
           id: seg.id,
           type: "line",
           source: seg.id,
-          layout: { "line-join": "round", "line-cap": "round" },
-          paint: { "line-color": "#ff2200", "line-width": 5 },
+          layout: { "line-join": "round", "line-cap": "butt" },
+          paint: { "line-color": "#ff2200", "line-width": 5, "line-dasharray": [4, 4] },
         });
       }
 
@@ -390,7 +390,7 @@ export function RouteMap({
             </div>
           ))}
           <div className="flex items-center gap-2">
-            <span className="w-5 h-[3px] rounded-full shrink-0" style={{ backgroundColor: "#ff2200" }} />
+            <span className="w-5 h-[3px] shrink-0" style={{ backgroundColor: "#ff2200", borderTop: "3px dashed #ff2200", background: "none" }} />
             <span className="text-white/80">Deadhead</span>
           </div>
         </div>

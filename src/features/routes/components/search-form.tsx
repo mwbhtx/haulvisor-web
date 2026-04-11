@@ -169,7 +169,7 @@ function DaysOutPill({ value, onChange, departureDate }: { value: number; onChan
         >
           <span className="text-muted-foreground">Days Out:</span>
           <span className="flex items-center gap-1.5">
-            <span>{value}</span>
+            <span className="dark:text-primary">{value}</span>
             <ChevronDown className="h-3.5 w-3.5 text-muted-foreground" />
           </span>
         </button>
@@ -215,7 +215,7 @@ function NumOrdersPill({ value, onChange }: { value: number; onChange: (v: numbe
         >
           <span className="text-muted-foreground">Orders:</span>
           <span className="flex items-center gap-1.5">
-            <span>{label}</span>
+            <span className="dark:text-primary">{label}</span>
             <ChevronDown className="h-3.5 w-3.5 text-muted-foreground" />
           </span>
         </button>
@@ -263,7 +263,7 @@ function FilterPill({
         >
           {label && <span className="text-muted-foreground">{label}:</span>}
           <span className="flex items-center gap-1.5">
-            <span>{value}</span>
+            <span className="dark:text-primary">{value}</span>
             <ChevronDown className="h-3.5 w-3.5 text-muted-foreground" />
           </span>
         </button>
@@ -322,7 +322,7 @@ function LocationPill({
           )}
           <span className="text-muted-foreground">{label}:</span>
           <span className="flex items-center gap-1.5">
-            <span>{value?.name?.split(",")[0] ?? "Not set"}</span>
+            <span className="dark:text-primary">{value?.name?.split(",")[0] ?? "Not set"}</span>
             <ChevronDown className="h-3.5 w-3.5 text-muted-foreground" />
           </span>
         </button>

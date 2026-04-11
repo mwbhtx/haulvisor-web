@@ -69,13 +69,13 @@ export default function HomePage() {
         <MarketingNav />
 
         {/* ── Hero ── */}
-        <div className="relative z-10 flex-1 flex flex-col items-center justify-center text-center px-6">
+        <div className="relative z-10 flex-1 flex flex-col items-center justify-center text-center px-6 gap-5">
           <img
             src="/visor-logo-text-white.svg"
             alt={brand.name}
             className="h-[39px] sm:h-[67px] w-auto"
           />
-          <p className="font-display text-white font-medium whitespace-nowrap" style={{ fontSize: '25px', marginTop: '8px' }}>
+          <p className="font-display text-white font-medium whitespace-nowrap" style={{ fontSize: '25px' }}>
             {brand.tagline}
           </p>
 

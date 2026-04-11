@@ -17,7 +17,7 @@ function estDriveTime(miles: number, speed: number): string {
   return `${h}h ${m}m`;
 }
 
-import { formatCurrency, formatDateRange, formatRpm } from "@/core/utils/route-helpers";
+import { formatCurrency, formatDateTime, formatRpm } from "@/core/utils/route-helpers";
 import type { RouteChain, RouteLeg } from "@/core/types";
 
 export interface RouteDetailPanelProps {
@@ -275,7 +275,7 @@ function RouteDetailContent({
                     </p>
                     <span className="text-sm font-bold text-foreground shrink-0 ml-2">{formatCurrency(leg.pay)}</span>
                   </div>
-                  <div className="flex items-center gap-2 mt-1 text-xs text-muted-foreground flex-wrap">
+                  <div className="flex items-center gap-2 mt-1 text-sm text-muted-foreground flex-wrap">
                     {leg.order_id && onShowComments && (
                       <button type="button" onClick={(e) => { e.stopPropagation(); onShowComments(leg.order_id!); }} className="text-muted-foreground hover:text-primary transition-colors shrink-0" title="View comments">
                         <ClipboardListIcon className="h-3.5 w-3.5" />
@@ -289,7 +289,21 @@ function RouteDetailContent({
                     {hasTarp && <span className="font-semibold uppercase tracking-wide text-warning bg-black px-1.5 py-0.5">TARP</span>}
                   </div>
                   {leg.commodity && (
-                    <p className="text-xs text-muted-foreground mt-1">Commodity: {leg.commodity.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' ')}</p>
+                    <p className="text-sm text-muted-foreground mt-1">Commodity: {leg.commodity.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' ')}</p>
+                  )}
+                  {leg.pickup_date_early_local && (
+                    <div className="flex items-baseline gap-2 mt-3">
+                      <span className="text-sm font-semibold text-foreground shrink-0">Pickup</span>
+                      <span className="flex-1 border-b border-solid border-muted-foreground/30 relative -top-0.5" />
+                      <span className="text-sm text-muted-foreground shrink-0">{formatDateTime(leg.pickup_date_early_local)}{leg.pickup_date_late_local ? ` - ${formatDateTime(leg.pickup_date_late_local)}` : ""}</span>
+                    </div>
+                  )}
+                  {leg.delivery_date_early_local && (
+                    <div className="flex items-baseline gap-2 mt-1">
+                      <span className="text-sm font-semibold text-foreground shrink-0">Delivery</span>
+                      <span className="flex-1 border-b border-solid border-muted-foreground/30 relative -top-0.5" />
+                      <span className="text-sm text-muted-foreground shrink-0">{formatDateTime(leg.delivery_date_early_local)}{leg.delivery_date_late_local ? ` - ${formatDateTime(leg.delivery_date_late_local)}` : ""}</span>
+                    </div>
                   )}
                 </div>
               </div>

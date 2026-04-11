@@ -66,9 +66,7 @@ export const viewport = {
 export const metadata: Metadata = {
   title: "Haulvisor",
   description: brand.tagline,
-  icons: {
-    icon: "/visor-favicon.svg",
-  },
+  icons: [],
 };
 
 export default function RootLayout({
@@ -82,6 +80,9 @@ export default function RootLayout({
       className={`${interstate.variable} ${malloy.variable} ${interstateMono.variable} ${sohneMono.variable} ${sohne.variable} ${gapSans.variable} h-full antialiased`}
       suppressHydrationWarning
     >
+      <head>
+        <link rel="icon" href="/visor-favicon.svg" type="image/svg+xml" />
+      </head>
       <body className="min-h-full flex flex-col">
         <Providers>{children}</Providers>
       </body>
