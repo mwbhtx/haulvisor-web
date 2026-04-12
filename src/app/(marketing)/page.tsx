@@ -62,7 +62,7 @@ export default function HomePage() {
         {/* Hero background image */}
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{ backgroundImage: "url('/u3883561265_Semi_truck_pulling_cargo_with_the_word_Haulvisor__f724a03a-3629-4734-9178-e7990a837766_3.png')" }}
+          style={{ backgroundImage: "url('/white-semi-hero-shot.png')" }}
         />
         <div className="absolute inset-0 bg-black/50" />
 
@@ -121,7 +121,7 @@ export default function HomePage() {
       <section className="relative z-10 overflow-hidden">
         <div
           className="absolute inset-0 bg-cover bg-no-repeat"
-          style={{ backgroundImage: "url('/huh.png')", backgroundPosition: "center 58%" }}
+          style={{ backgroundImage: "url('/truck-mountain-shot.png')", backgroundPosition: "center 58%" }}
         />
         <div className="relative max-w-6xl mx-auto px-6 py-24 sm:py-32 text-center">
           <h2 className="font-display text-4xl sm:text-5xl md:text-6xl font-normal tracking-wide leading-[0.9]">
