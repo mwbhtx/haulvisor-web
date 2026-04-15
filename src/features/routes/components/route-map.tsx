@@ -117,9 +117,18 @@ export function RouteMap({
       if (legs.length === 0) { legCountRef.current = 0; return; }
       legCountRef.current = legs.length;
 
-      // Draw straight lines immediately for instant feedback
+      // Draw straight lines immediately for instant feedback.
+      // `line-offset` fans overlapping legs onto parallel tracks so they stay
+      // distinguishable where routes share road segments. Spacing must exceed
+      // line width or adjacent tracks visually overlap.
+      const LINE_WIDTH = 5;
+      const LINE_GAP = 2;
+      const legSpacing = LINE_WIDTH + LINE_GAP;
+      const maxLegOffset = legs.length > 1 ? ((legs.length - 1) / 2) * legSpacing : 0;
+      const deadheadOffset = maxLegOffset + LINE_WIDTH + LINE_GAP;
       for (let i = 0; i < legs.length; i++) {
         const legId = `route-leg-${i}`;
+        const offset = (i - (legs.length - 1) / 2) * legSpacing;
         map.addSource(legId, {
           type: "geojson",
           data: { type: "Feature", geometry: { type: "LineString", coordinates: [legs[i].origin, legs[i].dest] }, properties: {} },
@@ -131,7 +140,8 @@ export function RouteMap({
           layout: { "line-join": "round", "line-cap": "round" },
           paint: {
             "line-color": LEG_COLORS[i % LEG_COLORS.length],
-            "line-width": 5,
+            "line-width": LINE_WIDTH,
+            "line-offset": offset,
           },
         });
       }
@@ -175,7 +185,9 @@ export function RouteMap({
         }
       }
 
-      // Draw all deadhead segments
+      // Draw all deadhead segments. Offset perpendicular to direction of
+      // travel so the dashed line lays alongside any leg it retraces instead
+      // of sitting directly on top of it (which hides both).
       for (const seg of deadheadSegments) {
         map.addSource(seg.id, {
           type: "geojson",
@@ -186,7 +198,12 @@ export function RouteMap({
           type: "line",
           source: seg.id,
           layout: { "line-join": "round", "line-cap": "butt" },
-          paint: { "line-color": "#ff2200", "line-width": 5, "line-dasharray": [4, 4] },
+          paint: {
+            "line-color": "#ff2200",
+            "line-width": LINE_WIDTH,
+            "line-dasharray": [4, 4],
+            "line-offset": deadheadOffset,
+          },
         });
       }
 
