@@ -465,10 +465,6 @@ export function DesktopSettingsView() {
                   <div className="font-medium">EIA (home region)</div>
                 </div>
                 <div className="rounded-md border border-border bg-muted/30 px-3 py-2">
-                  <div className="text-xs uppercase tracking-wide text-muted-foreground">MPG</div>
-                  <div className="font-medium">{DEFAULT_AVG_MPG} mpg (industry avg)</div>
-                </div>
-                <div className="rounded-md border border-border bg-muted/30 px-3 py-2">
                   <div className="text-xs uppercase tracking-wide text-muted-foreground">Maintenance</div>
                   <div className="font-medium">${DEFAULT_MAINTENANCE_PER_MILE.toFixed(3)}/mi</div>
                 </div>
@@ -482,7 +478,7 @@ export function DesktopSettingsView() {
                 </div>
               </div>
               <p className="text-xs text-muted-foreground italic">
-                Switch to Detailed to override any of these values or add your own per-mile costs like tolls or factoring fees.
+                Your truck&apos;s MPG comes from Truck &amp; Capacity. Switch to Detailed to override maintenance, tires, or DEF, or to add per-mile costs like tolls or factoring fees.
               </p>
             </div>
           )}
@@ -493,6 +489,9 @@ export function DesktopSettingsView() {
                 Detailed mode estimates your variable cost per mile from components. This is your <span className="font-medium text-foreground">operating margin</span> — it does not include fixed costs like truck payment, insurance, or taxes.
               </p>
 
+              <p className="text-xs text-muted-foreground">
+                Your truck&apos;s MPG is used for fuel cost and lives in <span className="font-medium text-foreground">Truck &amp; Capacity</span> (edit it there, not here).
+              </p>
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <label className="text-sm font-medium block">Diesel Price ($/gal)</label>
@@ -504,18 +503,6 @@ export function DesktopSettingsView() {
                     value={dieselPrice}
                     onChange={(e) => handleNumberChange("diesel_price_per_gallon", e.target.value, setDieselPrice)}
                     placeholder={String(DEFAULT_DIESEL_PRICE_PER_GALLON)}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-sm font-medium block">Truck Avg. MPG</label>
-                  <Input
-                    type="number"
-                    min={3}
-                    max={12}
-                    step={0.1}
-                    value={avgMpg}
-                    onChange={(e) => handleNumberChange("avg_mpg", e.target.value, setAvgMpg)}
-                    placeholder={String(DEFAULT_AVG_MPG)}
                   />
                 </div>
                 <div className="space-y-2">
