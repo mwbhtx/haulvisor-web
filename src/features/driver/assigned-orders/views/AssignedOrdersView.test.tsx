@@ -115,24 +115,6 @@ describe("AssignedOrdersView", () => {
     expect(screen.getByText("E2")).toBeInTheDocument();
   });
 
-  it("renders stub Sync button on unlinked rows", async () => {
-    (api.listAssignedOrders as unknown as ReturnType<typeof vi.fn>).mockResolvedValue(
-      listResponse([
-        {
-          order_id: "E2",
-          status: "dispatched",
-          ingested_at: "t",
-          has_order_details: false,
-        },
-      ]),
-    );
-    render(<AssignedOrdersView />);
-    await waitFor(() => screen.getByText("E2"));
-    // Per-row stub button on unlinked rows — matched by exact aria-label
-    const stub = screen.getByRole("button", { name: "Sync order" });
-    expect(stub).toBeDisabled();
-  });
-
   it("renders the Sync Orders button", async () => {
     (api.listAssignedOrders as unknown as ReturnType<typeof vi.fn>).mockResolvedValue(
       listResponse([]),

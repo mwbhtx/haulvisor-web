@@ -7,7 +7,8 @@ import type {
   AssignedOrder,
   SyncAllResponse,
 } from "../types";
-import { AssignedOrdersTable } from "../components/AssignedOrdersTable";
+import { OrdersTable } from "@/features/orders/components/orders-table";
+import type { Order } from "@mwbhtx/haulvisor-core";
 import {
   AssignedOrdersFilterStrip,
   type AssignedOrdersFilter,
@@ -111,7 +112,15 @@ export function AssignedOrdersView() {
       ) : visibleOrders.length === 0 ? (
         <div className="text-sm text-muted-foreground">No orders.</div>
       ) : (
-        <AssignedOrdersTable orders={visibleOrders} />
+        <OrdersTable
+          companyId=""
+          orders={visibleOrders as unknown as Order[]}
+          isLoading={false}
+          isFetchingNextPage={false}
+          hasNextPage={false}
+          onLoadMore={() => {}}
+          error={null}
+        />
       )}
     </div>
   );
